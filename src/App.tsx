@@ -1,6 +1,7 @@
+import {Routes, Route} from 'react-router-dom'
+import Home from "./pages/Home"
 import Menu from "./components/Menu"
-import BackgroundBlobs from "./components/BackgroundBlobs"
-import Home from "./components/Home"
+import Clients from "./pages/Clients"
 
 function App() {
   // [{name: 'React', category: 'front', description: 'A JavaScript library for building user interfaces'}]
@@ -8,9 +9,12 @@ function App() {
 
   return (
     <>
-      <BackgroundBlobs />
-      <Menu />
-      <Home />
+    <Menu></Menu>
+    <Routes>
+      <Route path='/' element={<Home />} ></Route>
+      <Route path='/clients' element={<Clients />} ></Route>
+    </Routes>
+      
     </>
   )
 }
