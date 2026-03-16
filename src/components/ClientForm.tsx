@@ -70,7 +70,7 @@ export default function ClientForm() {
                         />
                     </div>
                     <button className="w-3/5 text-xs h-5 flex items-center justify-center mx-auto transition-transform duration-200 hover:scale-102 bg-fuchsia-500 text-white font-light rounded-[10px] px-4 py-4 hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(192,38,211,0.4)] cursor-pointer">
-                        Envoyer le message <img src="./public/assets/envoi.png" className="h-4 ml-5" alt="" />
+                        Envoyer le message <img src="/assets/envoi.png" className="h-4 ml-5" alt="" />
                     </button>
                 </form>
             </div>
