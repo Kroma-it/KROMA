@@ -19,14 +19,14 @@ function Menu() {
                     <button className="w-7 flex items-center h-3 bg-gray-300 dark:bg-blue-950 rounded-full  transition-colors">
                         <img className="h-2 m-0.5 z-2 w-2" src="./public/assets/soleil.png" alt="" />
                         <img className="h-2 m-1.5 z-2 w-2" src="./public/assets/lune.png" alt="" />
-                        <div id="theme-slider" className="absolute w-2.5 z-1 m-0.25 h-2.5 bg-purple-500 rounded-full shadow-md transform transition-transform"></div>
+                        <div id="theme-slider" className="absolute w-2.5 z-1 m-0.25 h-2.5 bg-fuchsia-500 rounded-full shadow-md transform transition-transform"></div>
                     </button>
                     </div>
                     <div className="flex items-center">
-                        <button className="w-7 flex items-center h-3 bg-gray-300 dark:bg-blue-950 rounded-full  transition-colors">
-                            <p className="text-white flex ml-1 float-right z-2 text-[6px] ">FR</p>
-                            <p className="text-white z-2 ml-1.5 text-[6px] ">EN</p>
-                            <div id="theme-slider" className="absolute w-2.5 z-1 m-0.5 h-2.5 bg-purple-500 rounded-full shadow-md transform transition-transform"></div>
+                        <button className="w-7 flex items-center h-3 bg-white dark:bg-white rounded-full  transition-colors">
+                            <p className="text-gray-500 font-bold flex ml-1 float-right z-2 text-[6px] ">FR</p>
+                            <p className="text-gray-500 font-bold z-2 ml-1.5 text-[6px] ">EN</p>
+                            <div id="theme-slider" className="absolute w-2.5 z-1 m-0.5 h-2.5 bg-fuchsia-500 rounded-full shadow-md transform transition-transform"></div>
                         </button>
                     </div>
                 </div>

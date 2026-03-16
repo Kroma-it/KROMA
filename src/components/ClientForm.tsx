@@ -3,11 +3,11 @@ export default function ClientForm() {
     return (
         <div className="relative w-full max-w-lg mx-auto min-h-[600px] flex flex-col items-center justify-center p-8 mt-10">
             {/* Background animated blobs container - Sticky so it follows scrolling */}
-            <div className="sticky top-1/2 w-full flex justify-center z-0">
-                <div className="absolute top-[-60px] -left-20 w-72 h-72 bg-fuchsia-600 rounded-full mix-blend-screen blur-2xl animate-morph animate-float1"></div>
-                <div className="absolute top-[-70px] -right-20 w-72 h-72 bg-violet-600 rounded-full mix-blend-screen blur-2xl animate-morph animate-float2" style={{ animationDelay: '2s' }}></div>
-                <div className="absolute top-[-100px] left-15 w-72 h-72 bg-indigo-600 rounded-full mix-blend-screen blur-2xl animate-morph animate-float3" style={{ animationDelay: '4s' }}></div>
-            </div>
+            
+                <div className="absolute top-[40px] -left-20 w-72 h-72 bg-fuchsia-600 rounded-full mix-blend-screen blur-xl animate-morph animate-float1"></div>
+                <div className="absolute top-[50px] -right-20 w-72 h-72 bg-violet-600 rounded-full mix-blend-screen blur-xl animate-morph animate-float2" style={{ animationDelay: '2s' }}></div>
+                <div className="absolute top-[0px] left-15 w-72 h-72 bg-indigo-600 rounded-full mix-blend-screen blur-xl animate-morph animate-float3" style={{ animationDelay: '4s' }}></div>
+        
 
             {/* Header Text */}
             <div className="relative z-10 flex flex-col items-center gap-4 mb-8">
@@ -25,6 +25,7 @@ export default function ClientForm() {
                                 id="nom"
                                 type="text"
                                 placeholder="NOUMECHI"
+                                required
                                 className="w-full h-7 bg-white/5 border border-white/10 text-[10px] rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
                             />
                         </div>
@@ -34,6 +35,7 @@ export default function ClientForm() {
                                 id="prenom"
                                 type="text"
                                 placeholder="Johnatan"
+                                required
                                 className="w-full h-7 bg-white/5 text-[10px] border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
                             />
                         </div>
@@ -44,6 +46,7 @@ export default function ClientForm() {
                             id="email"
                             type="email"
                             placeholder="johnatan@gmail.com"
+                            required
                             className="w-full h-7 bg-white/5 text-[10px] border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
                         />
                     </div>
@@ -53,6 +56,7 @@ export default function ClientForm() {
                             id="company"
                             type="text"
                             placeholder="Kroma"
+                            required
                             className="w-full h-7 text-[10px] bg-white/5 border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
                         />
                     </div>
@@ -61,6 +65,7 @@ export default function ClientForm() {
                         <textarea
                             id="message"
                             placeholder="Parlez nous de votre expérience avec Kroma"
+                            required
                             className="w-full h-15 text-[10px] bg-white/5 border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
                         />
                     </div>
