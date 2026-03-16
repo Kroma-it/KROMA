@@ -1,5 +1,6 @@
 import ClientForm from "../components/ClientForm"
 import Feedback from "../components/FeedBack"
+import Footer from "../components/Footer"
 
 function Clients() {
   // [{name: 'React', category: 'front', description: 'A JavaScript library for building user interfaces'}]
@@ -24,6 +25,7 @@ const feeds = [
     <>
       <ClientForm />
       <Feedback feeds={feeds}/>
+      <Footer />
     </>
   )
 }

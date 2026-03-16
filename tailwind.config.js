@@ -7,7 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        kroma: "#19101f",
+        kroma: {
+          100: "#f2eaf7",
+          200: "#c59dd9",
+          300: "#7a3f91",
+          400: "#2b0d3e",
+          500:"#11051aff"
+        }
       },
       keyframes: {
         morph: {
