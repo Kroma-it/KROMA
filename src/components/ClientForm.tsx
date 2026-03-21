@@ -1,3 +1,5 @@
+import {SendHorizonal} from "lucide-react"
+
 export default function ClientForm() {
     // Glassmorphism Card
     return (
@@ -70,7 +72,7 @@ export default function ClientForm() {
                         />
                     </div>
                     <button className="w-sm text-2xl h-15 flex items-center justify-center mx-auto transition-transform duration-200 hover:scale-102 bg-fuchsia-500 text-white font-light rounded-[10px] px-4 py-4 hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(192,38,211,0.4)] cursor-pointer">
-                        Envoyer le message <img src="/assets/envoi.png" className="h-7 ml-5" alt="" />
+                        Envoyer le message <SendHorizonal strokeWidth={1.5} className=" text-white w-8 h-8 ml-5" />
                     </button>
                 </form>
             </div>

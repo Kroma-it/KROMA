@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import Menu from "./components/Menu"
 import Clients from "./pages/Clients"
 import Pricing from "./pages/Pricing"
+import PrincingPer from "./pages/PricingPer"
 
 function App() {
   // [{name: 'React', category: 'front', description: 'A JavaScript library for building user interfaces'}]
@@ -15,6 +16,7 @@ function App() {
       <Route path='/' element={<Home />} ></Route>
       <Route path='/clients' element={<Clients />} ></Route>
       <Route path='/tarification' element={<Pricing />} ></Route>
+      <Route path='/personnalisation' element={<PrincingPer />} ></Route>
     </Routes>
       
     </>

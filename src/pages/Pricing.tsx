@@ -1,8 +1,17 @@
-import { ArrowRight } from 'lucide-react';
+import { SendHorizonal } from 'lucide-react';
 import Pack from "../components/Pack";
 import Footer from "../components/Footer"
 
 export default function Pricing() {
+  const landing = [
+    {
+      title: "Investissement créatif",
+      subtitle: "Des tarifs transparents pour des ambitions sans limites",
+      subtitle2 : "Kroma fusionne l'art et la technologie pour créer des expériences digitales uniques et percutantes. Choisissez la formule qui correspond à vos besoins et donnez vie à vos idées",
+    }
+  ]
+
+
     const packs = [
         {
             name: "Pack Starter",
@@ -64,7 +73,7 @@ export default function Pricing() {
                 </div>
                 <button className="bg-fuchsia-600 hover:bg-fuchsia-500 transition-colors text-white px-8 py-5 rounded-xl text-xl font-bold flex items-center gap-3 shrink-0 cursor-pointer">
                     CONTACTEZ-NOUS
-                    <ArrowRight className="w-6 h-6" />
+                    <SendHorizonal strokeWidth={1.5} className=" text-white w-8 h-8 ml-5" />
                 </button>
             </div>
         </div>

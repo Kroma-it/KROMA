@@ -4,7 +4,7 @@ import {FaTiktok, FaWhatsapp} from "react-icons/fa"
 
 export default function Footer(){
     return (
-        <footer className="bg-kroma-400 border-t border-white/20 mt-10 w-full">
+        <footer className="bg-kroma-500 border-t border-white/20 mt-10 w-full">
             <div className="h-auto flex flex-wrap justify-between gap-10 p-10">
                 {/* Colonne d'information et réseaux sociaux */}
                 <div className="flex flex-col gap-4 max-w-sm">
@@ -20,10 +20,10 @@ export default function Footer(){
                        <a href="https://www.instagram.com/kroma.agence" className="bg-fuchsia-500/30 p-3 rounded-full">
                         <Instagram className="text-white w-5 h-5" />
                        </a>
-                       <a href="" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://linkedin.com/company/kroma-agence" className="bg-fuchsia-500/30 p-3 rounded-full">
                         <Linkedin className="text-white w-5 h-5" />
                        </a>
-                       <a href="" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://github.com/kroma-it" className="bg-fuchsia-500/30 p-3 rounded-full">
                         <Github className="text-white w-5 h-5" />
                        </a>
                        <a href="https://www.tiktok.com/@kroma552" className="bg-fuchsia-500/30 p-3 rounded-full">
