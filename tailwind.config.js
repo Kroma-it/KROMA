@@ -8,11 +8,11 @@ export default {
     extend: {
       colors: {
         kroma: {
-          200: "#c59dd9",
-          300: "#7a3f91",
-          400: "#2b0d3e",
-          500: "#4a22ccff",
-          600: "#d946ef"
+          100 : "#f2eaf7",
+          200 : "#c59dd9",
+          300 : "#7a3f91",
+          400 : "#2b0d3e",
+          500 : "#16091f",
         }
       },
       keyframes: {
@@ -27,7 +27,7 @@ export default {
       },
       animation: {
         morph: 'morph 5s ease-in-out infinite',
-        zoomIn: 'zoomIn 5s ease-in-out infinite',
+        zoomIn: 'zoomIn 1s ease-in-out',
       }
     },
   },
