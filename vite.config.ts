@@ -8,7 +8,14 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    Sitemap({hostname: "https://kroma-agence.vercel.app"})
+    Sitemap({
+      hostname: "https://kroma-agence.vercel.app",
+      dynamicRoutes : [
+        '/clients',
+        '/tarification',
+        '/personnalisation',
+      ]
+    })
   ],
   base: '/',
   server: {

@@ -4,7 +4,7 @@ import {FaTiktok, FaWhatsapp} from "react-icons/fa"
 
 export default function Footer(){
     return (
-        <footer className="bg-kroma-500 border-t border-white/20 mt-10 w-full">
+        <footer className="bg-kroma-600 border-t border-white/20 mt-10 w-full">
             <div className="h-auto flex flex-wrap justify-between gap-10 p-10">
                 {/* Colonne d'information et réseaux sociaux */}
                 <div className="flex flex-col gap-4 max-w-sm">

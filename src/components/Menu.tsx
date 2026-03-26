@@ -6,7 +6,7 @@ import "../css/style.css"
 
 function Menu() {
     const [lang, setLang] = useState('FR');
-    const [activeDot, setActiveDot] = useState(0);
+    const [theme, setTheme] = useState('dark');
 
 
     return (
@@ -42,37 +42,45 @@ function Menu() {
                         </NavLink>
                     </li>
                 </ul>
-                <div className="flex gap-2 items-center mx-4">
-                    {[0, 1, 2].map((index) => (
-                        <span 
-                            key={index}
-                            className={`${activeDot === index ? 'w-24' : 'w-4'} cursor-pointer h-4 bg-fuchsia-500 rounded-full transition-all duration-300 flex flex-col`}
-                            onClick={() => setActiveDot(index)}
-                        ></span>
-                    ))}
-                </div>
-                
-                    <div className="p-5">
-                        <div className="relative bg-white w-24 h-10 text-gray-500 font-medium text-center flex items-center p-1 rounded-full cursor-pointer">
-                            <p
-                                className={`z-10 flex-1 transition-colors duration-100 ${lang === 'EN' ? 'text-white' : 'text-gray-500'}`}
-                                onClick={() => setLang('EN')}
-                            >
-                                FR
-                            </p>
-                            <p
-                                className={`z-10 flex-1 transition-colors duration-100 ${lang === 'FR' ? 'text-white' : 'text-gray-500'}`}
-                                onClick={() => setLang('FR')}
-                            >
-                                EN
-                            </p>
-                            <button
-                                className={`absolute bg-fuchsia-500 w-[calc(50%-4px)] h-8 rounded-full transition-all duration-300 ${lang === 'EN' ? 'translate-x-0' : 'translate-x-[calc(100%+0px)]'}`}
-                            ></button>
+                <div className="flex flex-col gap-2 items-center p-5">
+                    {/* Theme Toggle (Sun/Moon) */}
+                    <div className="relative bg-white/10 border border-white/20 w-20 h-10 flex items-center p-1 rounded-full cursor-pointer backdrop-blur-md">
+                        <div 
+                            className={`z-10 flex-1 flex justify-center items-center transition-colors duration-300 ${theme === 'dark' ? 'text-white' : 'text-gray-400'}`}
+                            onClick={() => setTheme('dark')}
+                        >
+                            <Moon size={18} />
                         </div>
-
-
+                        <div 
+                            className={`z-10 flex-1 flex justify-center items-center transition-colors duration-300 ${theme === 'light' ? 'text-white' : 'text-gray-400'}`}
+                            onClick={() => setTheme('light')}
+                        >
+                            <Sun size={18} />
+                        </div>
+                        <button 
+                            className={`absolute bg-fuchsia-500 w-8 h-8 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(217,70,239,0.5)] ${theme === 'dark' ? 'translate-x-[2px]' : 'translate-x-[calc(100%+6px)]'}`}
+                        ></button>
                     </div>
+
+                    {/* Language Toggle (EN/FR) */}
+                    <div className="relative bg-white/10 border border-white/20 w-20 h-10 flex items-center p-1 rounded-full cursor-pointer backdrop-blur-md">
+                        <div 
+                            className={`z-10 flex-1 flex justify-center items-center text-xs font-bold transition-colors duration-300 ${lang === 'EN' ? 'text-white' : 'text-gray-400'}`}
+                            onClick={() => setLang('EN')}
+                        >
+                            EN
+                        </div>
+                        <div 
+                            className={`z-10 flex-1 flex justify-center items-center text-xs font-bold transition-colors duration-300 ${lang === 'FR' ? 'text-white' : 'text-gray-400'}`}
+                            onClick={() => setLang('FR')}
+                        >
+                            FR
+                        </div>
+                        <button 
+                            className={`absolute bg-fuchsia-500 w-8 h-8 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(217,70,239,0.5)] ${lang === 'EN' ? 'translate-x-[2px]' : 'translate-x-[calc(100%+6px)]'}`}
+                        ></button>
+                    </div>
+                </div>
     {/*Start projet && imageAccount */ }
                 <NavLink to="/personnalisation" className={({isActive}) => isActive ? 'font-bold text-fuchsia-500 underline underline-offset-8' : ''}>
                     <button className='bg-fuchsia-600 cursor-pointer rounded-xl text-[12px] text-white h-10 w-35 transition-transform duration-200 hover:scale-105'>Commencer un projet</button>
