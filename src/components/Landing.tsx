@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 interface LandingProps {
     landing: {
         title: string;
@@ -8,8 +10,26 @@ interface LandingProps {
     }[];
 }
 
+
 export default function Landing({ landing }: LandingProps) {
     const data = landing[0]; // On prend le premier élément de la liste
+    const landing1 = data.title.split(" ")
+    const [motsAffiches, setMotsAffiches] = useState<string[]>([]);
+    
+    useEffect(() =>{
+        const timeouts: number[] = [];
+        landing1.forEach((word, index) => {
+            const timeout = setTimeout(() => {
+                // On ajoute le mot au tableau précédent
+                setMotsAffiches((prev) => [...prev, word]);
+            }, index * 500);
+            timeouts.push(timeout as unknown as number);
+        });
+
+        return () => {
+            timeouts.forEach(clearTimeout);
+        };
+    }, []);
 
     return (
         <section className="relative mt-[-100px] h-screen overflow-hidden bg-black">
@@ -21,22 +41,29 @@ export default function Landing({ landing }: LandingProps) {
             >
                 <source src={data.image} type="video/mp4" />
             </video>
-            <div className="absolute inset-0 w-full h-screen bg-gradient-to-t from-kroma-400 bg-black/30"></div>
+            <div className="absolute inset-0 w-full h-screen bg-gradient-to-t from-kroma-500 bg-black/30"></div>
             <div className="relative z-10 absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center">
-                <p className="border border-fuchsia-400 text-[20px] text-fuchsia-500 bg-fuchsia-900/50 p-2 rounded-full w-fit mx-auto mb-4">
+                <p className="border border-fuchsia-400 animate-zoomIn text-[20px] text-fuchsia-500 bg-fuchsia-900/25 p-2 rounded-full w-fit mx-auto mb-4">
                     {data.subtitle}
                 </p>
                 <h1 className="text-7xl font-bold w-3/5 mx-auto leading-tight">
-                    {data.title.split('expériences numériques')[0]}
-                    <span className="text-7xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-fuchsia-500">
-                        expériences numériques
-                    </span>
+                    {motsAffiches.map((word, index) => {
+                        const isGradient = word.toLowerCase().includes("expériences") || word.toLowerCase().includes("numériques");
+                        return (
+                            <span
+                                key={index}
+                                className={`${isGradient ? "font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-fuchsia-500" : ""} animate-zoomIn inline-block mr-2`}
+                            >
+                                {word + " "}
+                            </span>
+                        );
+                    })}
                 </h1>
                 <div className="flex gap-10 items-center justify-center mt-8">
-                    <button className="bg-fuchsia-500 p-3 cursor-pointer rounded-xl text-2xl hover:scale-105 transition-transform">
+                    <button className="bg-fuchsia-500 p-3 cursor-pointer rounded-xl text-2xl hover:scale-105 transition-transform animate-zoomIn">
                         {data.button}
                     </button>
-                    <button className="bg-fuchsia-500/20 p-3 border border-fuchsia-500 cursor-pointer rounded-xl text-2xl hover:bg-fuchsia-500/40 transition-colors">
+                    <button className="bg-fuchsia-500/20 p-3 border border-fuchsia-500 cursor-pointer rounded-xl text-2xl hover:bg-fuchsia-500/40 transition-colors animate-zoomIn">
                         {data.button1}
                     </button>
                 </div>

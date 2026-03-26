@@ -57,7 +57,7 @@ export default function Pricing() {
     return (
         <>
         <div className="flex flex-col items-center gap-10 justify-center text-white pt-20">
-            <p className="text-xl text-fuchsia-500 font-medium bg-fuchsia-900/50 p-3 border-1 rounded-full">Investissement créatif</p>
+            <p className="text-xl text-fuchsia-500 font-medium bg-fuchsia-900/30 p-3 border-1 rounded-full">Investissement créatif</p>
             <p className="text-6xl text-center w-3/6 font-bold">Des tarifs transparents pour des ambitions sans limites</p>
             <p className="text-lg text-center w-4/9 font-light">Kroma fusionne l'art et la technologie pour créer des expériences digitales uniques et percutantes. Choisissez la formule qui correspond à vos besoins et donnez vie à vos idées.</p>
         </div>

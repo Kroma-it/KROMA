@@ -1,10 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import Sitemap from "vite-plugin-sitemap"
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    Sitemap({hostname: "https://kroma-agence.vercel.app"})
+  ],
   base: '/',
   server: {
     host: '0.0.0.0',
