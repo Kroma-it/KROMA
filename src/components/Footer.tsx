@@ -8,7 +8,7 @@ export default function Footer(){
             <div className="h-auto flex flex-wrap justify-between gap-10 p-10">
                 {/* Colonne d'information et réseaux sociaux */}
                 <div className="flex flex-col gap-4 max-w-sm">
-                    <img src="public/assets/logoMenu.png" className="h-25 object-contain object-left" alt="Kroma Logo" />
+                    <img src="/assets/logoMenu.png" className="h-25 object-contain object-left" alt="Kroma Logo" />
                     <p className="text-white">L'agence créative qui transforme les idées audacieuses en réalité digitale éblouissante.</p>
                     <div className="flex flex-wrap w-2/3 gap-5 mt-2">
                        <a href="mailto:kromaagence5@gmail.com" className="bg-fuchsia-500/30 p-3 rounded-full">
