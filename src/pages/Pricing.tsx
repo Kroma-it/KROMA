@@ -1,4 +1,5 @@
 import { SendHorizonal } from 'lucide-react';
+import { NavLink } from "react-router-dom"
 import Pack from "../components/Pack";
 import Footer from "../components/Footer"
 
@@ -72,7 +73,8 @@ export default function Pricing() {
                     <p className="text-white/50 text-xl font-light">Personnalisez votre pack de design pour qu'il s'adapte parfaitement à votre flux de travail.</p>
                 </div>
                 <button className="bg-fuchsia-600 hover:bg-fuchsia-500 transition-colors text-white px-8 py-5 rounded-xl text-xl font-bold flex items-center gap-3 shrink-0 cursor-pointer">
-                    CONTACTEZ-NOUS
+                    <NavLink to='/personnalisation' >CONTACTEZ-NOUS</NavLink>
+                    
                     <SendHorizonal strokeWidth={1.5} className=" text-white w-8 h-8 ml-5" />
                 </button>
             </div>

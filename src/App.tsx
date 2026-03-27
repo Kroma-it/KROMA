@@ -4,6 +4,7 @@ import Menu from "./components/Menu"
 import Clients from "./pages/Clients"
 import Pricing from "./pages/Pricing"
 import PrincingPer from "./pages/PricingPer"
+import Realisation from "./pages/Realisation"
 
 function App() {
   // [{name: 'React', category: 'front', description: 'A JavaScript library for building user interfaces'}]
@@ -17,6 +18,7 @@ function App() {
       <Route path='/clients' element={<Clients />} ></Route>
       <Route path='/tarification' element={<Pricing />} ></Route>
       <Route path='/personnalisation' element={<PrincingPer />} ></Route>
+      <Route path='/realisations' element = {<Realisation />} ></Route>
     </Routes>
       
     </>

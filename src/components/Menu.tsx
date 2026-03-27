@@ -82,7 +82,7 @@ function Menu() {
                     </div>
                 </div>
     {/*Start projet && imageAccount */ }
-                <NavLink to="/personnalisation" className={({isActive}) => isActive ? 'font-bold text-fuchsia-500 underline underline-offset-8' : ''}>
+                <NavLink to="/personnalisation" className={({isActive}) => isActive ? 'font-medium text-fuchsia-500 underline underline-offset-8' : ''}>
                     <button className='bg-fuchsia-600 cursor-pointer rounded-xl text-[12px] text-white h-10 w-35 transition-transform duration-200 hover:scale-105'>Commencer un projet</button>
                 </NavLink>
                 <img src="/assets/2.jpg" className='h-12 w-12 rounded-full' alt="" />

@@ -6,9 +6,9 @@ export default function ClientForm() {
         <div className="relative w-full max-w-lg mx-auto min-h-[600px] flex flex-col items-center justify-center p-8 mt-10">
             {/* Background animated blobs container - Sticky so it follows scrolling */}
             
-                <div className="absolute top-40 right-100 w-3xl h-170 bg-fuchsia-600/80 rounded-full mix-blend-screen blur-3xl animate-morph"></div>
-                <div className="absolute top-10 left- w-3xl h-170 bg-indigo-600/80 rounded-full mix-blend-screen blur-xl animate-morph" style={{ animationDelay: '4s' }}></div>
-                <div className="absolute top-40 -right-120 w-3xl h-170 bg-violet-600/80 rounded-full mix-blend-screen blur-3xl animate-morph" style={{ animationDelay: '2s' }}></div>
+                <div className="absolute top-40 right-100 w-2xl h-140 bg-fuchsia-600/80 rounded-full mix-blend-screen blur-3xl animate-morph"></div>
+                <div className="absolute top-10 left- w-2xl h-170 bg-indigo-600/80 rounded-full mix-blend-screen blur-3xl animate-morph" style={{ animationDelay: '4s' }}></div>
+                <div className="absolute top-40 -right-120 w-2xl h-140 bg-violet-600/80 rounded-full mix-blend-screen blur-3xl animate-morph" style={{ animationDelay: '2s' }}></div>
         
 
             {/* Header Text */}

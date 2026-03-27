@@ -63,7 +63,7 @@ export default function Footer(){
                     <h1 className="font-bold text-2xl mb-4">NEWSLETTER</h1>
                     <p className="font-light text mb-4">Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités</p>
                     <div className="flex flex-col gap-2">
-                        <input type="email" placeholder="Email" className="w-full h-12 rounded-xl text-white bg-fuchsia-500/10 placeholder-white/60 px-4 text-black" />
+                        <input type="email" placeholder="Email" className="w-full h-12 rounded-xl text-white bg-fuchsia-500/10 placeholder-white/60 px-4 text-black focus:outline-none focus:border-fuchsia-500/30 transition-all resize-none leading-relaxed" />
                         <button className="bg-fuchsia-500 w-full p-3 cursor-pointer rounded-xl font-semibold text-xl hover:bg-fuchsia-600 transition-colors">S'inscrire</button>
                     </div>
                 </div>
