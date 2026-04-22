@@ -50,11 +50,11 @@ export default function Footer(){
                 <div className="text-white">
                     <h1 className="font-bold text-2xl mb-4">LIENS RAPIDES</h1>
                     <ul className="font-light text flex flex-col gap-2">
-                        <Link to="/"><li>Accueil</li></Link>
-                        <Link to="/services"><li>Services</li></Link>
-                        <Link to="/realisations"><li>Réalisations</li></Link>
-                        <Link to="/clients"><li>Avis-clients</li></Link>
-                        <Link to="/tarification"><li>Tarification</li></Link>
+                        <Link to="/"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Accueil</li></Link>
+                        <Link to="/services"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Services</li></Link>
+                        <Link to="/realisations"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Réalisations</li></Link>
+                        <Link to="/clients"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Avis-clients</li></Link>
+                        <Link to="/tarification"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Tarification</li></Link>
                     </ul>
                 </div>
 
@@ -63,8 +63,8 @@ export default function Footer(){
                     <h1 className="font-bold text-2xl mb-4">NEWSLETTER</h1>
                     <p className="font-light text mb-4">Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités</p>
                     <div className="flex flex-col gap-2">
-                        <input type="email" placeholder="Email" className="w-full h-12 rounded-xl text-white bg-fuchsia-500/10 placeholder-white/60 px-4 text-black focus:outline-none focus:border-fuchsia-500/30 transition-all resize-none leading-relaxed" />
-                        <button className="bg-fuchsia-500 w-full p-3 cursor-pointer rounded-xl font-semibold text-xl hover:bg-fuchsia-600 transition-colors">S'inscrire</button>
+                        <input type="email" placeholder="Email" className="w-full h-12 rounded-xl text-white bg-fuchsia-500/10 placeholder-white/60 px-4 text-black focus:border-fuchsia-500/30 focus:outline-none border border-black/30 transition-all resize-none leading-relaxed" />
+                        <button className="bg-purple-900 w-full p-3 cursor-pointer rounded-xl font-semibold text-xl hover:bg-fuchsia-600 transition-colors duration-500">S'inscrire</button>
                     </div>
                 </div>
 

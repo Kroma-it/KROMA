@@ -90,8 +90,8 @@ export default function Service(){
                             <p className="text-lg font-medium">Notre équipe reviendra vers vous sous 48h ouvrées</p>
                         </div>
 
-                        <button className="group relative px-10 py-5 bg-fuchsia-600 rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_20px_40px_-10px_rgba(192,38,211,0.4)]">
-                            <div className="absolute inset-0 bg-fuchsia-500 opacity-100 group-hover:opacity-90 transition-opacity" />
+                        <button className="group relative px-10 py-5 bg-fuchsia-600 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 shadow-[0_20px_40px_-10px_rgba(192,38,211,0.4)]">
+                            <div className="absolute inset-0 bg-fuchsia-500 opacity-100 group-hover:opacity-90 transition-opacity duration-500" />
                             <span className="relative text-white font-medium text-xl tracking-tight">Envoyer la demande</span>
                         </button>
                     </div>
@@ -101,7 +101,6 @@ export default function Service(){
                     <div className="absolute -left-20 top-20 w-64 h-64 bg-purple-600/5 blur-[80px] rounded-full" />
                 </div>
             </div>
-            <Footer></Footer>
         </>
     )
 }
