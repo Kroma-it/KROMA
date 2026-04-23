@@ -3,9 +3,9 @@ import {Star, Quote} from "lucide-react"
 export default function Feedback({ feeds }: { feeds: any[] }) {
     return (
         <>
-            <div className="ml-40 p-7">
-                <h1 className="text-white font-bold text-4xl">Ce qu'ils disent à propos de nous</h1>
-                <p className="text-white font-light mt-5">Rejoignez plus de 15 compagnies qui font confiance en Kroma pour leur identité visuelle</p>
+            <div className="px-6 md:px-12 lg:ml-40 p-7">
+                <h1 className="text-white font-bold text-2xl md:text-4xl">Ce qu'ils disent à propos de nous</h1>
+                <p className="text-white font-light mt-5 text-sm md:text-base">Rejoignez plus de 15 compagnies qui font confiance en Kroma pour leur identité visuelle</p>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
                 {feeds.map((feed, index) => (

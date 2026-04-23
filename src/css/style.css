@@ -1,2 +1,42 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js";
+
+/* Mobile Menu Styles */
+#mobile-menu {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.menu-btn {
+    position: relative;
+    gap: 6px;
+    padding: 10px 0;
+}
+
+.menu-dot {
+    width: 4px;
+    height: 4px;
+    background-color: currentColor;
+    border-radius: 50%;
+    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    transform-origin: center;
+    display: block;
+}
+
+.menu-btn.active .menu-dot {
+    width: 24px;
+    height: 2px;
+    border-radius: 2px;
+}
+
+/* Ensuring they stay as 3 distinct lines */
+.menu-btn.active .menu-dot:nth-child(1) {
+    transform: translateY(0);
+}
+
+.menu-btn.active .menu-dot:nth-child(2) {
+    transform: translateY(0);
+}
+
+.menu-btn.active .menu-dot:nth-child(3) {
+    transform: translateY(0);
+}

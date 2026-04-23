@@ -5,6 +5,7 @@ import Clients from "./pages/Clients"
 import Pricing from "./pages/Pricing"
 import PrincingPer from "./pages/PricingPer"
 import Realisation from "./pages/Realisation"
+import Footer from './components/Footer'
 
 function App() {
   // [{name: 'React', category: 'front', description: 'A JavaScript library for building user interfaces'}]
@@ -20,7 +21,7 @@ function App() {
       <Route path='/personnalisation' element={<PrincingPer />} ></Route>
       <Route path='/realisations' element = {<Realisation />} ></Route>
     </Routes>
-      
+    <Footer></Footer>
     </>
   )
 }
