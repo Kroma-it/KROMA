@@ -22,14 +22,6 @@ Cette section doit expliquer les changements importants, le comportement ajoute 
 
 **Fichiers :** Liste des fichiers crees, modifies ou supprimes dans le commit.
 
-**Verification**  
-Liste des controles effectues avant le commit.
-
-- [ ] Le changement est documente clairement
-- [ ] Les fichiers concernes sont listes
-- [ ] Les details du commit sont renseignes
-- [ ] Le projet a ete verifie ou la raison du non-test est indiquee
-
 ---
 
 Exemple :
@@ -53,12 +45,6 @@ Ajout de deux nouvelles sections sur la page d'accueil :
 - `src/pages/Home.tsx`
 - `src/css/style.css`
 
-**Verification**
-- [x] Le changement est documente clairement
-- [x] Les fichiers concernes sont listes
-- [x] Les details du commit sont renseignes
-- [x] Le rendu a ete verifie localement
-
 ---
 
 ## 2026-05-27 - Neox-debug
@@ -67,7 +53,7 @@ Ajout de deux nouvelles sections sur la page d'accueil :
 Ajout du login et modification d'autres pages
 
 **Nature**  
-Modification ey ajout
+Modification et ajout
 
 **Details**  
 - Création de la page de login en overlay qui s'active lorsqu'on clique sur l'avatar
@@ -84,11 +70,22 @@ Ajout de deux nouvelles sections sur la page d'accueil :
 - `src/components/Login.tsx`
 - `.githooks/pre-commit`
 
+---
 
-**Verification**
-- [x] Le changement est documente clairement
-- [x] Les fichiers concernes sont listes
-- [x] Les details du commit sont renseignes
-- [x] Le rendu a ete verifie localement
+## 2026-05-27 - Neox-debug
+
+**Nom**  
+Modification du script de commit_log
+
+**Nature**  
+Modification
+
+**Details**  
+- Modification du script qui vérifie le fichier de commit
+- Modification de la structure du fichier de commit
+
+**Fichiers**  
+- `COMMIT_LOG.md`
+- `.githooks/pre-commit`
 
 ---
