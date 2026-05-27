@@ -1,0 +1,30 @@
+#!/bin/sh
+
+LOG_FILE="docs/COMMIT_LOG.md"
+
+if [ ! -f "$LOG_FILE" ]; then
+  echo "Commit bloque: le fichier $LOG_FILE est introuvable."
+  exit 1
+fi
+
+if ! git diff --cached --name-only | grep -q "^$LOG_FILE$"; then
+  echo "Commit bloque: tu dois mettre a jour $LOG_FILE avant de commit."
+  echo "Ajoute une entree, puis fais: git add $LOG_FILE"
+  exit 1
+fi
+
+CONTENT="$(git show ":$LOG_FILE")"
+
+for FIELD in "Nom" "Nature" "Details" "Fichiers" "Verification"; do
+  if ! echo "$CONTENT" | grep -q "^\*\*$FIELD\*\*"; then
+    echo "Commit bloque: la section '$FIELD' est manquante dans $LOG_FILE."
+    exit 1
+  fi
+done
+
+if echo "$CONTENT" | grep -q "\- \[ \]"; then
+  echo "Commit bloque: il reste des cases non cochees dans la section Verification."
+  exit 1
+fi
+
+echo "Journal de commit verifie."

@@ -6,6 +6,7 @@ import Pricing from "./pages/Pricing"
 import PrincingPer from "./pages/PricingPer"
 import Realisation from "./pages/Realisation"
 import Footer from './components/Footer'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   // [{name: 'React', category: 'front', description: 'A JavaScript library for building user interfaces'}]
@@ -13,6 +14,7 @@ function App() {
 
   return (
     <>
+    <ScrollToTop />
     <Menu></Menu>
     <Routes>
       <Route path='/' element={<Home />} ></Route>

@@ -40,3 +40,36 @@
 .menu-btn.active .menu-dot:nth-child(3) {
     transform: translateY(0);
 }
+
+.kroma-marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.kroma-marquee-track {
+    animation: kroma-scroll 28s linear infinite;
+}
+
+.kroma-marquee-track-slow {
+    animation-duration: 34s;
+}
+
+.kroma-marquee:hover .kroma-marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes kroma-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kroma-marquee-track {
+        animation: none;
+    }
+}
