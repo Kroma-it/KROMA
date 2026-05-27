@@ -89,3 +89,20 @@ Modification
 - `.githooks/pre-commit`
 
 ---
+
+## 2026-05-27 - Neox-debug
+
+**Nom**  
+Staged files
+
+**Nature**  
+Staging
+
+**Details**  
+- I staged the files pre-commit and HISTORY.md by doing a git add
+
+**Fichiers**  
+- `HISTORY.md`
+- `.githooks/pre-commit`
+
+---
