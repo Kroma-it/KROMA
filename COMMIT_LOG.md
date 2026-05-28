@@ -106,3 +106,21 @@ Staging
 - `.githooks/pre-commit`
 
 ---
+
+## 2026-05-28 - Neox-debug
+
+**Nom**  
+Vercel config
+
+**Nature**  
+Ajout
+
+**Details**  
+- J'ai ajouté le fichier de config vercel pour qu'il sache que le projet n'est plus à la racine mais dans `frontend`
+- J'ai ajouté le fichier readme à la racine
+
+**Fichiers**  
+- `vercel.json`
+- `README.md`
+
+---
