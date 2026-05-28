@@ -1,6 +1,5 @@
 import ClientForm from "../components/ClientForm"
 import Feedback from "../components/FeedBack"
-import Footer from "../components/Footer"
 
 function Clients() {
   // [{name: 'React', category: 'front', description: 'A JavaScript library for building user interfaces'}]
@@ -23,14 +22,7 @@ const feeds = [
 
   return (
     <div className="relative">
-      {/* Background animated blobs - page level, flows behind everything */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[20%] -right-20 md:-right-40 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-fuchsia-600/40 rounded-full blur-[120px] md:blur-[180px] animate-pulse"></div>
-        <div className="absolute top-[10%] -left-20 md:-left-40 w-[450px] md:w-[700px] h-[450px] md:h-[700px] bg-indigo-600/40 rounded-full blur-[120px] md:blur-[180px] animate-pulse" style={{ animationDelay: '4s' }}></div>
-        <div className="absolute top-[60%] right-0 md:-right-40 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-violet-600/40 rounded-full blur-[120px] md:blur-[180px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
-
-      <div className="relative z-10">
+      <div className="relative z-20">
         <ClientForm />
         <Feedback feeds={feeds}/>
       </div>

@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
-import { Moon, Sun } from "lucide-react"
 import "../css/style.css"
+import Login from "./Login";
 
 
 function Menu() {
     const [lang, setLang] = useState('FR');
-    const [theme, setTheme] = useState('dark');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
 
 
     return (
@@ -49,25 +49,6 @@ function Menu() {
                 <div className="flex items-center gap-3">
                     {/* Desktop Toggles */}
                     <div className="hidden md:flex flex-row gap-3 items-center">
-                        {/* Theme Toggle (Sun/Moon) */}
-                        <div className="relative bg-white/5 border border-white/10 w-[72px] h-9 flex items-center p-1 rounded-full cursor-pointer backdrop-blur-md hover:border-fuchsia-500/30 transition-all duration-300">
-                            <div 
-                                className={`z-10 flex-1 flex justify-center items-center transition-all duration-300 ${theme === 'dark' ? 'text-white scale-110' : 'text-gray-500 hover:text-gray-300'}`}
-                                onClick={() => setTheme('dark')}
-                            >
-                                <Moon size={14} />
-                            </div>
-                            <div 
-                                className={`z-10 flex-1 flex justify-center items-center transition-all duration-300 ${theme === 'light' ? 'text-white scale-110' : 'text-gray-500 hover:text-gray-300'}`}
-                                onClick={() => setTheme('light')}
-                            >
-                                <Sun size={14} />
-                            </div>
-                            <button 
-                                className={`absolute bg-gradient-to-br from-fuchsia-500 to-purple-600 w-7 h-7 rounded-full transition-all duration-300 shadow-[0_0_12px_rgba(217,70,239,0.4)] ${theme === 'dark' ? 'left-1' : 'left-[calc(100%-32px)]'}`}
-                            ></button>
-                        </div>
-
                         {/* Language Toggle (EN/FR) */}
                         <div className="relative bg-white/5 border border-white/10 w-[72px] h-9 flex items-center p-1 rounded-full cursor-pointer backdrop-blur-md hover:border-fuchsia-500/30 transition-all duration-300">
                             <div 
@@ -83,28 +64,27 @@ function Menu() {
                                 FR
                             </div>
                             <button 
-                                className={`absolute bg-gradient-to-br from-fuchsia-500 to-purple-600 w-7 h-7 rounded-full transition-all duration-300 shadow-[0_0_12px_rgba(217,70,239,0.4)] ${lang === 'EN' ? 'left-1' : 'left-[calc(100%-32px)]'}`}
+                                className={`absolute bg-linear-to-br from-fuchsia-500 to-purple-600 w-7 h-7 rounded-full transition-all duration-300 shadow-[0_0_12px_rgba(217,70,239,0.4)] ${lang === 'EN' ? 'left-1' : 'left-[calc(100%-32px)]'}`}
                             ></button>
                         </div>
                         
                         <NavLink 
                             to="/personnalisation" 
-                            className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-fuchsia-600 text-white rounded-xl font-bold text-sm transition-all duration-500 hover:bg-fuchsia-900 border border-white/10 group relative overflow-hidden active:scale-95"
+                            className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-fuchsia-700/90 text-white rounded-xl font-bold text-sm transition-all duration-500 hover:bg-fuchsia-900 border border-white/10 group relative overflow-hidden active:scale-95"
                         >
                             <span className="relative z-10">Commencer un projet</span>
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                            <svg 
-                                className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform duration-300" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                            </svg>
+                            <div className="absolute inset-0 bg-linear-to-r from-purple-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </NavLink>
 
                         {/* Avatar */}
-                        <img src="/assets/2.jpg" className='h-11 w-11 rounded-full border-2 border-fuchsia-500/30 hover:border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
+                        <button
+                            type="button"
+                            onClick={() => setIsLoginOpen(true)}
+                            aria-label="Ouvrir la connexion"
+                            className="rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 focus:ring-offset-black"
+                        >
+                            <img src="/assets/2.jpg" className='h-11 w-11 rounded-full border-2 border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
+                        </button>
                     </div>
 
                     {/* Mobile Toggle Button (3 dots) */}
@@ -132,25 +112,6 @@ function Menu() {
 
                         {/* Mobile Toggles */}
                         <div className="flex items-center justify-between gap-4 py-2">
-                             {/* Theme Toggle (Sun/Moon) */}
-                            <div className="relative bg-white/10 border border-white/20 w-20 h-10 flex items-center p-1 rounded-full cursor-pointer backdrop-blur-md">
-                                <div 
-                                    className={`z-10 flex-1 flex justify-center items-center transition-colors duration-300 ${theme === 'dark' ? 'text-white' : 'text-gray-400'}`}
-                                    onClick={() => setTheme('dark')}
-                                >
-                                    <Moon size={18} />
-                                </div>
-                                <div 
-                                    className={`z-10 flex-1 flex justify-center items-center transition-colors duration-300 ${theme === 'light' ? 'text-white' : 'text-gray-400'}`}
-                                    onClick={() => setTheme('light')}
-                                >
-                                    <Sun size={18} />
-                                </div>
-                                <button 
-                                    className={`absolute bg-fuchsia-500 w-8 h-8 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(217,70,239,0.5)] ${theme === 'dark' ? 'translate-x-[2px]' : 'translate-x-[calc(100%+6px)]'}`}
-                                ></button>
-                            </div>
-
                             {/* Language Toggle (EN/FR) */}
                             <div className="relative bg-white/10 border border-white/20 w-20 h-10 flex items-center p-1 rounded-full cursor-pointer backdrop-blur-md">
                                 <div 
@@ -170,7 +131,17 @@ function Menu() {
                                 ></button>
                             </div>
                         </div>
-                <img src="/assets/2.jpg" className='h-12 w-12 rounded-full' alt="" />
+                <button
+                    type="button"
+                    onClick={() => {
+                        setIsMenuOpen(false);
+                        setIsLoginOpen(true);
+                    }}
+                    aria-label="Ouvrir la connexion"
+                    className="w-fit rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
+                >
+                    <img src="/assets/2.jpg" className='h-12 w-12 rounded-full' alt="" />
+                </button>
 
                         <NavLink 
                             to="/personnalisation" 
@@ -184,6 +155,7 @@ function Menu() {
                         </NavLink>
                     </nav>
                 </div>
+            {isLoginOpen && <Login onClose={() => setIsLoginOpen(false)} />}
         </>
     )
 }
