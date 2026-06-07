@@ -3,6 +3,7 @@ import {Mail, Github, Facebook, Instagram, Linkedin} from "lucide-react"
 import {FaTiktok, FaWhatsapp} from "react-icons/fa"
 
 export default function Footer(){
+
     return (
         <footer className="border-t border-white/20 mt-10 w-full">
             <div className="h-auto flex flex-wrap justify-between gap-10 p-10">
@@ -10,7 +11,7 @@ export default function Footer(){
                 <div className="flex flex-col gap-4 max-w-sm">
                     <img src="/assets/logoMenu.png" className="h-25 object-contain object-left" alt="Kroma Logo" />
                     <p className="text-white">L'agence créative qui transforme les idées audacieuses en réalité digitale éblouissante.</p>
-                    <div className="flex flex-wrap w-2/3 gap-5 mt-2">
+                    <div className="flex flex-wrap gap-5 mt-2">
                        <a href="mailto:kromaagence5@gmail.com" className="bg-fuchsia-500/30 p-3 rounded-full">
                         <Mail className="text-white w-5 h-5" />
                        </a>
@@ -52,8 +53,6 @@ export default function Footer(){
                     <ul className="font-light text flex flex-col gap-2">
                         <Link to="/"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Accueil</li></Link>
                         <Link to="/services"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Services</li></Link>
-                        <Link to="/realisations"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Réalisations</li></Link>
-                        <Link to="/clients"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Avis-clients</li></Link>
                         <Link to="/tarification"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Tarification</li></Link>
                     </ul>
                 </div>

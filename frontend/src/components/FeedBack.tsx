@@ -1,17 +1,29 @@
 import {Star, Quote} from "lucide-react"
 
-export default function Feedback({ feeds }: { feeds: any[] }) {
+type FeedbackItem = {
+    stars: number
+    feedback: string
+    img: string
+    name: string
+    poste: string
+}
+
+export default function Feedback({ feeds }: { feeds: FeedbackItem[] }) {
     return (
         <>
             <div className="px-6 md:px-12 lg:ml-40 p-7">
                 <h1 className="text-white font-bold text-2xl md:text-4xl">Ce qu'ils disent à propos de nous</h1>
                 <p className="text-white font-light mt-5 text-sm md:text-base">Rejoignez plus de 7 compagnies qui font confiance en Kroma pour leur identité visuelle</p>
             </div>
+            {/**div des feedbacks */}
             <div className="flex flex-wrap justify-center gap-4">
                 {feeds.map((feed, index) => (
+
+                    
+                    
                     <div key={index} className="relative bg-purple-900/80 text-sm font-light text-white w-80 h-auto rounded-xl pt-3 overflow-hidden">
                         <div className="flex ml-5 mb-1 gap-1">
-                            <Quote strokeWidth={0.5} className="rotate-10 absolute right-2 -top-5 text-fuchsia-400/15 h-40 w-40" />
+                            <Quote strokeWidth={0.5} className="rotate-10 absolute right-2 -top-5 text-fuchsia-400/15 h-30 w-30" />
                             
                             {Array.from({ length: feed.stars }).map((_, i) => (
                                 <Star key={i} strokeWidth={1} className="w-5 text-fuchsia-400" />

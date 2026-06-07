@@ -124,3 +124,46 @@ Ajout
 - `README.md`
 
 ---
+
+## 2026-06-01 - Neox-debug
+
+**Nom**  
+Grosse mise à jour
+
+**Nature**  
+Ajout et modification
+
+**Details**  
+- J'ai ajouté la logique de modal dans le site, pourvoir changer de page (url) sans toute fois perdre la progression de la page précédente, un avantage pour le UX
+- Dans la page d'`avis-clients` j'ai supprimé les champs `Nom`, `Prénom`, `Email`, `Compagnie` parce que pour faire un feedback il faut un compte et plus besoin de renseigner ces champs. Il restait donc les champs du nombre d'étoiles et le `commentaire`. J'ai supprimer la page d'`avis-clients`, j'ai envoyé les feedbacks à l'accueil et envoyer le formulaire de feedback dans le profil utilisateur pour aussi être sûr que le feedback aura un utilisateur
+- J'ai ajouté la page de 404 (`NotFound.tsx`) personnalisée mais qui doit être mieux personnalisée
+- J'ai ajouté la page de profil utilisateur
+- J'ai modifié le fichier `App.tsx` de tel sorte que l'overlay fonctionne, que le menu ne s'affiche pas sur le 404 et le profil admin que je vais faire,  que le footer ne s'affiche pas sur le profil client et le 404
+- J'ai retiré la page des `réalisations` parce qu'il y avait des éléments inutiles comme le slider et le design était trop lourd. On a donc décidé de la supprimer et faire un design plus simplifié à l'acceuil
+- J'ai modifié le nom du menu en `MenuUser.tsx` parce qu'il y aura un menu `MenuAdmin.tsx`
+- J'ai repmlacé le fichier `pre-commit` par `commit-msg` pour ajouter certaines exceptions
+
+**Fichiers**  
+- `LoginModal.tsx`
+- `Login.tsx`
+- `Clients.tsx`
+- `ClientForm.tsx`
+- `NotFound.tsx`
+- `Profil.tsx`
+- `App.tsx`
+- `PackHisoty.tsx`
+- `RegisterModal.tsx`
+- `Réalisation.tsx`
+- `FeedbackHistory.tsx`
+- `ServiceHistory.tsx`
+- `UserInfo.tsx`
+- `ClientForm.tsx`
+- `MenuUser.tsx`
+- `MenuAdmin.tsx`
+- `commit-msg`
+- `UserInfo.tsx`
+- `DashboardUser.tsx`
+- `ServiceLogo.tsx`
+- `ServiceWeb.tsx`
+
+---

@@ -11,7 +11,7 @@ type LandingProps = {
 
 export default function Landing({ icon: Icon, cta1, cta1Link, cta2, cta2Link }: LandingProps) {
     return (
-        <section className="relative h-screen overflow-hidden bg-black">
+        <section className="relative h-screen mb-20 overflow-hidden bg-black">
             <video
                 autoPlay
                 muted

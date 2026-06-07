@@ -1,0 +1,52 @@
+#!/bin/sh
+
+# Le hook 'commit-msg' reçoit le chemin du fichier temporaire contenant le message du commit en paramètre ($1)
+COMMIT_MSG_FILE="$1"
+# On récupère la première ligne du message (le titre du commit) et on nettoie les espaces
+COMMIT_MSG=$(head -n 1 "$COMMIT_MSG_FILE" | xargs)
+
+LOG_FILE="COMMIT_LOG.md"
+
+# 1. INTELLIGENCE : Si le message commence par "fix:", on ignore toutes les vérifications
+if echo "$COMMIT_MSG" | grep -q "^fix:"; then
+  echo "🔧 Commit de type 'fix' détecté. Passage libre sans mise à jour du journal."
+  exit 0
+fi
+
+# 2. VÉRIFICATIONS STANDARDS (Si ce n'est pas un fix)
+if [ ! -f "$LOG_FILE" ]; then
+  echo "❌ Commit bloqué : Le fichier $LOG_FILE est introuvable."
+  exit 1
+fi
+
+if ! git diff --cached --name-only | grep -q "^$LOG_FILE$"; then
+  echo "❌ Commit bloqué : Tu dois mettre à jour $LOG_FILE avant de commit."
+  echo " Ajoute une entrée, puis fais : git add $LOG_FILE"
+  exit 1
+fi
+
+# On récupère uniquement les modifications prêtes à être commitées (les lignes qui commencent par +)
+STAGED_DIFF=$(git diff --cached "$LOG_FILE")
+
+# Vérification que la NOUVELLE entrée contient bien tous les champs requis
+for FIELD in "Nom" "Nature" "Details" "Fichiers"; do
+  if ! echo "$STAGED_DIFF" | grep -qi "^\+[[:space:]]*\*\*$FIELD\*\*"; then
+    echo "❌ Commit bloqué : Le champ obligatoire '**$FIELD**' est absent de ta nouvelle entrée dans $LOG_FILE."
+    exit 1
+  fi
+done
+
+# 3. VÉRIFICATION DE LA COHÉRENCE DU NOM
+# On extrait la valeur du champ **Nom** fraîchement ajouté dans le Markdown
+MD_NOM=$(echo "$STAGED_DIFF" | grep -i "^\+[[:space:]]*\*\*Nom\*\*" | sed -E 's/^\+[[:space:]]*\*\*[Nn]om\*\*:[[:space:]]*//' | head -n 1 | xargs)
+
+# On compare le message du commit avec le nom écrit dans le Markdown
+if [ "$COMMIT_MSG" != "$MD_NOM" ]; then
+  echo "❌ Commit bloqué : Le titre de ton commit ne correspond pas au nom indiqué dans le Markdown."
+  echo "   🔹 Message du commit  : \"$COMMIT_MSG\""
+  echo "   🔹 Nom dans le journal : \"$MD_NOM\""
+  echo "Modifie ton commit ou ton fichier pour qu'ils soient strictement identiques."
+  exit 1
+fi
+
+echo "✅ Journal et message de commit parfaitement synchronisés !"
