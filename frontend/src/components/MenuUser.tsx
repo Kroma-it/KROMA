@@ -23,7 +23,7 @@ function Menu() {
         <>
             <header className='fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-25 bg-black/20 backdrop-blur-xl px-4 md:px-20'>
                 {/* Left: Logo */}
-                <img src="/assets/logoMenu.png" className='h-18' alt="" />
+                <img src="/assets/logoMenu.svg" className='h-18' alt="" />
 
                 {/* Center: Navigation Links (desktop only) */}
                 <ul className='hidden md:flex gap-8 lg:gap-10 justify-center text-base lg:text-[19px] text-white'>

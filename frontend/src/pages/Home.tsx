@@ -83,9 +83,9 @@ const feedbacks = [
 ];
 
 const partners = [
-  { name: "LC Home", logo: "/assets/logos/logo1.png" },
-  { name: "Kroma Partner", logo: "/assets/logos/logo2.png" },
-  { name: "Kroma Studio", logo: "/assets/logos/logo3.png" },
+  { name: "LC Home", logo: "/assets/logos/ARS.svg" },
+  { name: "Kroma Partner", logo: "/assets/logos/eConcept.svg" },
+  { name: "Kroma Studio", logo: "/assets/logos/lePolo.svg" },
 ];
 
 const landing = {
@@ -274,7 +274,7 @@ function Home() {
         </div>
       {/**brief */}
       <section className="px-6 pb-24 md:px-12 lg:px-24">
-        <div className="mx-auto rounded-2xl grid max-w-7xl gap-10 border border-white/10 bg-white/[0.045] p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="mx-auto rounded-2xl grid max-w-7xl gap-10 border border-white/10 bg-white/45 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <div className="mb-5 flex flex-wrap gap-3 text-sm text-white/65">
               <span className="inline-flex items-center gap-2">
