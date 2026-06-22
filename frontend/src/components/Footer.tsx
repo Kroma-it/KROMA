@@ -54,7 +54,7 @@ export default function Footer(){
                         <Link to="/"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Accueil</li></Link>
                         <Link to="/services/logo"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Conception de logo</li></Link>
                         <Link to="/services/web"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Conception de site web</li></Link>
-                        <Link to="/services/design"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Création graphique</li></Link>
+                        <Link to="/services/graphics"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Création graphique</li></Link>
                         <Link to="/tarification"><li className="hover:text-fuchsia-500 hover:translate-x-2 transition-all duration-500">Tarification</li></Link>
                     </ul>
                 </div>

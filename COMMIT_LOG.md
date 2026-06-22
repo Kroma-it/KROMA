@@ -167,3 +167,33 @@ Ajout et modification
 - `ServiceWeb.tsx`
 
 ---
+
+## 2026-06-22 - Neox-debug
+
+**Nom**  
+Version 1 prête
+
+**Nature**  
+Ajout et modification
+
+**Details**  
+- J'ai terminé la page `ServiceLogo.tsx`, la page `ServiceWeb.tsx`
+- J'ai créé la page `ServiceGraphics.tsx`qui appelle le composant `GraphicsCrea.tsx`
+- J'ai amélioré la page `PrincingPer.tsx`
+- La page `ServiceWeb.tsx` appelle le composant `WebCrea.tsx`
+- La page `ServiceLogo.tsx` appelle le composant `LogoCrea.tsx`
+- Le composant `PricingHero.tsx` est appellé par `Pricing.tsx` et `PricingPer.tsx`
+- Le composant `MenuUser.tsx` est devenu `Menu.tsx`
+- J'ai retiré la dégradé dans le composant `Pack.tsx`
+- J'ai ajouté les images des visuels que je vais améliorer le design après
+- J'ai changé les icônes en svg et les images en webP
+
+**Fichiers**  
+- `WebCrea.tsx`
+- `LogoCrea.tsx`
+- `GraphicsCrea.tsx`
+- `PricingHero.tsx`
+- `PricingHero.tsx`
+- `Menu.tsx`
+- `ServiceClient.tsx`
+- `Pricing.tsx`

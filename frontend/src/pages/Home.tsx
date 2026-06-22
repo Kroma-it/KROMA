@@ -12,6 +12,7 @@ import {
 import { NavLink } from "react-router-dom";
 import Landing from "../components/Landing";
 import Feedback from "../components/FeedBack";
+import { Helmet } from "react-helmet-async";
 
 const services = [
   {
@@ -103,6 +104,10 @@ function Home() {
 
   return (
     <main className="overflow-hidden text-white">
+      <Helmet>
+        <title>Agence créative de design | Kroma</title>
+        <meta name="description" content="Kroma est une agence créative de design qui aide les entrepreneurs et marques à construire une présence professionnelle forte et cohérente." />
+      </Helmet>
       <Landing
         icon={landing.icon}
         cta1={landing.cta1}
@@ -115,7 +120,7 @@ function Home() {
 
         <div className="mx-auto grid max-w-7xl mb-20 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div>
-            <p className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-fuchsia-400/30 bg-white/5 px-4 py-2 text-sm font-semibold text-fuchsia-200">
+            <p className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-fuchsia-400/30 bg-white/5 px-4 py-2 text-sm font-semibold text-kroma-400">
               <Sparkles className="h-4 w-4" />
               Studio creatif digital
             </p>
@@ -153,7 +158,7 @@ function Home() {
 
           <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
                 Ce que nous faisons
               </p>
               <h2 className="max-w-2xl text-3xl font-black leading-tight md:text-5xl">
@@ -193,7 +198,7 @@ function Home() {
 
         <div className="mx-auto grid max-w-7xl mb-20 gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-emerald-300">
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
               Methode
             </p>
             <h2 className="text-3xl font-black leading-tight md:text-5xl">
@@ -207,7 +212,7 @@ function Home() {
 
           <div className="grid gap-4">
             {process.map((step, index) => (
-              <div key={step.title} className="flex gap-5 border rounded-2xl border-white/10 bg-kroma-600/70 p-5">
+              <div key={step.title} className="flex gap-5 border rounded-2xl border-white/20 p-5">
                 <div className="flex  h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-kroma-600">
                   0{index + 1}
                 </div>
@@ -223,7 +228,7 @@ function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-fuchsia-300">
+              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
                 Réalisations
               </p>
               <h2 className="max-w-2xl text-3xl font-black leading-tight md:text-5xl">
@@ -241,7 +246,7 @@ function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="mb-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.25em] text-emerald-300">
+              <p className="mb-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
                 <Handshake className="h-4 w-4" />
                 Partenaires
               </p>
@@ -255,7 +260,7 @@ function Home() {
             </p>
           </div>
 
-          <div className="kroma-marquee mb-20 rounded-2xl border border-white/10 bg-linear-to-l from-kroma-600 via-transparent to-kroma-600 py-5">
+          <div className="kroma-marquee mb-20 rounded-2xl border border-white/10 bg-linear-to-l from-kroma-700 via-white/5 to-kroma-700 py-5">
             <div className="kroma-marquee-track kroma-marquee-track-slow flex w-max items-center gap-5 px-5">
               {scrollingPartners.map((partner, index) => (
                 <div
@@ -274,30 +279,30 @@ function Home() {
         </div>
       {/**brief */}
       <section className="px-6 pb-24 md:px-12 lg:px-24">
-        <div className="mx-auto rounded-2xl grid max-w-7xl gap-10 border border-white/10 bg-white/45 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="mx-auto rounded-2xl grid max-w-7xl gap-10 border border-white/10 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <div className="mb-5 flex flex-wrap gap-3 text-sm text-white/65">
               <span className="inline-flex items-center gap-2">
-                <BadgeCheck className="h-4 w-4 text-emerald-300" />
+                <BadgeCheck className="h-4 w-4 text-kroma-400" />
                 Brief clair
               </span>
               <span className="inline-flex items-center gap-2">
-                <Layers3 className="h-4 w-4 text-cyan-300" />
+                <Layers3 className="h-4 w-4 text-kroma-400" />
                 Fichiers exploitables
               </span>
               <span className="inline-flex items-center gap-2">
-                <Wand2 className="h-4 w-4 text-fuchsia-300" />
+                <Wand2 className="h-4 w-4 text-kroma-400" />
                 Creation sur mesure
               </span>
             </div>
             <h2 className="max-w-3xl text-3xl font-black leading-tight md:text-5xl">
-              Pret a donner une vraie forme a votre prochaine idee ?
+              Prêt a donner une vraie forme a votre prochaine idee ?
             </h2>
           </div>
 
           <NavLink
             to="/personnalisation"
-            className="inline-flex items-center justify-center gap-3 rounded-xl bg-fuchsia-600 px-7 py-4 font-black text-white transition hover:-translate-y-1 hover:bg-fuchsia-500"
+            className="inline-flex items-center justify-center gap-3 rounded-xl bg-kroma-600 px-7 py-4 font-black text-white transition hover:-translate-y-1 hover:bg-fuchsia-500"
           >
             Demander un devis
             <ArrowRight className="h-5 w-5" />

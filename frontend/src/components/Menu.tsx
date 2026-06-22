@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { CircleUser, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { NavLink, useLocation} from "react-router-dom"
 import "../css/style.css"
 import { toModalBackgroundState } from "../utils/modalBackground";
@@ -21,7 +21,7 @@ function Menu() {
 
     return (
         <>
-            <header className='fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-25 bg-black/20 backdrop-blur-xl px-4 md:px-20'>
+            <header className='fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-22 bg-black/20 backdrop-blur-xl px-4 md:px-20'>
                 {/* Left: Logo */}
                 <img src="/assets/logoMenu.svg" className='h-18' alt="" />
 
@@ -61,7 +61,7 @@ function Menu() {
                                 isServicesOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
                             }`}
                         >
-                            <div className="rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl shadow-fuchsia-900/20 overflow-hidden">
+                            <div className="rounded-2xl bg-black/70 backdrop-blur-2xl border border-white/20 shadow-xl shadow-fuchsia-900/20 overflow-hidden">
                                 <NavLink
                                     to="/services/logo"
                                     className={({ isActive }) =>
@@ -124,7 +124,6 @@ function Menu() {
                             className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-fuchsia-700/90 text-white rounded-xl font-bold text-sm transition-all duration-500 hover:bg-fuchsia-900 border border-white/10 group relative overflow-hidden active:scale-95"
                         >
                             <span className="relative z-10">Commencer un projet</span>
-                            <div className="absolute inset-0 bg-linear-to-r from-purple-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </NavLink>
 
                         {/* Avatar */}
@@ -138,9 +137,10 @@ function Menu() {
                             </button>
                         </NavLink>
                         {/**Profil */}
+                        {/*
                         <NavLink to='/profil'>
                             <CircleUser className="text-white"></CircleUser>
-                        </NavLink>
+                        </NavLink>*/}
                         {/*<NavLink to='/dashboard/users'>
                             <Shield className="text-white"></Shield>
                         </NavLink>*/}
@@ -226,29 +226,6 @@ function Menu() {
                         
                         <div className="h-px bg-white/10 my-4"></div>
 
-                        {/* Mobile Toggles */}
-                        {/*<div className="flex items-center justify-between gap-4 py-2">*/}
-                            {/* Language Toggle (EN/FR) */}
-                            {/*
-                            <div className="relative bg-white/10 border border-white/20 w-20 h-10 flex items-center p-1 rounded-full cursor-pointer backdrop-blur-md">
-                                <div 
-                                    className={`z-10 flex-1 flex justify-center items-center text-xs font-bold transition-colors duration-300 ${lang === 'EN' ? 'text-white' : 'text-gray-400'}`}
-                                    onClick={() => setLang('EN')}
-                                >
-                                    EN
-                                </div>
-                                <div 
-                                    className={`z-10 flex-1 flex justify-center items-center text-xs font-bold transition-colors duration-300 ${lang === 'FR' ? 'text-white' : 'text-gray-400'}`}
-                                    onClick={() => setLang('FR')}
-                                >
-                                    FR
-                                </div>
-                                <button 
-                                    className={`absolute bg-fuchsia-500 w-8 h-8 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(217,70,239,0.5)] ${lang === 'EN' ? 'translate-x-0.5' : 'translate-x-[calc(100%+6px)]'}`}
-                                ></button>
-                            </div>
-                        </div>
-                        */}
                 <NavLink to="/login" state={loginBackgroundState} onClick={() => setIsMenuOpen(false)}>
                     <button
                         type="button"
@@ -262,7 +239,7 @@ function Menu() {
                         <NavLink 
                             to="/personnalisation" 
                             onClick={() => setIsMenuOpen(false)} 
-                            className="mt-4 bg-purple-800 text-white px-6 py-4 rounded-2xl text-center font-bold text-lg shadow-xl shadow-purple-900/40 active:scale-95 transition-all duration-300 border border-white/5 flex items-center justify-center gap-3 group"
+                            className="mt-4 bg-kroma-600 text-white px-6 py-4 rounded-2xl text-center font-bold text-lg active:scale-95 transition-all duration-300 border border-white/5 flex items-center justify-center gap-3 group"
                         >
                             Commencer un projet
                             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">

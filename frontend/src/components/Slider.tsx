@@ -83,7 +83,7 @@ export default function Slider() {
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover opacity-60 mix-blend-screen scale-110 animate-fade-in"
             />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-kroma-600 bg-black/30" />
+        <div className="absolute inset-0 bg-linear-to-t from-kroma-700 bg-black/30" />
 
         {/* Secondary Glows */}
         <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-fuchsia-600/10 blur-[120px] rounded-full" />
