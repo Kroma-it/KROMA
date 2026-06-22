@@ -124,3 +124,19 @@ Ajout
 - `README.md`
 
 ---
+
+## 2026-06-22 - Neox-debug
+
+**Nom**  
+Fichier test supprimé
+
+**Nature**  
+Suppression
+
+**Details**  
+- J'ai supprimé le fichier `gianny_est_trop_bg.yml`
+
+**Fichiers**  
+- `gianny_est_trop_bg.yml`
+
+---
