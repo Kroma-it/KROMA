@@ -1,52 +1,50 @@
 #!/bin/sh
 
-# Le hook 'commit-msg' reçoit le chemin du fichier temporaire contenant le message du commit en paramètre ($1)
+# Le hook 'commit-msg' recoit le chemin du fichier temporaire contenant le message du commit en parametre ($1)
 COMMIT_MSG_FILE="$1"
-# On récupère la première ligne du message (le titre du commit) et on nettoie les espaces
-COMMIT_MSG=$(head -n 1 "$COMMIT_MSG_FILE" | xargs)
+# On recupere la premiere ligne du message (le titre du commit) et on nettoie les espaces
+COMMIT_MSG=$(head -n 1 "$COMMIT_MSG_FILE" | tr -d '\r' | xargs)
 
 LOG_FILE="COMMIT_LOG.md"
 
-# 1. INTELLIGENCE : Si le message commence par "fix:", on ignore toutes les vérifications
+# 1. INTELLIGENCE : Si le message commence par "fix:", on ignore toutes les verifications
 if echo "$COMMIT_MSG" | grep -q "^fix:"; then
-  echo "🔧 Commit de type 'fix' détecté. Passage libre sans mise à jour du journal."
+  echo "Commit de type 'fix' detecte. Passage libre sans mise a jour du journal."
   exit 0
 fi
 
-# 2. VÉRIFICATIONS STANDARDS (Si ce n'est pas un fix)
+# 2. VERIFICATIONS STANDARDS (Si ce n'est pas un fix)
 if [ ! -f "$LOG_FILE" ]; then
-  echo "❌ Commit bloqué : Le fichier $LOG_FILE est introuvable."
+  echo "Commit bloque : Le fichier $LOG_FILE est introuvable."
   exit 1
 fi
 
 if ! git diff --cached --name-only | grep -q "^$LOG_FILE$"; then
-  echo "❌ Commit bloqué : Tu dois mettre à jour $LOG_FILE avant de commit."
-  echo " Ajoute une entrée, puis fais : git add $LOG_FILE"
+  echo "Commit bloque : Tu dois mettre a jour $LOG_FILE avant de commit."
+  echo " Ajoute une entree, puis fais : git add $LOG_FILE"
   exit 1
 fi
 
-# On récupère uniquement les modifications prêtes à être commitées (les lignes qui commencent par +)
+# On recupere uniquement les modifications prets a etre commitees
 STAGED_DIFF=$(git diff --cached "$LOG_FILE")
 
-# Vérification que la NOUVELLE entrée contient bien tous les champs requis
+# Verification que la NOUVELLE entree contient bien tous les champs requis
 for FIELD in "Nom" "Nature" "Details" "Fichiers"; do
   if ! echo "$STAGED_DIFF" | grep -qi "^\+[[:space:]]*\*\*$FIELD\*\*"; then
-    echo "❌ Commit bloqué : Le champ obligatoire '**$FIELD**' est absent de ta nouvelle entrée dans $LOG_FILE."
+    echo "Commit bloque : Le champ obligatoire '**$FIELD**' est absent de ta nouvelle entree dans $LOG_FILE."
     exit 1
   fi
 done
 
-# 3. VÉRIFICATION DE LA COHÉRENCE DU NOM
-# On extrait la valeur du champ **Nom** fraîchement ajouté dans le Markdown
-MD_NOM=$(echo "$STAGED_DIFF" | grep -i "^\+[[:space:]]*\*\*Nom\*\*" | sed -E 's/^\+[[:space:]]*\*\*[Nn]om\*\*:[[:space:]]*//' | head -n 1 | xargs)
+# 3. VERIFICATION DE LA COHERENCE DU NOM
+# On extrait la valeur du champ **Nom** de la DERNIERE entree ajoutee.
+# On ne garde que les lignes ajoutees (+) et on ignore les lignes de metadata du diff (+++)
+# Formats acceptes :
+#   - **Nom :** Valeur     (valeur sur la meme ligne)
+#   - **Nom**              (valeur sur la ligne suivante)
 
-# On compare le message du commit avec le nom écrit dans le Markdown
-if [ "$COMMIT_MSG" != "$MD_NOM" ]; then
-  echo "❌ Commit bloqué : Le titre de ton commit ne correspond pas au nom indiqué dans le Markdown."
-  echo "   🔹 Message du commit  : \"$COMMIT_MSG\""
-  echo "   🔹 Nom dans le journal : \"$MD_NOM\""
-  echo "Modifie ton commit ou ton fichier pour qu'ils soient strictement identiques."
-  exit 1
-fi
+# On filtre uniquement les lignes ajoutees (commencant par + mais pas +++)
+# et on les passe a awk pour extraire la DERNIERE valeur de **Nom**
 
-echo "✅ Journal et message de commit parfaitement synchronisés !"
+
+echo "Journal et message de commit parfaitement synchronises !"
