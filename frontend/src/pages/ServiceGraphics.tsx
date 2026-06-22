@@ -85,25 +85,25 @@ export default function ServiceGraphics() {
       title: "Affiche evenementielle",
       tag: "Print / Reseaux sociaux",
       desc: "Un support visuel pense pour annoncer, attirer et donner envie de participer.",
-      image: "/assets/visuels/affiche1%20copy.webP",
+      image: "/assets/visuels/affiche1%20copy.webp",
     },
     {
       title: "Visuel de campagne",
       tag: "Communication digitale",
       desc: "Une composition forte pour porter un message promotionnel de maniere memorable.",
-      image: "/assets/visuels/surpriseEvent%20noel%20copy.webP",
+      image: "/assets/visuels/surpriseEvent%20noel%20copy.webp",
     },
     {
       title: "Creation social media",
       tag: "Instagram / Facebook",
       desc: "Un format adapte aux plateformes sociales, lisible rapidement et facile a partager.",
-      image: "/assets/visuels/Artboard%202.webP",
+      image: "/assets/visuels/Artboard%202.webp",
     },
     {
       title: "Support de marque",
       tag: "Presentation / Publication",
       desc: "Un visuel coherent avec votre positionnement pour renforcer votre image professionnelle.",
-      image: "/assets/visuels/1.webP",
+      image: "/assets/visuels/1.webp",
     },
   ];
 
