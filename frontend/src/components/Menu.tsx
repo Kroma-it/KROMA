@@ -133,7 +133,7 @@ function Menu() {
                                 aria-label="Ouvrir la connexion"
                                 className="rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 focus:ring-offset-black"
                             >
-                                <img src="/assets/2.jpg" className='h-11 w-11 rounded-full border-2 border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
+                                <img src="/assets/2.webp" className='h-11 w-11 rounded-full border-2 border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
                             </button>
                         </NavLink>
                         {/**Profil */}
@@ -232,7 +232,7 @@ function Menu() {
                         aria-label="Ouvrir la connexion"
                         className="w-fit rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
                     >
-                        <img src="/assets/2.jpg" className='h-12 w-12 rounded-full' alt="" />
+                        <img src="/assets/2.webp" className='h-12 w-12 rounded-full' alt="" />
                     </button>
                 </NavLink>
 
