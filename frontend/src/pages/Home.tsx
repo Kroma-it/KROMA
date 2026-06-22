@@ -60,8 +60,8 @@ const feedbacks = [
   {
     stars: 5,
     feedback:
-      "Le flyer est propre, il respecte les specifications que j'avais donnees pour la realisation. Les informations sont bien disposees et suffisamment lisibles.",
-    img: "/assets/2.webP",
+      "Le flyer est propre, il respecte les spécifications que j'avais donné pour la réalisation. Les informations sont bien disposées et suffisamment lisibles.",
+    img: "/assets/2.webp",
     name: "M. SIAKAM Krixian",
     poste: 'Fondateur des "studios_underscore"',
   },
@@ -69,7 +69,7 @@ const feedbacks = [
     stars: 4,
     feedback:
       "Je trouve le concept tres innovant. J'ai deja demande l'un de leurs services et j'ai ete tres satisfait par une equipe dynamique.",
-    img: "/assets/1.webP",
+    img: "/assets/1.webp",
     name: "M. FOAPA Gianny",
     poste: "Fondateur de E-Concept",
   },
@@ -77,9 +77,9 @@ const feedbacks = [
     stars: 5,
     feedback:
       "Kroma a su donner une image plus claire et professionnelle a notre projet, avec une livraison propre et facile a exploiter.",
-    img: "/assets/3.webP",
-    name: "Client Kroma",
-    poste: "Projet accompagne",
+    img: "/assets/3.webp",
+    name: "M. NDONGO Nick",
+    poste: "Fondateur de ARS",
   },
 ];
 
