@@ -1,6 +1,8 @@
 import { SendHorizonal, ChartNoAxesCombined } from 'lucide-react';
 import { NavLink } from "react-router-dom"
+import { Helmet } from "react-helmet-async";
 import Pack from "../components/Pack";
+import PricingHero from "../components/PricingHero";
 
 export default function Pricing() {
 
@@ -87,14 +89,16 @@ export default function Pricing() {
     ]
     return (
         <>
-        <div className="flex flex-col items-center gap-10 justify-center text-white pt-40 md:pt-60 pb-6 px-6">
-            <p className="flex items-center justify-center gap-2 text-base md:text-xl text-fuchsia-500 font-medium bg-fuchsia-900/30 px-5 py-2 border border-fuchsia-500/30 rounded-full">
-                <ChartNoAxesCombined className="w-5 h-5" />
-                Investissement créatif
-            </p>
-            <h1 className="text-4xl md:text-6xl text-center w-full md:w-3/6 font-bold leading-tight">Des tarifs transparents pour des ambitions sans limites</h1>
-            <p className="text-base md:text-lg text-center w-full md:w-4/9 font-light text-white/60">Kroma fusionne l'art et la technologie pour créer des expériences digitales uniques et percutantes. Choisissez la formule qui correspond à vos besoins et donnez vie à vos idées.</p>
-        </div>
+        <Helmet>
+            <title>Des tarifs transparents pour des ambitions sans limites | Kroma</title>
+            <meta name="description" content="Kroma fusionne l'art et la technologie pour créer des expériences digitales uniques et percutantes"/>
+        </Helmet>
+        <PricingHero
+            icon={ChartNoAxesCombined}
+            iconText="Investissement créatif"
+            titleText="Des tarifs transparents pour des ambitions sans limites"
+            bottomText="Kroma fusionne l'art et la technologie pour créer des expériences digitales uniques et percutantes. Choisissez la formule qui correspond à vos besoins et donnez vie à vos idées."
+        />
 
         {/* Design Packs Section */}
         <div className="max-w-7xl mx-auto px-6 md:px-10 pt-10 pb-4">
@@ -109,12 +113,12 @@ export default function Pricing() {
         
         {/*Demande de devis*/}
         <div className="max-w-7xl mx-auto px-6 md:px-10 mb-20">
-            <div className="bg-linear-to-br from-purple-900/60 to-fuchsia-900/30 rounded-4xl md:rounded-[2.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-sm">
+            <div className="bg-white/5 rounded-4xl md:rounded-[2.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-sm">
                 <div className="flex flex-col gap-3 text-center md:text-left">
                     <h2 className="text-white text-2xl md:text-4xl font-bold">Besoin d'une approche plus spécifique ?</h2>
                     <p className="text-white/50 text-lg font-light">Personnalisez votre pack de design pour qu'il s'adapte parfaitement à votre flux de travail.</p>
                 </div>
-                <NavLink to='/personnalisation' className="bg-fuchsia-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-xl text-lg md:text-xs  font-bold flex items-center gap-3 shrink-0 cursor-pointer shadow-[0_10px_30px_-10px_rgba(192,38,211,0.5)]">
+                <NavLink to='/personnalisation' className="bg-kroma-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-xl text-lg md:text-xs  font-bold flex items-center gap-3 shrink-0 cursor-pointer">
                     CONTACTEZ-NOUS
                     <SendHorizonal strokeWidth={1.5} className="text-white w-6 h-6" />
                 </NavLink>
@@ -134,12 +138,12 @@ export default function Pricing() {
 
         {/*Demande de devis*/}
         <div className="max-w-7xl mx-auto px-6 md:px-10 mb-20">
-            <div className="bg-linear-to-br from-purple-900/60 to-fuchsia-900/30 rounded-4xl md:rounded-[2.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-sm">
+            <div className="bg-white/5 rounded-4xl md:rounded-[2.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-sm">
                 <div className="flex flex-col gap-3 text-center md:text-left">
                     <h2 className="text-white text-2xl md:text-4xl font-bold">Besoin d'une approche plus spécifique ?</h2>
                     <p className="text-white/50 text-lg font-light">Personnalisez votre pack de design pour qu'il s'adapte parfaitement à votre flux de travail.</p>
                 </div>
-                <NavLink to='/personnalisation' className="bg-fuchsia-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-xl text-lg md:text-xl font-bold flex items-center gap-3 shrink-0 cursor-pointer shadow-[0_10px_30px_-10px_rgba(192,38,211,0.5)]">
+                <NavLink to='/personnalisation' className="bg-kroma-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-xl text-lg md:text-xs font-bold flex items-center gap-3 shrink-0 cursor-pointer">
                     CONTACTEZ-NOUS
                     <SendHorizonal strokeWidth={1.5} className="text-white w-6 h-6" />
                 </NavLink>

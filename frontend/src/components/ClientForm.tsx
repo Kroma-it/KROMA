@@ -1,107 +1,86 @@
-import { useState } from "react"
-import {SendHorizonal, Undo, Star} from "lucide-react"
+import React, { useState } from "react"
+import { MessageSquareText, SendHorizonal, Star } from "lucide-react"
 
 export default function ClientForm() {
     const [rating, setRating] = useState(0)
-    // Glassmorphism Card
+    const [hovered, setHovered] = useState(0)
+    const [comment, setComment] = useState("")
+
+    const activeRating = hovered || rating
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        console.log("Feedback envoyé:", { stars: rating, comment })
+    }
+
     return (
-        <div className="relative w-full mx-auto min-h-150 flex flex-col items-center justify-center px-4 md:p-8 mt-10">
+        <div className="relative w-[400px] overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+            <MessageSquareText
+                strokeWidth={0.5}
+                className="absolute -right-6 -rotate-20 -bottom-10 h-40 w-40 text-fuchsia-400/10"
+            />
+            <div className="absolute -left-16 -top-16 h-40 w-40 rounded-full bg-fuchsia-700/20 blur-[70px] pointer-events-none" />
 
-            {/* Header Text */}
-            <div className="relative z-10 flex flex-col items-center gap-4 mt-20 md:mt-30 mb-8 px-4">
-                <p className="flex items-center justify-center gap-2 text-base md:text-xl text-fuchsia-500 font-medium bg-fuchsia-900/30 px-5 py-2 border border-fuchsia-500/30 rounded-full">
-                    <Undo className="w-5 h-5" />
-                    FeedBack Portal
-                </p>
-                <p className="text-white text-xl md:text-4xl w-full md:w-5xl text-center font-normal">Votre vision nourrit notre créativité. Aidez-nous à nous améliorer et à façonner l'avenir du design digital.</p>
+            <div className="relative z-10 mb-6">
+                <span className="text-[11px] font-extrabold tracking-[0.25em] text-fuchsia-400 uppercase">
+                    Feedback
+                </span>
+                <h3 className="mt-2 text-2xl font-extrabold text-white">
+                    Parlez de votre expérience avec Kroma
+                </h3>
             </div>
 
-            {/* Form Container */}
-            <div className="relative z-10 w-full md:w-3xl h-auto border border-purple-900 bg-[#25182d]/70 rounded-3xl p-4 md:p-6 shadow-[0_0_40px_rgba(0,0,0,0.3)]">
-                <form className="flex flex-col gap-8 md:gap-12">
-                    <div className="flex flex-col md:flex-row mt-3 gap-5">
-                        <div className="flex flex-col w-full md:w-1/2 gap-3">
-                            <label htmlFor="nom" className="text-white text-lg md:text-xl font-medium ml-1">Nom</label>
-                            <input
-                                id="nom"
-                                type="text"
-                                placeholder="NOUMECHI"
-                                required
-                                className="w-full h-12 bg-white/5 border border-white/10 text-xl rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
-                            />
-                        </div>
-                        <div className="flex flex-col w-full md:w-1/2 gap-3">
-                            <label htmlFor="prenom" className="text-white text-lg md:text-xl font-medium ml-1">Prénom</label>
-                            <input
-                                id="prenom"
-                                type="text"
-                                placeholder="Johnatan"
-                                required
-                                className="w-full h-12 bg-white/5 text-xl border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
-                            />
-                        </div>
+            <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
+                <div>
+                    <label className="mb-3 block text-xs font-bold text-zinc-300">
+                        Nombre d'étoiles
+                    </label>
+                    <div className="flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                                key={star}
+                                type="button"
+                                onClick={() => setRating(star)}
+                                onMouseEnter={() => setHovered(star)}
+                                onMouseLeave={() => setHovered(0)}
+                                aria-label={`Donner ${star} étoile${star > 1 ? "s" : ""}`}
+                                className="rounded-full p-1 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/60 cursor-pointer"
+                            >
+                                <Star
+                                    className={`h-8 w-8 transition-all duration-200 ${
+                                        star <= activeRating
+                                            ? "fill-fuchsia-500 text-fuchsia-500 drop-shadow-[0_0_7px_rgba(217,70,239,0.65)]"
+                                            : "text-white/20"
+                                    }`}
+                                />
+                            </button>
+                        ))}
                     </div>
-                    <div className="flex flex-col gap-1.5">
-                        <label htmlFor="email" className="text-white text-lg md:text-xl font-medium ml-1">Adresse email</label>
-                        <input
-                            id="email"
-                            type="email"
-                            placeholder="johnatan@gmail.com"
-                            required
-                            className="w-full h-12 bg-white/5 text-xl border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
-                        />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                        <label htmlFor="company" className="text-white text-lg md:text-xl font-medium ml-1">Compagnie</label>
-                        <input
-                            id="company"
-                            type="text"
-                            placeholder="Kroma"
-                            required
-                            className="w-full h-12 text-xl bg-white/5 border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light"
-                        />
-                    </div>
-                    
-                    {/* Rating Stars */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-white text-lg md:text-xl font-medium ml-1">Note</label>
-                        <div className="flex gap-2">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <button
-                                    key={star}
-                                    type="button"
-                                    onClick={() => setRating(star)}
-                                    className="transition-all duration-200 hover:scale-110"
-                                >
-                                    <Star
-                                        size={32}
-                                        className={`${
-                                            star <= rating
-                                                ? "fill-purple-800 text-purple-800"
-                                                : "text-gray-500"
-                                        } transition-colors duration-200 cursor-pointer`}
-                                    />
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                </div>
 
-                    <div className="flex flex-col gap-1.5">
-                        <label htmlFor="message" className="text-white text-lg md:text-xl font-medium ml-1">Message</label>
-                        <textarea
-                            id="message"
-                            placeholder="Parlez nous de votre expérience avec Kroma"
-                            required
-                            className="w-full h-45 text-xl bg-white/5 border border-white/10 rounded-lg px-5 py-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 focus:bg-white/10 transition-all font-light resize-none"
-                        />
-                    </div>
+                <div>
+                    <label htmlFor="client-comment" className="mb-2 block text-xs font-bold text-zinc-300">
+                        Commentaire
+                    </label>
+                    <textarea
+                        id="client-comment"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        placeholder="Écrivez votre commentaire..."
+                        required
+                        rows={7}
+                        className="w-full resize-none rounded-2xl border border-white/5 bg-[#0f071a]/50 px-4 py-3 text-sm text-white placeholder-zinc-600 transition-all duration-300 focus:border-fuchsia-500/50 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/30"
+                    />
+                </div>
 
-                    <button className="w-full md:w-sm text-xl md:text-2xl h-15 flex items-center justify-center mx-auto transition-all duration-500 hover:scale-102 bg-purple-800 text-white font-light rounded-[10px] px-4 py-4 hover:opacity-90 cursor-pointer">
-                        Envoyer le message <SendHorizonal strokeWidth={1.5} className="text-white w-8 h-8 ml-5" />
-                    </button>
-                </form>
-            </div>
+                <button
+                    type="submit"
+                    className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#ab05bd] py-3.5 text-lg font-extrabold tracking-wide text-white shadow-[0_0_25px_rgba(171,5,189,0.35)] transition-all duration-300 hover:bg-[#c205d6] active:scale-[0.98] cursor-pointer"
+                >
+                    Envoyer le feedback
+                    <SendHorizonal className="h-4 w-4" />
+                </button>
+            </form>
         </div>
-    );
+    )
 }
-

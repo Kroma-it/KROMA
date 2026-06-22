@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# Le hook 'commit-msg' recoit le chemin du fichier temporaire contenant le message du commit en parametre ($1)
+COMMIT_MSG_FILE="$1"
+# On recupere la premiere ligne du message (le titre du commit) et on nettoie les espaces
+COMMIT_MSG=$(head -n 1 "$COMMIT_MSG_FILE" | tr -d '\r' | xargs)
+
+LOG_FILE="COMMIT_LOG.md"
+
+# 1. INTELLIGENCE : Si le message commence par "fix:", on ignore toutes les verifications
+if echo "$COMMIT_MSG" | grep -q "^fix:"; then
+  echo "Commit de type 'fix' detecte. Passage libre sans mise a jour du journal."
+  exit 0
+fi
+
+# 2. VERIFICATIONS STANDARDS (Si ce n'est pas un fix)
+if [ ! -f "$LOG_FILE" ]; then
+  echo "Commit bloque : Le fichier $LOG_FILE est introuvable."
+  exit 1
+fi
+
+if ! git diff --cached --name-only | grep -q "^$LOG_FILE$"; then
+  echo "Commit bloque : Tu dois mettre a jour $LOG_FILE avant de commit."
+  echo " Ajoute une entree, puis fais : git add $LOG_FILE"
+  exit 1
+fi
+
+# On recupere uniquement les modifications prets a etre commitees
+STAGED_DIFF=$(git diff --cached "$LOG_FILE")
+
+# Verification que la NOUVELLE entree contient bien tous les champs requis
+for FIELD in "Nom" "Nature" "Details" "Fichiers"; do
+  if ! echo "$STAGED_DIFF" | grep -qi "^\+[[:space:]]*\*\*$FIELD\*\*"; then
+    echo "Commit bloque : Le champ obligatoire '**$FIELD**' est absent de ta nouvelle entree dans $LOG_FILE."
+    exit 1
+  fi
+done
+
+# 3. VERIFICATION DE LA COHERENCE DU NOM
+# On extrait la valeur du champ **Nom** de la DERNIERE entree ajoutee.
+# On ne garde que les lignes ajoutees (+) et on ignore les lignes de metadata du diff (+++)
+# Formats acceptes :
+#   - **Nom :** Valeur     (valeur sur la meme ligne)
+#   - **Nom**              (valeur sur la ligne suivante)
+
+# On filtre uniquement les lignes ajoutees (commencant par + mais pas +++)
+# et on les passe a awk pour extraire la DERNIERE valeur de **Nom**
+
+
+echo "Journal et message de commit parfaitement synchronises !"

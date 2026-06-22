@@ -8,6 +8,7 @@ interface Slide {
   description: string;
   tag: string;
   image: string;
+  link: string
 }
 const slides: Slide[] = [
   {
@@ -16,7 +17,8 @@ const slides: Slide[] = [
     title: 'NEON DYNAMICS',
     description: "Redefining the digital ecosystem for the world's leading performance automotive brand.",
     tag: 'FEATURED PROJECT',
-    image: '/assets/slide1.png',
+    image: '/assets/lybek.png',
+    link : 'https://lybek.vercel.app'
   },
   {
     id: '02',
@@ -25,6 +27,7 @@ const slides: Slide[] = [
     description: "Creating a seamless visual identity for next-generation tech startups.",
     tag: 'BRANDING DESIGN',
     image: '/assets/slide2.png',
+    link:''
   },
   {
     id: '03',
@@ -33,6 +36,7 @@ const slides: Slide[] = [
     description: "Pushing the boundaries of immersive web experiences through minimalist art.",
     tag: 'WEB DEVELOPMENT',
     image: '/assets/slide3.png',
+    link:''
   },
 ];
 
@@ -79,7 +83,7 @@ export default function Slider() {
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover opacity-60 mix-blend-screen scale-110 animate-fade-in"
             />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-kroma-600 bg-black/30" />
+        <div className="absolute inset-0 bg-linear-to-t from-kroma-700 bg-black/30" />
 
         {/* Secondary Glows */}
         <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-fuchsia-600/10 blur-[120px] rounded-full" />
@@ -113,11 +117,14 @@ export default function Slider() {
           </div>
 
           {/* CTA Button */}
+          <a href={slides[currentSlide].link}>  
           <button className="group relative flex items-center gap-6 px-10 py-5 bg-fuchsia-600 rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_25px_50px_-15px_rgba(192,38,211,0.5)]">
             <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-500 to-purple-600 group-hover:from-fuchsia-400 group-hover:to-purple-500 transition-all" />
-            <span className="relative text-white font-bold text-lg tracking-wide">Explore Case Study</span>
+            <span className="relative text-white font-bold text-lg tracking-wide">Explore</span>
+            
             <ArrowRight className="relative text-white w-6 h-6 group-hover:translate-x-2 transition-transform" />
           </button>
+          </a>
         </div>
       </div>
 

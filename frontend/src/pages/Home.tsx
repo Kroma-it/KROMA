@@ -6,13 +6,13 @@ import {
   Layers3,
   Palette,
   PenTool,
-  Quote,
   Sparkles,
-  Star,
   Wand2,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import Landing from "../components/Landing";
+import Feedback from "../components/FeedBack";
+import { Helmet } from "react-helmet-async";
 
 const services = [
   {
@@ -36,9 +36,9 @@ const services = [
 ];
 
 const stats = [
-  { value: "15+", label: "clients accompagnes" },
-  { value: "3", label: "piliers: marque, design, web" },
-  { value: "100%", label: "solutions adaptees" },
+  { value: "10+", label: "Projets réalisés" },
+  { value: "7+", label: "Clients satisfaits" },
+  { value: "2+", label: "années d'expérience" },
 ];
 
 const process = [
@@ -56,30 +56,12 @@ const process = [
   },
 ];
 
-const works = [
-  {
-    image: "/assets/slide1.png",
-    title: "Campagne visuelle",
-    category: "Motion",
-  },
-  {
-    image: "/assets/slide3.png",
-    title: "Interface digitale",
-    category: "Web",
-  },
-  {
-    image: "/assets/slide5.png",
-    title: "Identite de marque",
-    category: "Branding",
-  },
-];
-
 const feedbacks = [
   {
     stars: 5,
     feedback:
       "Le flyer est propre, il respecte les specifications que j'avais donnees pour la realisation. Les informations sont bien disposees et suffisamment lisibles.",
-    img: "/assets/2.jpg",
+    img: "/assets/2.webP",
     name: "M. SIAKAM Krixian",
     poste: 'Fondateur des "studios_underscore"',
   },
@@ -87,7 +69,7 @@ const feedbacks = [
     stars: 4,
     feedback:
       "Je trouve le concept tres innovant. J'ai deja demande l'un de leurs services et j'ai ete tres satisfait par une equipe dynamique.",
-    img: "/assets/2.jpg",
+    img: "/assets/1.webP",
     name: "M. FOAPA Gianny",
     poste: "Fondateur de E-Concept",
   },
@@ -95,17 +77,16 @@ const feedbacks = [
     stars: 5,
     feedback:
       "Kroma a su donner une image plus claire et professionnelle a notre projet, avec une livraison propre et facile a exploiter.",
-    img: "/assets/2.jpg",
+    img: "/assets/3.webP",
     name: "Client Kroma",
     poste: "Projet accompagne",
   },
 ];
 
 const partners = [
-  { name: "LC Home", logo: "/assets/logos/LC home-100.jpg" },
-  { name: "LC Food", logo: "/assets/logos/LC food-100.jpg" },
-  { name: "Kroma Partner", logo: "/assets/logos/logo3.jpg" },
-  { name: "Kroma Studio", logo: "/assets/logos/logoNomVertical.jpg" },
+  { name: "LC Home", logo: "/assets/logos/ARS.svg" },
+  { name: "Kroma Partner", logo: "/assets/logos/eConcept.svg" },
+  { name: "Kroma Studio", logo: "/assets/logos/lePolo.svg" },
 ];
 
 const landing = {
@@ -119,11 +100,14 @@ const landing = {
 };
 
 function Home() {
-  const scrollingFeedbacks = [...feedbacks, ...feedbacks];
   const scrollingPartners = [...partners, ...partners];
 
   return (
-    <main className="overflow-hidden bg-kroma-600 text-white">
+    <main className="overflow-hidden text-white">
+      <Helmet>
+        <title>Agence créative de design | Kroma</title>
+        <meta name="description" content="Kroma est une agence créative de design qui aide les entrepreneurs et marques à construire une présence professionnelle forte et cohérente." />
+      </Helmet>
       <Landing
         icon={landing.icon}
         cta1={landing.cta1}
@@ -134,13 +118,13 @@ function Home() {
 
       {/** première section qui parle de Kroma*/}
 
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+        <div className="mx-auto grid max-w-7xl mb-20 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div>
-            <p className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-fuchsia-400/30 bg-white/5 px-4 py-2 text-sm font-semibold text-fuchsia-200">
+            <p className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-fuchsia-400/30 bg-white/5 px-4 py-2 text-sm font-semibold text-kroma-400">
               <Sparkles className="h-4 w-4" />
               Studio creatif digital
             </p>
-            <h2 className="max-w-3xl text-4xl font-black leading-tight md:text-6xl">
+            <h2 className="max-w-3xl text-4xl font-extrabold leading-tight md:text-6xl">
               Une image plus claire, plus forte, plus facile à reconnaitre.
             </h2>
           </div>
@@ -168,13 +152,13 @@ function Home() {
       {/**service de Kroma */}
 
 
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto mb-20 max-w-7xl">
 
           {/**titre et CTA */}
 
           <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
                 Ce que nous faisons
               </p>
               <h2 className="max-w-2xl text-3xl font-black leading-tight md:text-5xl">
@@ -212,9 +196,9 @@ function Home() {
           </div>
         </div>
 
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div className="mx-auto grid max-w-7xl mb-20 gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-emerald-300">
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
               Methode
             </p>
             <h2 className="text-3xl font-black leading-tight md:text-5xl">
@@ -228,8 +212,8 @@ function Home() {
 
           <div className="grid gap-4">
             {process.map((step, index) => (
-              <div key={step.title} className="flex gap-5 border border-white/10 bg-kroma-600/70 p-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-kroma-600">
+              <div key={step.title} className="flex gap-5 border rounded-2xl border-white/20 p-5">
+                <div className="flex  h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-kroma-600">
                   0{index + 1}
                 </div>
                 <div>
@@ -240,113 +224,29 @@ function Home() {
             ))}
           </div>
         </div>
-
+        {/**realisations */}
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-fuchsia-300">
-                Realisations
+              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
+                Réalisations
               </p>
               <h2 className="max-w-2xl text-3xl font-black leading-tight md:text-5xl">
                 Un apercu des univers que Kroma peut construire.
               </h2>
             </div>
-
-            <NavLink
-              to="/realisations"
-              className="inline-flex w-fit items-center gap-3 rounded-xl border border-white/15 px-6 py-3 font-bold text-white transition hover:border-cyan-300 hover:bg-white/5"
-            >
-              Explorer le portfolio
-              <ArrowRight className="h-5 w-5" />
-            </NavLink>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {works.map((work) => (
-              <NavLink
-                key={work.image}
-                to="/realisations"
-                className="group block overflow-hidden border border-white/10 bg-white/[0.035] transition hover:-translate-y-1 hover:border-white/25"
-              >
-                <div className="aspect-4/5 overflow-hidden">
-                  <img
-                    src={work.image}
-                    alt={work.title}
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-5">
-                  <p className="text-sm font-bold uppercase tracking-[0.18em] text-white/40">
-                    {work.category}
-                  </p>
-                  <h3 className="mt-2 text-xl font-bold">{work.title}</h3>
-                </div>
-              </NavLink>
-            ))}
           </div>
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-24">
-          <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
-                Feedbacks clients
-              </p>
-              <h2 className="max-w-2xl text-3xl font-black leading-tight md:text-5xl">
-                Des retours concrets de projets deja accompagnes.
-              </h2>
-            </div>
-
-            <NavLink
-              to="/clients"
-              className="inline-flex w-fit items-center gap-3 rounded-xl border border-white/15 px-6 py-3 font-bold text-white transition hover:border-fuchsia-400 hover:bg-white/5"
-            >
-              Voir les clients
-              <ArrowRight className="h-5 w-5" />
-            </NavLink>
-          </div>
-        </div>
-
-        <div className="kroma-marquee overflow-hidden">
-          <div className="kroma-marquee-track flex w-max gap-5 px-6 md:px-12 lg:px-24">
-            {scrollingFeedbacks.map((feed, index) => (
-              <article
-                key={`${feed.name}-${index}`}
-                className="relative w-[19rem] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-kroma-500/70 p-6 shadow-2xl shadow-black/20 md:w-[24rem]"
-              >
-                <Quote className="absolute -right-4 -top-6 h-28 w-28 rotate-12 text-fuchsia-400/10" />
-                <div className="mb-5 flex gap-1">
-                  {Array.from({ length: feed.stars }).map((_, starIndex) => (
-                    <Star
-                      key={starIndex}
-                      className="h-5 w-5 fill-fuchsia-400 text-fuchsia-400"
-                      strokeWidth={1.4}
-                    />
-                  ))}
-                </div>
-                <p className="min-h-32 text-sm leading-7 text-white/70 md:text-base">
-                  "{feed.feedback}"
-                </p>
-                <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
-                  <img
-                    src={feed.img}
-                    alt={feed.name}
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="font-bold text-white">{feed.name}</h3>
-                    <p className="text-sm text-white/45">{feed.poste}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-
+      {/**feedback clients */}
+      <div className="mb-20">
+        <Feedback feeds={feedbacks}/>
+      </div>
+        {/**partenaires */}
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="mb-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.25em] text-emerald-300">
+              <p className="mb-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.25em] text-kroma-400">
                 <Handshake className="h-4 w-4" />
                 Partenaires
               </p>
@@ -360,49 +260,49 @@ function Home() {
             </p>
           </div>
 
-          <div className="kroma-marquee rounded-2xl border border-white/10 bg-white/[0.035] py-5">
+          <div className="kroma-marquee mb-20 rounded-2xl border border-white/10 bg-linear-to-l from-kroma-700 via-white/5 to-kroma-700 py-5">
             <div className="kroma-marquee-track kroma-marquee-track-slow flex w-max items-center gap-5 px-5">
               {scrollingPartners.map((partner, index) => (
                 <div
                   key={`${partner.name}-${index}`}
-                  className="flex h-28 w-52 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white px-5 transition hover:-translate-y-1 hover:border-fuchsia-300"
+                  className="flex h-28 w-52 shrink-0 items-center justify-center transition hover:-translate-y-1 hover:border-fuchsia-300"
                 >
                   <img
                     src={partner.logo}
                     alt={partner.name}
-                    className="max-h-20 max-w-36 object-contain"
+                    className="max-h-50 max-w-46 object-contain"
                   />
                 </div>
               ))}
             </div>
           </div>
         </div>
-
+      {/**brief */}
       <section className="px-6 pb-24 md:px-12 lg:px-24">
-        <div className="mx-auto grid max-w-7xl gap-10 border border-white/10 bg-white/4.5 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="mx-auto rounded-2xl grid max-w-7xl gap-10 border border-white/10 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <div className="mb-5 flex flex-wrap gap-3 text-sm text-white/65">
               <span className="inline-flex items-center gap-2">
-                <BadgeCheck className="h-4 w-4 text-emerald-300" />
+                <BadgeCheck className="h-4 w-4 text-kroma-400" />
                 Brief clair
               </span>
               <span className="inline-flex items-center gap-2">
-                <Layers3 className="h-4 w-4 text-cyan-300" />
+                <Layers3 className="h-4 w-4 text-kroma-400" />
                 Fichiers exploitables
               </span>
               <span className="inline-flex items-center gap-2">
-                <Wand2 className="h-4 w-4 text-fuchsia-300" />
+                <Wand2 className="h-4 w-4 text-kroma-400" />
                 Creation sur mesure
               </span>
             </div>
             <h2 className="max-w-3xl text-3xl font-black leading-tight md:text-5xl">
-              Pret a donner une vraie forme a votre prochaine idee ?
+              Prêt a donner une vraie forme a votre prochaine idee ?
             </h2>
           </div>
 
           <NavLink
             to="/personnalisation"
-            className="inline-flex items-center justify-center gap-3 rounded-xl bg-fuchsia-600 px-7 py-4 font-black text-white transition hover:-translate-y-1 hover:bg-fuchsia-500"
+            className="inline-flex items-center justify-center gap-3 rounded-xl bg-kroma-600 px-7 py-4 font-black text-white transition hover:-translate-y-1 hover:bg-fuchsia-500"
           >
             Demander un devis
             <ArrowRight className="h-5 w-5" />

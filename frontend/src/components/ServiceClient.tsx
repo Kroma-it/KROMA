@@ -35,7 +35,7 @@ export default function ServiceClient({ pricings, selectedServices, onToggleServ
             className={`group relative flex flex-col p-8 rounded-3xl backdrop-blur-xl transition-all duration-500 cursor-pointer border
               ${isSelected 
                 ? 'border-fuchsia-600 bg-fuchsia-600/10 shadow-[0_20px_40px_-15px_rgba(192,38,211,0.2)]' 
-                : 'bg-white/[0.03] border-white/10 hover:bg-white/[0.07] hover:border-fuchsia-500/30 hover:-translate-y-2'
+                : 'bg-white/3 border-white/10 hover:bg-white/[0.07] hover:border-fuchsia-500/30 hover:-translate-y-2'
               }`}
           >
             {/* Selection Check Icon */}
@@ -46,7 +46,7 @@ export default function ServiceClient({ pricings, selectedServices, onToggleServ
             )}
 
             {/* Background Glow */}
-            <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br from-fuchsia-600/0 via-fuchsia-600/0 to-fuchsia-600/5 transition-opacity duration-500
+            <div className={`absolute inset-0 rounded-3xl bg-linear-to-br from-fuchsia-600/0 via-fuchsia-600/0 to-fuchsia-600/5 transition-opacity duration-500
               ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} 
             />
             

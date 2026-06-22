@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1183.18 773.98">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        fill: #09624a;
+      }
+
+      .cls-3 {
+        fill: #4bb445;
+      }
+
+      .cls-4 {
+        fill: #3aac3a;
+        font-family: Ubuntu-Medium, Ubuntu;
+        font-size: 89.77px;
+        font-weight: 500;
+      }
+
+      .cls-5 {
+        letter-spacing: .02em;
+      }
+    </style>
+  </defs>
+  <path class="cls-2" d="m137.75,536.19l65.04-183.57h0c-3.82,5.84-10.33,9.36-17.3,9.36h-23.37c-11.69,0-22.12,7.37-26.02,18.39l-69.2,195.34h41.7c9.09,0,17.19-5.72,20.23-14.29h0s8.93-25.23,8.93-25.23Z"/>
+  <path class="cls-2" d="m325.13,475.43l-54.5-153.85h-56.86l28.39,80.14,20.1,56.76c3.6,10.16,13.21,16.96,24,16.96h38.87Z"/>
+  <path class="cls-3" d="m299.06,240.32l-28.58,81.34-15.71,44.74-.33.94-12.21,34.46-42.98,121.32c-2.77,7.83-10.18,13.07-18.49,13.07h-21.62c-12.67,0-23.96,7.99-28.19,19.93l-1.87,5.3h-.25l8.94-25.23,61.71-174.21,14.29-40.32h.02l20.45-58.25c4.86-13.84,17.93-23.1,32.59-23.1h32.24Z"/>
+  <text class="cls-4" transform="translate(410.64 393.21)"><tspan x="0" y="0">Africa Realisation</tspan><tspan x="0" y="107.73">Se</tspan><tspan class="cls-5" x="99.74" y="107.73">r</tspan><tspan class="cls-1" x="137.53" y="107.73">vice</tspan></text>
+</svg>

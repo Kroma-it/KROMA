@@ -1,4 +1,4 @@
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Medal } from 'lucide-react';
 
 interface PackData {
     name: string;
@@ -19,13 +19,13 @@ export default function Pack({ packs }: PackProps) {
                 return (
                     <div key={index} className={`relative text-white flex flex-col w-full sm:w-87.5 h-auto rounded-3xl p-8 border transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${
                         isPopular 
-                            ? 'bg-linear-to-b from-fuchsia-900/40 to-purple-950/60 border-fuchsia-500/40 shadow-[0_0_60px_-15px_rgba(192,38,211,0.3)]' 
+                            ? 'border-kroma-600' 
                             : 'bg-white/3 border-white/10 hover:border-fuchsia-500/30'
                     }`}>
                         {/* Popular Badge */}
                         {isPopular && (
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-linear-to-r from-fuchsia-600 to-purple-600 text-white text-xs font-bold uppercase tracking-widest px-5 py-1.5 rounded-full flex items-center gap-2 shadow-lg">
-                                <Sparkles size={12} />
+                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-kroma-600 text-white text-xs font-bold uppercase tracking-widest px-5 py-1.5 rounded-full flex items-center gap-2 shadow-lg">
+                                <Medal size={17} />
                                 Populaire
                             </div>
                         )}
@@ -55,8 +55,8 @@ export default function Pack({ packs }: PackProps) {
 
                         <button className={`w-full py-4 px-6 rounded-2xl font-semibold text-lg md:text-xl transition-all duration-300 cursor-pointer ${
                             isPopular 
-                                ? 'bg-linear-to-r from-fuchsia-600 to-purple-600 text-white hover:from-fuchsia-500 hover:to-purple-500 shadow-[0_10px_30px_-10px_rgba(192,38,211,0.5)]' 
-                                : 'bg-white/5 border border-fuchsia-500/30 hover:bg-fuchsia-600 hover:border-fuchsia-600'
+                                ? 'bg-kroma-600 text-white hover:from-fuchsia-500 hover:to-purple-500' 
+                                : 'bg-white/5 border border-fuchsia-500/30 hover:bg-kroma-600 hover:border-fuchsia-600'
                         }`}>
                             Choisir {pack.name.split(' ')[1] || 'ce pack'}
                         </button>
