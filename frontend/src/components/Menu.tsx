@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronDown } from "lucide-react";
 import { NavLink, useLocation} from "react-router-dom"
 import "../css/style.css"
@@ -10,6 +10,7 @@ function Menu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isServicesOpen, setIsServicesOpen] = useState(false);
     const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 {/*
     const toggleLang = () => {
         setLang(prev => prev === 'FR' ? 'EN' : 'FR')
@@ -18,10 +19,19 @@ function Menu() {
     const location = useLocation(); //permet de savoir la page dans la actuelle
     const loginBackgroundState = toModalBackgroundState(location);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Initial check
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
 
     return (
         <>
-            <header className='fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-22 bg-black/20 backdrop-blur-xl px-4 md:px-20'>
+            <header className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-22 px-4 md:px-20 transition-all duration-300 ${isScrolled ? 'bg-black/20 backdrop-blur-xl' : 'bg-transparent'}`}>
                 {/* Left: Logo */}
                 <img src="/assets/logoMenu.svg" className='h-18' alt="" />
 
@@ -133,7 +143,7 @@ function Menu() {
                                 aria-label="Ouvrir la connexion"
                                 className="rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 focus:ring-offset-black"
                             >
-                                <img src="/assets/2.jpg" className='h-11 w-11 rounded-full border-2 border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
+                                <img src="/assets/2.webp" className='h-11 w-11 rounded-full border-2 border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
                             </button>
                         </NavLink>
                         {/**Profil */}
@@ -160,7 +170,7 @@ function Menu() {
             </header>
 
                 {/* Mobile Navigation Overlay - outside header to avoid clipping */}
-                <div className={`md:hidden fixed top-25 left-0 right-0 bottom-0 z-50 bg-black/20 backdrop-blur-xl border-t border-white/10 transition-all duration-300 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} id="mobile-menu">
+                <div className={`md:hidden fixed top-22 left-0 right-0 bottom-0 z-50 bg-black/20 backdrop-blur-xl border-t border-white/10 transition-all duration-300 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} id="mobile-menu">
                     <nav className="flex flex-col gap-6 py-12 px-10 text-white h-full overflow-y-auto pb-32">
                         <NavLink to="/" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold hover:text-fuchsia-500 transition-colors">Accueil</NavLink>
                         {/* Mobile Services Accordion */}
@@ -232,7 +242,7 @@ function Menu() {
                         aria-label="Ouvrir la connexion"
                         className="w-fit rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
                     >
-                        <img src="/assets/2.jpg" className='h-12 w-12 rounded-full' alt="" />
+                        <img src="/assets/2.webp" className='h-12 w-12 rounded-full' alt="" />
                     </button>
                 </NavLink>
 

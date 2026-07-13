@@ -99,7 +99,7 @@ const landing = {
   cta2Link: "/realisations",
 };
 
-function Home() {
+export default function Home() {
   const scrollingPartners = [...partners, ...partners];
 
   return (
@@ -270,7 +270,7 @@ function Home() {
                   <img
                     src={partner.logo}
                     alt={partner.name}
-                    className="max-h-50 max-w-46 object-contain"
+                    className="max-h-30 max-w-46 object-contain"
                   />
                 </div>
               ))}
@@ -312,5 +312,3 @@ function Home() {
     </main>
   );
 }
-
-export default Home;

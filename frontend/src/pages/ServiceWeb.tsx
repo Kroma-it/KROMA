@@ -137,7 +137,7 @@ export default function ServiceWeb() {
 
           <h1 className="text-4xl md:text-6xl font-black leading-tight tracking-tight">
             Création de Site Web <br />
-            <span className="bg-linear-to-r from-cyan-400 via-indigo-400 to-fuchsia-300 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-fuchsia-400 via-purple-400 to-cyan-300 bg-clip-text text-transparent">
               Professionnel
             </span>
           </h1>

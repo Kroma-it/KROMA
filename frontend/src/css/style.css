@@ -73,3 +73,16 @@
         animation: none;
     }
 }
+
+/* Custom scrollbar — kroma-500 */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #a41bb6;
+  border-radius: 3px;
+}
+

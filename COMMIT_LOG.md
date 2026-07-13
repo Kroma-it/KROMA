@@ -197,3 +197,21 @@ Ajout et modification
 - `Menu.tsx`
 - `ServiceClient.tsx`
 - `Pricing.tsx`
+
+---
+
+## 2026-07-13
+
+**Nom**  
+update logoCrea et design
+
+**Nature**  
+Ajout et modification
+
+**Details**  
+- J'ai amélioré le fichier `LogoCrea.tsx`
+- J'ai changé le design de la barre de défilement et fait en sorte que le flou du menu ne s'appliquepas quand on est en haut de la page
+
+**Fichiers**  
+- `LogoCrea.tsx`
+- `Menu.tsx`

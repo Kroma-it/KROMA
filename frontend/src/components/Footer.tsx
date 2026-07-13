@@ -12,25 +12,25 @@ export default function Footer(){
                     <img src="/assets/logoMenu.svg" className="h-25 object-contain object-left" alt="Kroma Logo" />
                     <p className="text-white">L'agence créative qui transforme les idées audacieuses en réalité digitale éblouissante.</p>
                     <div className="flex flex-wrap gap-5 mt-2">
-                       <a href="mailto:kromaagence5@gmail.com" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="mailto:kromaagence5@gmail.com" className="bg-fuchsia-500/30 p-3 rounded-full transition-all duration-300 ease-in-out hover:bg-fuchsia-600 hover:-translate-y-1 hover:rotate-12 hover:scale-110 hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]">
                         <Mail className="text-white w-5 h-5" />
                        </a>
-                       <a href="https://whatsapp.com/channel/0029VbBdGv5I7BeIQXipEi00" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://whatsapp.com/channel/0029VbBdGv5I7BeIQXipEi00" className="bg-fuchsia-500/30 p-3 rounded-full transition-all duration-300 ease-in-out hover:bg-fuchsia-600 hover:-translate-y-1 hover:rotate-12 hover:scale-110 hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]">
                         <FaWhatsapp className="text-white w-5 h-5" />
                        </a>
-                       <a href="https://www.instagram.com/kroma.agence" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://www.instagram.com/kroma.agence" className="bg-fuchsia-500/30 p-3 rounded-full transition-all duration-300 ease-in-out hover:bg-fuchsia-600 hover:-translate-y-1 hover:rotate-12 hover:scale-110 hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]">
                         <Instagram className="text-white w-5 h-5" />
                        </a>
-                       <a href="https://linkedin.com/company/kroma-agence" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://linkedin.com/company/kroma-agence" className="bg-fuchsia-500/30 p-3 rounded-full transition-all duration-300 ease-in-out hover:bg-fuchsia-600 hover:-translate-y-1 hover:rotate-12 hover:scale-110 hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]">
                         <Linkedin className="text-white w-5 h-5" />
                        </a>
-                       <a href="https://github.com/kroma-it" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://github.com/kroma-it" className="bg-fuchsia-500/30 p-3 rounded-full transition-all duration-300 ease-in-out hover:bg-fuchsia-600 hover:-translate-y-1 hover:rotate-12 hover:scale-110 hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]">
                         <Github className="text-white w-5 h-5" />
                        </a>
-                       <a href="https://www.tiktok.com/@kroma552" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://www.tiktok.com/@kroma552" className="bg-fuchsia-500/30 p-3 rounded-full transition-all duration-300 ease-in-out hover:bg-fuchsia-600 hover:-translate-y-1 hover:rotate-12 hover:scale-110 hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]">
                         <FaTiktok className="text-white w-5 h-5" />
                        </a>
-                       <a href="https://www.facebook.com/share/17byEWnguA/" className="bg-fuchsia-500/30 p-3 rounded-full">
+                       <a href="https://www.facebook.com/share/17byEWnguA/" className="bg-fuchsia-500/30 p-3 rounded-full transition-all duration-300 ease-in-out hover:bg-fuchsia-600 hover:-translate-y-1 hover:rotate-12 hover:scale-110 hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]">
                         <Facebook className="text-white w-5 h-5" />
                        </a>
                     </div>

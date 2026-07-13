@@ -310,26 +310,6 @@ export default function GraphicsCrea() {
           <Sparkles className="w-4 h-4 text-cyan-300 drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
         </motion.div>
       </div>
-
-      {/* Ground Reflection & Shadow Line */}
-      <div className="relative w-[80%] h-6 mt-6 z-10 pointer-events-none">
-        {/* Horizontal Laser Line */}
-        <div className="absolute top-1/2 left-0 right-0 h-[1.5px] bg-linear-to-r from-transparent via-fuchsia-400/50 to-transparent filter blur-[0.5px]" />
-        {/* Glow */}
-        <div className="absolute top-1/2 left-[15%] right-[15%] h-[8px] -translate-y-1/2 bg-linear-to-r from-transparent via-fuchsia-500/25 to-transparent filter blur-md" />
-        {/* Specular Ground Highlight */}
-        <div className="absolute top-1/2 left-1/3 right-1/3 h-[2px] -translate-y-1/2 bg-white/40 filter blur-[0.2px]" />
-      </div>
-
-      {/* Text Content */}
-      <div className="text-center mt-6 z-20">
-        <h2 className="text-3xl md:text-4.5xl font-black uppercase tracking-[0.22em] text-white drop-shadow-[0_4px_15px_rgba(255,255,255,0.15)] leading-none">
-          Supports Visuels
-        </h2>
-        <p className="text-xs md:text-sm font-light tracking-[0.25em] text-white/60 mt-3 font-serif italic">
-          Création Graphique & Identité de Communication
-        </p>
-      </div>
     </div>
   );
 }
