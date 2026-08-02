@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -13,6 +14,15 @@ import { NavLink } from "react-router-dom";
 import Landing from "../components/Landing";
 import Feedback from "../components/FeedBack";
 import { Helmet } from "react-helmet-async";
+import { apiGetPublicFeedbacks } from "../utils/api";
+
+type FeedbackDisplay = {
+  stars: number;
+  feedback: string;
+  img: string;
+  name: string;
+  poste: string;
+};
 
 const services = [
   {
@@ -100,6 +110,25 @@ const landing = {
 };
 
 export default function Home() {
+  const [apiFeedbacks, setApiFeedbacks] = useState<FeedbackDisplay[] | null>(null);
+
+  useEffect(() => {
+    apiGetPublicFeedbacks().then((res) => {
+      if (res.feedbacks.length > 0) {
+        setApiFeedbacks(
+          res.feedbacks.map((f: any) => ({
+            stars: f.rating,
+            feedback: f.comment,
+            img: f.user?.avatarUrl || '/assets/2.webp',
+            name: `${f.user?.firstName || ''} ${f.user?.lastName || ''}`.trim() || 'Client Kroma',
+            poste: 'Client Kroma',
+          }))
+        );
+      }
+    }).catch(() => {});
+  }, []);
+
+  const displayFeedbacks = apiFeedbacks ?? feedbacks;
   const scrollingPartners = [...partners, ...partners];
 
   return (
@@ -240,7 +269,7 @@ export default function Home() {
 
       {/**feedback clients */}
       <div className="mb-20">
-        <Feedback feeds={feedbacks}/>
+        <Feedback feeds={displayFeedbacks}/>
       </div>
         {/**partenaires */}
         <div className="mx-auto max-w-7xl">

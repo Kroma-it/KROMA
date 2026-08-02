@@ -1,8 +1,32 @@
-import {Link} from "react-router-dom"
-import {Mail, Github, Facebook, Instagram, Linkedin} from "lucide-react"
-import {FaTiktok, FaWhatsapp} from "react-icons/fa"
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { Mail, Github, Facebook, Instagram, Linkedin } from "lucide-react"
+import { FaTiktok, FaWhatsapp } from "react-icons/fa"
+import { apiSubscribeNewsletter } from "../utils/api"
 
 export default function Footer(){
+    const [email, setEmail] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+    const handleSubscribe = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!email || !email.includes('@')) {
+            setMessage({ type: 'error', text: 'Veuillez entrer un e-mail valide.' })
+            return
+        }
+        setLoading(true)
+        setMessage(null)
+        try {
+            const res = await apiSubscribeNewsletter(email)
+            setMessage({ type: 'success', text: res.message || 'Inscription réussie !' })
+            setEmail("")
+        } catch (err: any) {
+            setMessage({ type: 'error', text: err.message || 'Erreur lors de l\'inscription.' })
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <footer className="border-t border-white/20 mt-10 w-full">
@@ -63,10 +87,29 @@ export default function Footer(){
                 <div className="text-white max-w-sm">
                     <h1 className="font-bold text-2xl mb-4">NEWSLETTER</h1>
                     <p className="font-light text mb-4">Inscrivez-vous à notre newsletter pour recevoir nos dernières actualités</p>
-                    <div className="flex flex-col gap-2">
-                        <input type="email" placeholder="Email" className="w-full h-12 rounded-xl bg-fuchsia-500/10 placeholder-white/60 px-4 text-white focus:border-fuchsia-500/30 focus:outline-none border border-black/30 transition-all resize-none leading-relaxed" />
-                        <button className="bg-fuchsia-700/70 w-full p-3 cursor-pointer rounded-xl font-semibold text-xl hover:bg-fuchsia-600 transition-colors duration-500">S'inscrire</button>
-                    </div>
+                    <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
+                        <input 
+                            type="email" 
+                            placeholder="Email" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            disabled={loading}
+                            className="w-full h-12 rounded-xl bg-fuchsia-500/10 placeholder-white/60 px-4 text-white focus:border-fuchsia-500/30 focus:outline-none border border-black/30 transition-all resize-none leading-relaxed" 
+                        />
+                        <button 
+                            type="submit"
+                            disabled={loading}
+                            className="bg-fuchsia-700/70 w-full p-3 cursor-pointer rounded-xl font-semibold text-xl hover:bg-fuchsia-600 disabled:opacity-50 transition-colors duration-500"
+                        >
+                            {loading ? "Inscription..." : "S'inscrire"}
+                        </button>
+                    </form>
+                    {message && (
+                        <p className={`mt-3 text-sm font-semibold ${message.type === 'success' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                            {message.text}
+                        </p>
+                    )}
                 </div>
 
             </div>
