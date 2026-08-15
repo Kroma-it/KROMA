@@ -1,5 +1,7 @@
-import React, { useRef, useState } from "react"
-import { Building, Camera, Globe, Mail, Save, User } from "lucide-react"
+import React, { useRef, useState, useEffect } from "react"
+import { Building, Camera, Globe, Mail, Save, User, Loader2 } from "lucide-react"
+import { useAuth } from "../context/AuthContext"
+import { apiUpdateProfile } from "../utils/api"
 
 type FieldProps = {
     label: string
@@ -9,27 +11,66 @@ type FieldProps = {
     type: string
     placeholder: string
     className?: string
+    disabled?: boolean
 }
 
 export default function UserInfo() {
+    const { user, refreshUser } = useAuth()
     const fileInputRef = useRef<HTMLInputElement | null>(null)
-    const [lastName, setLastName] = useState("Dupont")
-    const [firstName, setFirstName] = useState("Jean")
-    const [email, setEmail] = useState("jean.dupont@exemple.com")
+    const [lastName, setLastName] = useState("")
+    const [firstName, setFirstName] = useState("")
+    const [email, setEmail] = useState("")
     const [company, setCompany] = useState("Kroma Studio")
     const [country, setCountry] = useState("France")
     const [avatar, setAvatar] = useState("/assets/2.jpg")
+    const [loading, setLoading] = useState(false)
+    const [status, setStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+    useEffect(() => {
+        if (user) {
+            setLastName(user.lastName || "")
+            setFirstName(user.firstName || "")
+            setEmail(user.email || "")
+            if (user.avatarUrl) {
+                setAvatar(user.avatarUrl)
+            }
+        }
+    }, [user])
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
 
-        setAvatar(URL.createObjectURL(file))
+        const reader = new FileReader()
+        reader.onloadend = () => {
+            setAvatar(reader.result as string)
+        }
+        reader.readAsDataURL(file)
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log("Profil sauvegarde:", { lastName, firstName, email, company, country })
+        if (!user) {
+            setStatus({ type: 'error', text: 'Vous devez être connecté pour modifier votre profil.' })
+            return
+        }
+
+        setLoading(true)
+        setStatus(null)
+
+        try {
+            await apiUpdateProfile({
+                firstName,
+                lastName,
+                avatarUrl: avatar
+            })
+            await refreshUser()
+            setStatus({ type: 'success', text: 'Votre profil a été mis à jour avec succès.' })
+        } catch (err: any) {
+            setStatus({ type: 'error', text: err.message || 'Erreur lors de la mise à jour.' })
+        } finally {
+            setLoading(false)
+        }
     }
 
     const renderField = ({
@@ -40,6 +81,7 @@ export default function UserInfo() {
         type,
         placeholder,
         className = "",
+        disabled = false,
     }: FieldProps) => (
         <div className={className}>
             <label className="mb-2 block text-xs font-bold text-zinc-300">
@@ -52,7 +94,8 @@ export default function UserInfo() {
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     placeholder={placeholder}
-                    className="h-12 w-full rounded-2xl border border-white/5 bg-[#0f071a]/70 py-3 pl-11 pr-4 text-sm font-semibold text-white placeholder-zinc-600 transition-all duration-300 focus:border-fuchsia-500/50 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/30"
+                    disabled={disabled}
+                    className="h-12 w-full rounded-2xl border border-white/5 bg-[#0f071a]/70 py-3 pl-11 pr-4 text-sm font-semibold text-white placeholder-zinc-600 transition-all duration-300 focus:border-fuchsia-500/50 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/30 disabled:opacity-50"
                 />
             </div>
         </div>
@@ -92,13 +135,23 @@ export default function UserInfo() {
 
                     <div className="text-center">
                         <h2 className="text-xl font-extrabold text-white">
-                            {firstName} {lastName}
+                            {firstName || "Utilisateur"} {lastName}
                         </h2>
                         <p className="mt-1 text-sm text-zinc-400">{company}</p>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="grid flex-1 grid-cols-1 gap-x-5 gap-y-4 md:grid-cols-2">
+                    {status && (
+                        <div className={`md:col-span-2 p-4 rounded-2xl text-xs font-semibold border ${
+                            status.type === 'success' 
+                                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' 
+                                : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                        }`}>
+                            {status.text}
+                        </div>
+                    )}
+
                     {renderField({
                         label: "Nom",
                         value: lastName,
@@ -106,6 +159,7 @@ export default function UserInfo() {
                         icon: User,
                         type: "text",
                         placeholder: "Votre nom",
+                        disabled: loading || !user,
                     })}
                     {renderField({
                         label: "Prenom",
@@ -114,6 +168,7 @@ export default function UserInfo() {
                         icon: User,
                         type: "text",
                         placeholder: "Votre prenom",
+                        disabled: loading || !user,
                     })}
                     {renderField({
                         label: "Adresse mail",
@@ -123,6 +178,7 @@ export default function UserInfo() {
                         type: "email",
                         placeholder: "vous@exemple.com",
                         className: "md:col-span-2",
+                        disabled: true, // L'email ne peut pas être modifié car il sert d'identifiant unique
                     })}
                     {renderField({
                         label: "Compagnie",
@@ -131,6 +187,7 @@ export default function UserInfo() {
                         icon: Building,
                         type: "text",
                         placeholder: "Nom de votre compagnie",
+                        disabled: loading || !user,
                     })}
                     {renderField({
                         label: "Pays",
@@ -139,14 +196,25 @@ export default function UserInfo() {
                         icon: Globe,
                         type: "text",
                         placeholder: "Votre pays",
+                        disabled: loading || !user,
                     })}
 
                     <button
                         type="submit"
-                        className="md:col-span-2 mt-2 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#ab05bd] py-3.5 text-sm font-extrabold tracking-wide text-white shadow-[0_0_25px_rgba(171,5,189,0.35)] transition-all duration-300 hover:bg-[#c205d6] active:scale-[0.98] cursor-pointer"
+                        disabled={loading || !user}
+                        className="md:col-span-2 mt-2 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#ab05bd] py-3.5 text-sm font-extrabold tracking-wide text-white shadow-[0_0_25px_rgba(171,5,189,0.35)] transition-all duration-300 hover:bg-[#c205d6] active:scale-[0.98] cursor-pointer disabled:opacity-50"
                     >
-                        Enregistrer les informations
-                        <Save className="h-4 w-4" />
+                        {loading ? (
+                            <>
+                                Enregistrement...
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                            </>
+                        ) : (
+                            <>
+                                Enregistrer les informations
+                                <Save className="h-4 w-4" />
+                            </>
+                        )}
                     </button>
                 </form>
             </div>

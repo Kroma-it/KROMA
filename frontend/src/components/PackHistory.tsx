@@ -1,26 +1,25 @@
-import { Archive, PackageOpen } from "lucide-react"
-
-type PackOrder = {
-    name: string
-    price: string
-}
-
-const packs: PackOrder[] = [
-    {
-        name: "Pack Essentiel",
-        price: "180k XAF",
-    },
-    {
-        name: "Portfolio",
-        price: "40k XAF",
-    },
-    {
-        name: "Portfolio",
-        price: "40k XAF",
-    }
-]
+import { useEffect, useState } from "react"
+import { Archive, PackageOpen, Loader2 } from "lucide-react"
+import { useAuth } from "../context/AuthContext"
+import { apiGetMyOrders } from "../utils/api"
 
 export default function PackHistory() {
+    const { user } = useAuth()
+    const [orders, setOrders] = useState<any[]>([])
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (!user) return
+        setLoading(true)
+        apiGetMyOrders()
+            .then((res) => {
+                const packOrders = res.orders.filter((o: any) => o.type === 'PACK')
+                setOrders(packOrders)
+            })
+            .catch((err) => console.error("Error loading pack orders:", err))
+            .finally(() => setLoading(false))
+    }, [user])
+
     return (
         <section className="relative h-fit w-full self-start overflow-hidden rounded-[28px] border border-fuchsia-400/10 bg-[#100b1f]/90 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.45)] md:p-8">
             <PackageOpen
@@ -39,36 +38,56 @@ export default function PackHistory() {
             </div>
 
             <div className="relative z-10 flex flex-col gap-4">
-                {packs.map((pack, index) => (
-                    <article
-                        key={pack.name}
-                        className="relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-5 pl-6 transition-all duration-300 hover:border-fuchsia-400/25 hover:bg-white/[0.08]"
-                    >
-                        <div className="absolute bottom-0 left-0 top-0 w-1 rounded-full bg-fuchsia-300" />
+                {loading && (
+                    <div className="flex justify-center p-6 text-fuchsia-400">
+                        <Loader2 className="animate-spin h-6 w-6" />
+                    </div>
+                )}
+                {!loading && orders.length === 0 && (
+                    <p className="text-zinc-400 text-sm text-center py-6">Aucune commande de pack pour le moment.</p>
+                )}
+                {!loading && orders.map((order, index) => {
+                    let packName = "Pack"
+                    let packPrice = ""
+                    try {
+                        const parsed = typeof order.services === 'string' ? JSON.parse(order.services) : order.services
+                        packName = parsed.name || "Pack Kroma"
+                        packPrice = parsed.price || ""
+                    } catch {
+                        packName = order.notes || "Pack"
+                    }
 
-                        <div className="mb-4 flex items-start justify-between gap-4">
-                            <div>
-                                <p className="text-xs font-extrabold text-zinc-500">
-                                    #P-{index === 0 ? "502" : "314"}
+                    return (
+                        <article
+                            key={order.id}
+                            className="relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-5 pl-6 transition-all duration-300 hover:border-fuchsia-400/25 hover:bg-white/[0.08]"
+                        >
+                            <div className="absolute bottom-0 left-0 top-0 w-1 rounded-full bg-fuchsia-300" />
+
+                            <div className="mb-4 flex items-start justify-between gap-4">
+                                <div>
+                                    <p className="text-xs font-extrabold text-zinc-500">
+                                        #P-{order.id.substring(0, 5)}
+                                    </p>
+                                    <h3 className="mt-3 text-base font-extrabold text-zinc-200">
+                                        {packName}
+                                    </h3>
+                                </div>
+
+                                <p className="text-lg font-extrabold text-fuchsia-200">
+                                    {packPrice}
                                 </p>
-                                <h3 className="mt-3 text-base font-extrabold text-zinc-200">
-                                    {pack.name}
-                                </h3>
                             </div>
 
-                            <p className="text-lg font-extrabold text-fuchsia-200">
-                                {pack.price}
-                            </p>
-                        </div>
-
-                        <button
-                            type="button"
-                            className="flex h-9 w-full items-center justify-center rounded-xl bg-white/10 text-xs font-extrabold text-zinc-200 transition-all duration-300 hover:bg-fuchsia-400/20 hover:text-white active:scale-[0.98] cursor-pointer"
-                        >
-                            Voir les assets
-                        </button>
-                    </article>
-                ))}
+                            <button
+                                type="button"
+                                className="flex h-9 w-full items-center justify-center rounded-xl bg-white/10 text-xs font-extrabold text-zinc-200 transition-all duration-300 hover:bg-fuchsia-400/20 hover:text-white active:scale-[0.98] cursor-pointer"
+                            >
+                                Voir les details / statut: {order.status}
+                            </button>
+                        </article>
+                    )
+                })}
             </div>
         </section>
     )

@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import {Routes, Route, useLocation} from 'react-router-dom'
+import {Routes, Route, useLocation, Navigate} from 'react-router-dom'
 import type { Location } from 'react-router-dom'
 import Home from "./pages/Home"
 import Menu from "./components/Menu"
@@ -8,14 +8,23 @@ import PrincingPer from "./pages/PricingPer"
 import NotFound from "./pages/NotFound"
 import Login from './pages/Login'
 import Profil from './pages/Profil'
+import Admin from './pages/Admin'
 import ServiceLogo from './pages/ServiceLogo'
 import ServiceWeb from './pages/ServiceWeb'
 import ServiceGraphics from './pages/ServiceGraphics'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import { getModalBackgroundLocation } from './utils/modalBackground'
+import { useAuth } from './context/AuthContext'
 
 const modalPaths = new Set(['/login', '/register'])
+
+function AdminGuard() {
+  const { user, isLoading } = useAuth()
+  if (isLoading) return null
+  if (!user || user.role !== 'ADMIN') return <Navigate to="/" replace />
+  return <Admin />
+}
 
 function App() {
   const location = useLocation()
@@ -41,7 +50,8 @@ function App() {
     '/services/logo',
     '/services/web',
     '/services/graphics',
-    '/login'
+    '/login',
+    '/admin'
   ]
   const normalizedPath = currentPath.endsWith('/') && currentPath !== '/' ? currentPath.slice(0, -1) : currentPath
   const is404 = !knownRoutes.includes(normalizedPath)
@@ -61,6 +71,7 @@ function App() {
         <Route path='/services/logo' element={<ServiceLogo />} />
         <Route path='/services/web' element={<ServiceWeb />} />
         <Route path='/services/graphics' element={<ServiceGraphics />} />
+        <Route path='/admin' element={<AdminGuard />} />
         
         {/* Render as full pages if accessed directly */}
         {!backgroundLocation && (

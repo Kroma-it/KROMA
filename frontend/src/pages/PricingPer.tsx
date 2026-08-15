@@ -14,6 +14,7 @@ import {
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import PricingHero from "../components/PricingHero"
+import { apiCreateOrder } from "../utils/api"
 
 type PricingItem = {
     icon: LucideIcon
@@ -63,6 +64,10 @@ const pricings: PricingItem[] = [
 
 export default function Service() {
     const [selectedServices, setSelectedServices] = useState<string[]>([])
+    const [notes, setNotes] = useState("")
+    const [email, setEmail] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
     const handleToggleService = (title: string) => {
         setSelectedServices((prev) =>
@@ -70,6 +75,37 @@ export default function Service() {
                 ? prev.filter((serviceTitle) => serviceTitle !== title)
                 : [...prev, title]
         )
+    }
+
+    const handleSubmitProject = async () => {
+        if (selectedServices.length === 0) {
+            setStatusMessage({ type: 'error', text: 'Veuillez sélectionner au moins un service pour votre projet.' })
+            return
+        }
+        if (!email || !email.includes('@')) {
+            setStatusMessage({ type: 'error', text: 'Veuillez renseigner une adresse email valide.' })
+            return
+        }
+
+        setLoading(true)
+        setStatusMessage(null)
+
+        try {
+            await apiCreateOrder({
+                type: 'CUSTOM',
+                customerEmail: email,
+                services: selectedServices,
+                notes
+            })
+            setStatusMessage({ type: 'success', text: 'Votre projet a été transmis à l’équipe KROMA avec succès !' })
+            setSelectedServices([])
+            setNotes('')
+            setEmail('')
+        } catch (err: any) {
+            setStatusMessage({ type: 'error', text: err.message || 'Erreur lors de la transmission du projet.' })
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -197,9 +233,33 @@ export default function Service() {
                         <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">Details du projet</h2>
                     </div>
 
+                    {statusMessage && (
+                        <div className={`mb-6 p-4 rounded-2xl text-sm font-semibold border ${
+                            statusMessage.type === 'success' 
+                                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' 
+                                : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                        }`}>
+                            {statusMessage.text}
+                        </div>
+                    )}
+
+                    <div className="mb-6">
+                        <label className="block mb-2 text-xs font-bold uppercase tracking-wider text-zinc-300">Votre adresse email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="vous@exemple.com"
+                            className="w-full px-5 py-3.5 rounded-2xl border border-white/10 bg-black/40 text-white placeholder:text-white/20 focus:border-fuchsia-500/50 focus:outline-none transition-all"
+                        />
+                    </div>
+
                     <div className="relative mb-8 sm:mb-12">
+                        <label className="block mb-2 text-xs font-bold uppercase tracking-wider text-zinc-300">Description de votre projet</label>
                         <textarea
-                            className="h-60 w-full resize-none rounded-2xl border border-white/5 bg-black/40 p-4 text-base leading-relaxed text-white transition-all placeholder:text-white/20 focus:border-fuchsia-500/30 focus:outline-none sm:h-80 sm:rounded-4xl sm:p-5 sm:text-lg md:text-xl"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            className="h-48 w-full resize-none rounded-2xl border border-white/5 bg-black/40 p-4 text-base leading-relaxed text-white transition-all placeholder:text-white/20 focus:border-fuchsia-500/30 focus:outline-none sm:h-64 sm:rounded-3xl sm:p-5 sm:text-lg"
                             placeholder="Decrivez votre projet artistique, vos objectifs, et l'univers que vous souhaitez explorer ici..."
                         />
                         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/5 to-transparent" />
@@ -211,8 +271,13 @@ export default function Service() {
                             <p className="text-sm font-medium sm:text-base md:text-lg">Notre equipe reviendra vers vous sous 48h</p>
                         </div>
 
-                        <button className="group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-kroma-600 px-8 py-4 text-center font-black text-white transition-all duration-300 hover:bg-fuchsia-700 active:scale-95 md:w-auto">
-                            Envoyer le projet
+                        <button 
+                            type="button"
+                            onClick={handleSubmitProject}
+                            disabled={loading}
+                            className="group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-fuchsia-600 px-8 py-4 text-center font-black text-white transition-all duration-300 hover:bg-fuchsia-700 active:scale-95 disabled:opacity-50 md:w-auto cursor-pointer"
+                        >
+                            {loading ? "Transmission..." : "Envoyer le projet"}
                         </button>
                     </div>
 

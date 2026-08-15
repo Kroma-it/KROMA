@@ -1,23 +1,30 @@
-import { useState, useEffect } from "react"
-import { ChevronDown } from "lucide-react";
-import { NavLink, useLocation} from "react-router-dom"
+import { useState, useEffect, useRef } from "react"
+import { ChevronDown, LogOut, User } from "lucide-react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import "../css/style.css"
 import { toModalBackgroundState } from "../utils/modalBackground";
+import { useAuth } from "../context/AuthContext";
 
 
 function Menu() {
-    {/*const [lang, setLang] = useState('FR');*/}
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isServicesOpen, setIsServicesOpen] = useState(false);
     const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-{/*
-    const toggleLang = () => {
-        setLang(prev => prev === 'FR' ? 'EN' : 'FR')
-    }
-*/}
-    const location = useLocation(); //permet de savoir la page dans la actuelle
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement>(null);
+
+    const location = useLocation();
+    const navigate = useNavigate();
     const loginBackgroundState = toModalBackgroundState(location);
+    const { user, logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+        setIsUserMenuOpen(false);
+        setIsMenuOpen(false);
+        navigate('/');
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -136,25 +143,59 @@ function Menu() {
                             <span className="relative z-10">Commencer un projet</span>
                         </NavLink>
 
-                        {/* Avatar */}
-                        <NavLink to="/login" state={loginBackgroundState} >
-                            <button
-                                type="button"
-                                aria-label="Ouvrir la connexion"
-                                className="rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 focus:ring-offset-black"
-                            >
-                                <img src="/assets/2.webp" className='h-11 w-11 rounded-full border-2 border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
-                            </button>
-                        </NavLink>
-                        {/**Profil */}
-                        {/*
-                        <NavLink to='/profil'>
-                            <CircleUser className="text-white"></CircleUser>
-                        </NavLink>*/}
-                        {/*<NavLink to='/dashboard/users'>
-                            <Shield className="text-white"></Shield>
-                        </NavLink>*/}
-                        
+                        {/* Avatar / User Menu */}
+                        {user ? (
+                            <div className="relative" ref={userMenuRef}>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsUserMenuOpen(prev => !prev)}
+                                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-fuchsia-500/40 bg-fuchsia-900/20 hover:bg-fuchsia-900/40 transition-all duration-300 cursor-pointer"
+                                >
+                                    {user.avatarUrl ? (
+                                        <img src={user.avatarUrl} className="h-8 w-8 rounded-full border border-fuchsia-500" alt={user.firstName} />
+                                    ) : (
+                                        <div className="h-8 w-8 rounded-full bg-fuchsia-700 flex items-center justify-center text-white font-bold text-sm">
+                                            {user.firstName?.charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
+                                    <span className="text-white font-semibold text-sm">{user.firstName}</span>
+                                    <ChevronDown size={14} className={`text-white/60 transition-transform duration-300 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                                </button>
+
+                                {/* Dropdown */}
+                                <div className={`absolute top-full right-0 mt-2 w-44 rounded-2xl bg-black/80 backdrop-blur-2xl border border-white/15 shadow-xl shadow-fuchsia-900/20 overflow-hidden transition-all duration-300 ${
+                                    isUserMenuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+                                }`}>
+                                    <NavLink
+                                        to="/profil"
+                                        onClick={() => setIsUserMenuOpen(false)}
+                                        className="flex items-center gap-2.5 px-4 py-3 text-sm text-white hover:bg-fuchsia-700/30 hover:text-fuchsia-300 transition-colors"
+                                    >
+                                        <User size={15} />
+                                        Mon profil
+                                    </NavLink>
+                                    <div className="h-px bg-white/10" />
+                                    <button
+                                        type="button"
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-2.5 px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors w-full cursor-pointer"
+                                    >
+                                        <LogOut size={15} />
+                                        Se déconnecter
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <NavLink to="/login" state={loginBackgroundState}>
+                                <button
+                                    type="button"
+                                    aria-label="Ouvrir la connexion"
+                                    className="rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 focus:ring-offset-black"
+                                >
+                                    <img src="/assets/2.webp" className='h-11 w-11 rounded-full border-2 border-fuchsia-500 transition-all duration-300 cursor-pointer' alt="" />
+                                </button>
+                            </NavLink>
+                        )}
                     </div>
 
                     {/* Mobile Toggle Button (3 dots) */}
@@ -236,15 +277,31 @@ function Menu() {
                         
                         <div className="h-px bg-white/10 my-4"></div>
 
-                <NavLink to="/login" state={loginBackgroundState} onClick={() => setIsMenuOpen(false)}>
-                    <button
-                        type="button"
-                        aria-label="Ouvrir la connexion"
-                        className="w-fit rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
-                    >
-                        <img src="/assets/2.webp" className='h-12 w-12 rounded-full' alt="" />
-                    </button>
-                </NavLink>
+                                {user ? (
+                    <div className="flex items-center gap-3">
+                        {user.avatarUrl ? (
+                            <img src={user.avatarUrl} className="h-11 w-11 rounded-full border-2 border-fuchsia-500" alt={user.firstName} />
+                        ) : (
+                            <div className="h-11 w-11 rounded-full bg-fuchsia-700 flex items-center justify-center text-white font-bold text-base">
+                                {user.firstName?.charAt(0).toUpperCase()}
+                            </div>
+                        )}
+                        <div>
+                            <p className="text-white font-bold text-sm">{user.firstName} {user.lastName}</p>
+                            <p className="text-white/40 text-xs">{user.email}</p>
+                        </div>
+                    </div>
+                ) : (
+                    <NavLink to="/login" state={loginBackgroundState} onClick={() => setIsMenuOpen(false)}>
+                        <button
+                            type="button"
+                            aria-label="Ouvrir la connexion"
+                            className="w-fit rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
+                        >
+                            <img src="/assets/2.webp" className='h-12 w-12 rounded-full' alt="" />
+                        </button>
+                    </NavLink>
+                )}
 
                         <NavLink 
                             to="/personnalisation" 
@@ -256,6 +313,19 @@ function Menu() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
                         </NavLink>
+                        {user && (
+                            <>
+                                <div className="h-px bg-white/10 my-2" />
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-2 text-red-400 font-semibold text-base hover:text-red-300 transition-colors"
+                                >
+                                    <LogOut size={18} />
+                                    Se déconnecter
+                                </button>
+                            </>
+                        )}
                     </nav>
                 </div>
         </>

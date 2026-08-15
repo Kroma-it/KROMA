@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String     @id @default(uuid())
+  email             String     @unique
+  passwordHash      String?
+  firstName         String?
+  lastName          String?
+  googleId          String?    @unique
+  avatarUrl         String?
+  isProfileComplete Boolean    @default(false)
+  role              String     @default("USER") // USER | ADMIN
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  orders            Order[]
+  feedbacks         Feedback[]
+}
+
+model Order {
+  id            String         @id @default(uuid())
+  userId        String?
+  user          User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  type          String         // CUSTOM (/personnalisation) | PACK (/tarification)
+  customerEmail String
+  customerName  String?
+  services      String         // JSON string format
+  totalPrice    Float?
+  status        String         @default("PENDING") // PENDING | VALIDATED | REJECTED
+  notes         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  notifications Notification[]
+}
+
+model NewsletterSubscriber {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  isSubscribed Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+}
+
+model Feedback {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating     Int
+  comment    String
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  orderId   String?
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
