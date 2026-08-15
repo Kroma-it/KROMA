@@ -56,9 +56,11 @@ function App() {
   const normalizedPath = currentPath.endsWith('/') && currentPath !== '/' ? currentPath.slice(0, -1) : currentPath
   const is404 = !knownRoutes.includes(normalizedPath)
 
+  const isAdmin = (backgroundLocation || location).pathname === '/admin'
+
   return (
     <div>
-      {!is404 && <Menu />}
+      {!is404 && !isAdmin && <Menu />}
       <ScrollToTop />
       
       {/* Main Routes */}
@@ -90,7 +92,7 @@ function App() {
         </Routes>
       )}
 
-      {!is404 && <Footer />}
+      {!is404 && !isAdmin && <Footer />}
     </div>
   )
 }

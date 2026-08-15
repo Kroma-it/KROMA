@@ -120,30 +120,60 @@ export async function apiCreateFeedback(rating: number, comment: string) {
   });
 }
 
-// Admin
+// Admin — Stats
+export async function apiAdminGetStats() {
+  return request<{ users: number; orders: number; pendingOrders: number; validatedOrders: number; feedbacks: number; pendingFeedbacks: number; subscribers: number }>('/admin/stats');
+}
+
+// Admin — Commandes
 export async function apiAdminGetOrders(status?: string) {
   const query = status ? `?status=${status}` : '';
   return request<{ orders: any[] }>(`/admin/orders${query}`);
 }
-
 export async function apiAdminUpdateOrderStatus(id: string, status: 'PENDING' | 'VALIDATED' | 'REJECTED') {
   return request<{ message: string; order: any }>(`/admin/orders/${id}/status`, {
     method: 'PATCH',
     body: JSON.stringify({ status })
   });
 }
-
-export async function apiAdminGetNotifications() {
-  return request<{ notifications: any[]; unreadCount: number }>('/admin/notifications');
+export async function apiAdminDeleteOrder(id: string) {
+  return request<{ message: string }>(`/admin/orders/${id}`, { method: 'DELETE' });
 }
 
-export async function apiAdminGetSubscribers() {
-  return request<{ subscribers: any[] }>('/admin/subscribers');
+// Admin — Avis
+export async function apiAdminGetFeedbacks() {
+  return request<{ feedbacks: any[] }>('/admin/feedbacks');
 }
-
 export async function apiAdminToggleFeedback(id: string, isApproved: boolean) {
   return request<{ message: string; feedback: any }>(`/admin/feedbacks/${id}/approve`, {
     method: 'PATCH',
     body: JSON.stringify({ isApproved })
   });
+}
+export async function apiAdminDeleteFeedback(id: string) {
+  return request<{ message: string }>(`/admin/feedbacks/${id}`, { method: 'DELETE' });
+}
+
+// Admin — Utilisateurs
+export async function apiAdminGetUsers() {
+  return request<{ users: any[] }>('/admin/users');
+}
+export async function apiAdminUpdateUserRole(id: string, role: 'USER' | 'ADMIN') {
+  return request<{ message: string; user: any }>(`/admin/users/${id}/role`, {
+    method: 'PATCH',
+    body: JSON.stringify({ role })
+  });
+}
+export async function apiAdminDeleteUser(id: string) {
+  return request<{ message: string }>(`/admin/users/${id}`, { method: 'DELETE' });
+}
+
+// Admin — Notifications
+export async function apiAdminGetNotifications() {
+  return request<{ notifications: any[]; unreadCount: number }>('/admin/notifications');
+}
+
+// Admin — Newsletter
+export async function apiAdminGetSubscribers() {
+  return request<{ subscribers: any[] }>('/admin/subscribers');
 }
