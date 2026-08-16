@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { ChevronDown, LogOut, User } from "lucide-react";
+import { ChevronDown, LogOut, LayoutDashboard, User } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import "../css/style.css"
 import { toModalBackgroundState } from "../utils/modalBackground";
@@ -174,6 +174,19 @@ function Menu() {
                                         <User size={15} />
                                         Mon profil
                                     </NavLink>
+                                    {user.role === 'ADMIN' && (
+                                        <>
+                                            <div className="h-px bg-white/10" />
+                                            <NavLink
+                                                to="/admin"
+                                                onClick={() => setIsUserMenuOpen(false)}
+                                                className="flex items-center gap-2.5 px-4 py-3 text-sm text-[#c084fc] hover:bg-[#241838] transition-colors"
+                                            >
+                                                <LayoutDashboard size={15} />
+                                                Dashboard admin
+                                            </NavLink>
+                                        </>
+                                    )}
                                     <div className="h-px bg-white/10" />
                                     <button
                                         type="button"
