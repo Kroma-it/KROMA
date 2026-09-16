@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Backend API for KROMA Agency",
   "main": "dist/server.js",
-  "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc && prisma generate",
+    "build": "prisma generate && tsc",
     "start": "node dist/server.js",
+    "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "prisma:generate": "prisma generate"

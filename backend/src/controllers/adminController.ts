@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import prisma from '../config/prisma.js';
+import prisma from '../config/prisma';
 
 export const updateOrderStatusSchema = z.object({
   status: z.enum(['PENDING', 'VALIDATED', 'REJECTED'])

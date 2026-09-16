@@ -14,9 +14,9 @@ import {
   getStats,
   updateOrderStatusSchema,
   updateUserRoleSchema
-} from '../controllers/adminController.js';
-import { authenticateToken, requireAdmin } from '../middleware/authMiddleware.js';
-import { validateBody } from '../middleware/validateMiddleware.js';
+} from '../controllers/adminController';
+import { authenticateToken, requireAdmin } from '../middleware/authMiddleware';
+import { validateBody } from '../middleware/validateMiddleware';
 
 const router = Router();
 

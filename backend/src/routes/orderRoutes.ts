@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createOrder, getMyOrders, createOrderSchema } from '../controllers/orderController.js';
-import { validateBody } from '../middleware/validateMiddleware.js';
-import { authenticateToken } from '../middleware/authMiddleware.js';
+import { createOrder, getMyOrders, createOrderSchema } from '../controllers/orderController';
+import { validateBody } from '../middleware/validateMiddleware';
+import { authenticateToken } from '../middleware/authMiddleware';
 
 const router = Router();
 

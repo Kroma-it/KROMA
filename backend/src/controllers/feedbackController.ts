@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { z } from 'zod';
-import prisma from '../config/prisma.js';
-import { AuthenticatedRequest } from '../middleware/authMiddleware.js';
+import prisma from '../config/prisma';
+import { AuthenticatedRequest } from '../middleware/authMiddleware';
 
 export const createFeedbackSchema = z.object({
   rating: z.number().min(1).max(5),
