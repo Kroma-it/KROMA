@@ -324,3 +324,21 @@ Correction
 - `frontend/src/utils/api.ts`
 - `backend/src/app.ts`
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-09-21 - Neox-debug
+
+**Nom**  
+Diagnostic de l'erreur d'authentification (healthcheck base de données)
+
+**Nature**  
+Correction
+
+**Details**  
+- Sur `kroma-agence.vercel.app`, la connexion renvoie "Erreur lors de l'authentification" : même une simple lecture (`GET /api/v1/feedbacks`) renvoie 500 et Supabase ne reçoit aucune connexion, donc le serveur n'atteint pas la base (variable d'environnement manquante ou incorrecte sur le projet Vercel)
+- La route `/api/v1/health` teste maintenant la base (`SELECT 1`) et renvoie le code d'erreur Prisma ainsi que les noms des variables d'environnement manquantes (jamais leurs valeurs), avec un statut 503 si la base est inaccessible
+
+**Fichiers**  
+- `backend/src/app.ts`
+- `COMMIT_LOG.md`

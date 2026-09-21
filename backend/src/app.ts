@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import prisma from './config/prisma';
 import authRoutes from './routes/authRoutes';
 import orderRoutes from './routes/orderRoutes';
 import newsletterRoutes from './routes/newsletterRoutes';
@@ -23,11 +24,26 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Route de santé (Healthcheck)
-app.get('/api/v1/health', (_req, res) => {
-  res.json({
-    status: 'ok',
+// Route de santé (Healthcheck) : vérifie aussi la base et les variables d'environnement
+// (noms et codes d'erreur uniquement, jamais de valeurs ni de messages détaillés)
+app.get('/api/v1/health', async (_req, res) => {
+  const missingEnv = ['DATABASE_URL', 'DIRECT_URL', 'JWT_SECRET'].filter((name) => !process.env[name]);
+
+  let db: 'ok' | 'error' = 'ok';
+  let dbErrorCode: string | undefined;
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+  } catch (error: any) {
+    db = 'error';
+    dbErrorCode = error?.errorCode || error?.code || error?.name || 'UNKNOWN';
+  }
+
+  res.status(db === 'ok' ? 200 : 503).json({
+    status: db === 'ok' ? 'ok' : 'degraded',
     service: 'KROMA Backend API',
+    db,
+    ...(dbErrorCode && { dbErrorCode }),
+    ...(missingEnv.length > 0 && { missingEnv }),
     time: new Date().toISOString()
   });
 });
