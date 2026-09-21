@@ -258,3 +258,22 @@ Fusion
 - `Menu.tsx`
 - `App.tsx`
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-09-21 - Neox-debug
+
+**Nom**  
+Correction du 404 au rafraîchissement et avatar par défaut
+
+**Nature**  
+Correction et modification
+
+**Details**  
+- Au rafraîchissement d'une page autre que l'accueil, Vercel renvoyait son propre 404 au lieu de la page `NotFound.tsx`. J'ai ajouté dans `vercel.json`, sur le service `frontend`, une règle de réécriture vers `/index.html` pour que React Router prenne le relais
+- J'ai remplacé l'image d'avatar par défaut (`/assets/2.webp`) par l'icône `User` de lucide-react dans le menu (version ordinateur et mobile)
+
+**Fichiers**  
+- `vercel.json`
+- `Menu.tsx`
+- `COMMIT_LOG.md`
