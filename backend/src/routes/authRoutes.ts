@@ -7,9 +7,9 @@ import {
   loginOrRegisterSchema,
   googleAuthSchema,
   updateProfileSchema
-} from '../controllers/authController.js';
-import { validateBody } from '../middleware/validateMiddleware.js';
-import { authenticateToken } from '../middleware/authMiddleware.js';
+} from '../controllers/authController';
+import { validateBody } from '../middleware/validateMiddleware';
+import { authenticateToken } from '../middleware/authMiddleware';
 
 const router = Router();
 

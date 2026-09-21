@@ -2,30 +2,48 @@ import { Router } from 'express';
 import {
   getAllOrders,
   updateOrderStatus,
+  deleteOrder,
   getNotifications,
   getSubscribers,
   toggleFeedbackApproval,
-  updateOrderStatusSchema
-} from '../controllers/adminController.js';
-import { authenticateToken, requireAdmin } from '../middleware/authMiddleware.js';
-import { validateBody } from '../middleware/validateMiddleware.js';
+  getAllFeedbacks,
+  deleteFeedback,
+  getAllUsers,
+  updateUserRole,
+  deleteUser,
+  getStats,
+  updateOrderStatusSchema,
+  updateUserRoleSchema
+} from '../controllers/adminController';
+import { authenticateToken, requireAdmin } from '../middleware/authMiddleware';
+import { validateBody } from '../middleware/validateMiddleware';
 
 const router = Router();
 
-// Protéger toutes les routes admin
 router.use(authenticateToken, requireAdmin);
 
-// Gestion des commandes
+// Stats globales
+router.get('/stats', getStats);
+
+// Utilisateurs
+router.get('/users', getAllUsers);
+router.patch('/users/:id/role', validateBody(updateUserRoleSchema), updateUserRole);
+router.delete('/users/:id', deleteUser);
+
+// Commandes
 router.get('/orders', getAllOrders);
 router.patch('/orders/:id/status', validateBody(updateOrderStatusSchema), updateOrderStatus);
+router.delete('/orders/:id', deleteOrder);
 
-// Notifications & statistiques
+// Avis
+router.get('/feedbacks', getAllFeedbacks);
+router.patch('/feedbacks/:id/approve', toggleFeedbackApproval);
+router.delete('/feedbacks/:id', deleteFeedback);
+
+// Notifications
 router.get('/notifications', getNotifications);
 
-// Abonnés newsletter
+// Newsletter
 router.get('/subscribers', getSubscribers);
-
-// Modération des avis
-router.patch('/feedbacks/:id/approve', toggleFeedbackApproval);
 
 export default router;

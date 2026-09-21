@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createFeedback, getPublicFeedbacks, getMyFeedbacks, createFeedbackSchema } from '../controllers/feedbackController.js';
-import { validateBody } from '../middleware/validateMiddleware.js';
-import { authenticateToken } from '../middleware/authMiddleware.js';
+import { createFeedback, getPublicFeedbacks, getMyFeedbacks, createFeedbackSchema } from '../controllers/feedbackController';
+import { validateBody } from '../middleware/validateMiddleware';
+import { authenticateToken } from '../middleware/authMiddleware';
 
 const router = Router();
 

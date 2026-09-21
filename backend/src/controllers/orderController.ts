@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import prisma from '../config/prisma.js';
-import { AuthenticatedRequest } from '../middleware/authMiddleware.js';
-import { sendOrderNotificationEmail } from '../services/emailService.js';
+import prisma from '../config/prisma';
+import { AuthenticatedRequest } from '../middleware/authMiddleware';
+import { sendOrderNotificationEmail } from '../services/emailService';
 
 const packServiceSchema = z.object({
   name: z.string(),

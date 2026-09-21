@@ -237,3 +237,24 @@ Modification
 - `Pricing.tsx`
 - `Pack.tsx`
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-09-21 - Neox-debug
+
+**Nom**  
+Mise à jour de frontend depuis main
+
+**Nature**  
+Fusion
+
+**Details**  
+- J'ai fusionné la branche `main` de GitHub dans `frontend` pour récupérer les derniers changements (backend adapté à Vercel, endpoints du dashboard, page `Admin.tsx`, `api.ts`)
+- Aucun conflit lors de la fusion
+
+**Fichiers**  
+- `Admin.tsx`
+- `api.ts`
+- `Menu.tsx`
+- `App.tsx`
+- `COMMIT_LOG.md`

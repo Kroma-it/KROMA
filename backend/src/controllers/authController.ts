@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import prisma from '../config/prisma.js';
-import { generateToken } from '../config/jwt.js';
-import { AuthenticatedRequest } from '../middleware/authMiddleware.js';
+import prisma from '../config/prisma';
+import { generateToken } from '../config/jwt';
+import { AuthenticatedRequest } from '../middleware/authMiddleware';
 
 // Schemas Zod
 export const loginOrRegisterSchema = z.object({

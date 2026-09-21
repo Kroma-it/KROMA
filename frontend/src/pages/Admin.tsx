@@ -1,569 +1,497 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Bell,
-  Check,
-  ChevronDown,
-  Loader2,
-  Mail,
-  Package,
-  RefreshCw,
-  Star,
-  Users,
-  X,
+  ArrowLeft, Bell, Check, ChevronDown, ExternalLink,
+  Loader2, LogOut, Mail, Menu as MenuIcon, Package,
+  RefreshCw, Shield, ShieldOff, Star, Trash2, Users, X, LayoutDashboard,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import {
-  apiAdminGetNotifications,
-  apiAdminGetOrders,
-  apiAdminGetSubscribers,
-  apiAdminToggleFeedback,
-  apiAdminUpdateOrderStatus,
-  apiGetPublicFeedbacks,
-  apiGetMyFeedbacks,
+  apiAdminDeleteFeedback, apiAdminDeleteOrder, apiAdminDeleteUser,
+  apiAdminGetFeedbacks, apiAdminGetNotifications, apiAdminGetOrders,
+  apiAdminGetStats, apiAdminGetSubscribers, apiAdminGetUsers,
+  apiAdminToggleFeedback, apiAdminUpdateOrderStatus, apiAdminUpdateUserRole,
 } from '../utils/api';
 
-type Tab = 'orders' | 'feedbacks' | 'subscribers' | 'notifications';
+/* ──────────────────────────── Types ──────────────────────────── */
+type Section = 'overview' | 'users' | 'orders' | 'feedbacks' | 'newsletter' | 'notifications';
 type OrderStatus = 'PENDING' | 'VALIDATED' | 'REJECTED';
 
-const STATUS_LABELS: Record<OrderStatus, string> = {
-  PENDING: 'En attente',
-  VALIDATED: 'Validée',
-  REJECTED: 'Rejetée',
-};
-
-const STATUS_COLORS: Record<OrderStatus, string> = {
-  PENDING: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+/* ──────────────────────────── Helpers ──────────────────────────── */
+const STATUS_FR: Record<OrderStatus, string> = { PENDING: 'En attente', VALIDATED: 'Validée', REJECTED: 'Rejetée' };
+const STATUS_CLS: Record<OrderStatus, string> = {
+  PENDING:   'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
   VALIDATED: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-  REJECTED: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+  REJECTED:  'bg-rose-500/15 text-rose-300 border-rose-500/30',
 };
 
-function StatusBadge({ status }: { status: string }) {
-  const s = status as OrderStatus;
+function Badge({ s }: { s: string }) {
+  const cls = STATUS_CLS[s as OrderStatus] ?? 'bg-white/10 text-white/60 border-white/20';
+  return <span className={`rounded-full border px-2.5 py-0.5 text-xs font-bold ${cls}`}>{STATUS_FR[s as OrderStatus] ?? s}</span>;
+}
+
+function Spinner() { return <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-[#c084fc]" /></div>; }
+
+function Empty({ label }: { label: string }) {
+  return <p className="py-16 text-center text-sm text-slate-500">{label}</p>;
+}
+
+function StatCard({ label, value, sub, color }: { label: string; value: number | string; sub?: string; color: string }) {
   return (
-    <span className={`inline-block rounded-full border px-3 py-1 text-xs font-bold ${STATUS_COLORS[s] ?? 'bg-white/10 text-white border-white/20'}`}>
-      {STATUS_LABELS[s] ?? status}
-    </span>
+    <div className="rounded-2xl border border-white/8 bg-[#0f0718] p-5">
+      <p className="text-xs font-bold uppercase tracking-widest text-slate-500">{label}</p>
+      <p className={`mt-2 text-4xl font-black ${color}`}>{value}</p>
+      {sub && <p className="mt-1 text-xs text-slate-500">{sub}</p>}
+    </div>
   );
 }
 
+function Avatar({ user, size = 8 }: { user: any; size?: number }) {
+  const s = `h-${size} w-${size}`;
+  if (user?.avatarUrl) return <img src={user.avatarUrl} alt="" className={`${s} rounded-full object-cover`} />;
+  const initials = `${user?.firstName?.[0] ?? '?'}${user?.lastName?.[0] ?? ''}`.toUpperCase();
+  return (
+    <div className={`${s} rounded-full bg-[#241838] border border-[#583385] flex items-center justify-center text-[#c084fc] text-xs font-bold`}>
+      {initials}
+    </div>
+  );
+}
+
+function fmt(d: string) {
+  return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function parseServices(raw: any): string {
+  try {
+    const p = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    if (Array.isArray(p)) return p.join(', ');
+    return p?.name ?? JSON.stringify(p);
+  } catch { return String(raw); }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MAIN COMPONENT
+══════════════════════════════════════════════════════════════════ */
 export default function Admin() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>('orders');
 
-  const [orders, setOrders] = useState<any[]>([]);
-  const [orderFilter, setOrderFilter] = useState<string>('');
-  const [ordersLoading, setOrdersLoading] = useState(false);
-  const [updatingOrder, setUpdatingOrder] = useState<string | null>(null);
+  const [section, setSection]   = useState<Section>('overview');
+  const [collapsed, setCollapsed] = useState(false);
 
-  const [feedbacks, setFeedbacks] = useState<any[]>([]);
-  const [feedbacksLoading, setFeedbacksLoading] = useState(false);
-  const [togglingFeedback, setTogglingFeedback] = useState<string | null>(null);
-
-  const [subscribers, setSubscribers] = useState<any[]>([]);
-  const [subscribersLoading, setSubscribersLoading] = useState(false);
-
+  // data
+  const [stats,         setStats]         = useState<any>(null);
+  const [users,         setUsers]         = useState<any[]>([]);
+  const [orders,        setOrders]        = useState<any[]>([]);
+  const [feedbacks,     setFeedbacks]     = useState<any[]>([]);
+  const [subscribers,   setSubscribers]   = useState<any[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [notifLoading, setNotifLoading] = useState(false);
+  const [unread,        setUnread]        = useState(0);
 
+  // loading
+  const [loadingSection, setLoadingSection] = useState(false);
+  const [busy,           setBusy]           = useState<string | null>(null);
+
+  // filters
+  const [orderFilter, setOrderFilter] = useState('');
+
+  /* ── redirect if not admin ── */
   useEffect(() => {
-    if (!isLoading && (!user || user.role !== 'ADMIN')) {
-      navigate('/');
-    }
+    if (!isLoading && (!user || user.role !== 'ADMIN')) navigate('/');
   }, [user, isLoading, navigate]);
 
-  const loadOrders = useCallback(async () => {
-    setOrdersLoading(true);
+  /* ── load data on section change ── */
+  const load = useCallback(async (s: Section) => {
+    setLoadingSection(true);
     try {
-      const res = await apiAdminGetOrders(orderFilter || undefined);
-      setOrders(res.orders);
-    } catch {
-      /* noop */
-    } finally {
-      setOrdersLoading(false);
+      switch (s) {
+        case 'overview': {
+          const [st, notifs] = await Promise.all([apiAdminGetStats(), apiAdminGetNotifications()]);
+          setStats(st);
+          setNotifications(notifs.notifications);
+          setUnread(notifs.unreadCount);
+          break;
+        }
+        case 'users':         { const r = await apiAdminGetUsers();          setUsers(r.users);               break; }
+        case 'orders':        { const r = await apiAdminGetOrders();         setOrders(r.orders);             break; }
+        case 'feedbacks':     { const r = await apiAdminGetFeedbacks();      setFeedbacks(r.feedbacks);       break; }
+        case 'newsletter':    { const r = await apiAdminGetSubscribers();    setSubscribers(r.subscribers);   break; }
+        case 'notifications': { const r = await apiAdminGetNotifications();  setNotifications(r.notifications); setUnread(r.unreadCount); break; }
+      }
+    } catch { /* silently fail */ }
+    setLoadingSection(false);
+  }, []);
+
+  useEffect(() => { if (user?.role === 'ADMIN') load(section); }, [section, user]);
+
+  useEffect(() => {
+    if (section === 'orders') {
+      apiAdminGetOrders(orderFilter || undefined).then(r => setOrders(r.orders)).catch(() => {});
     }
   }, [orderFilter]);
 
-  const loadFeedbacks = useCallback(async () => {
-    setFeedbacksLoading(true);
-    try {
-      const [pub, mine] = await Promise.all([
-        apiGetPublicFeedbacks(1, 50),
-        apiGetMyFeedbacks(),
-      ]);
-      const all = [...pub.feedbacks, ...mine.feedbacks];
-      const unique = Array.from(new Map(all.map((f) => [f.id, f])).values());
-      setFeedbacks(unique);
-    } catch {
-      /* noop */
-    } finally {
-      setFeedbacksLoading(false);
-    }
-  }, []);
-
-  const loadFeedbacksAdmin = useCallback(async () => {
-    setFeedbacksLoading(true);
-    try {
-      const res = await apiAdminGetOrders();
-      const notifs = await apiAdminGetNotifications();
-      setNotifications(notifs.notifications);
-      setUnreadCount(notifs.unreadCount);
-      setOrders(res.orders);
-
-      const pub = await apiGetPublicFeedbacks(1, 100);
-      setFeedbacks(pub.feedbacks);
-    } catch {
-      /* noop */
-    } finally {
-      setFeedbacksLoading(false);
-    }
-  }, []);
-
-  const loadSubscribers = useCallback(async () => {
-    setSubscribersLoading(true);
-    try {
-      const res = await apiAdminGetSubscribers();
-      setSubscribers(res.subscribers);
-    } catch {
-      /* noop */
-    } finally {
-      setSubscribersLoading(false);
-    }
-  }, []);
-
-  const loadNotifications = useCallback(async () => {
-    setNotifLoading(true);
-    try {
-      const res = await apiAdminGetNotifications();
-      setNotifications(res.notifications);
-      setUnreadCount(res.unreadCount);
-    } catch {
-      /* noop */
-    } finally {
-      setNotifLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!user || user.role !== 'ADMIN') return;
-    if (tab === 'orders') loadOrders();
-    else if (tab === 'feedbacks') {
-      apiGetPublicFeedbacks(1, 100)
-        .then((res) => setFeedbacks(res.feedbacks))
-        .catch(() => {})
-        .finally(() => setFeedbacksLoading(false));
-      setFeedbacksLoading(true);
-    } else if (tab === 'subscribers') loadSubscribers();
-    else if (tab === 'notifications') loadNotifications();
-  }, [tab, user]);
-
-  useEffect(() => {
-    if (tab === 'orders') loadOrders();
-  }, [orderFilter]);
-
-  const handleStatusChange = async (orderId: string, status: OrderStatus) => {
-    setUpdatingOrder(orderId);
-    try {
-      await apiAdminUpdateOrderStatus(orderId, status);
-      setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, status } : o))
-      );
-    } catch {
-      /* noop */
-    } finally {
-      setUpdatingOrder(null);
-    }
-  };
-
-  const handleToggleFeedback = async (id: string, current: boolean) => {
-    setTogglingFeedback(id);
-    try {
-      await apiAdminToggleFeedback(id, !current);
-      setFeedbacks((prev) =>
-        prev.map((f) => (f.id === id ? { ...f, isApproved: !current } : f))
-      );
-    } catch {
-      /* noop */
-    } finally {
-      setTogglingFeedback(null);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center text-white">
-        <Loader2 className="h-8 w-8 animate-spin text-fuchsia-400" />
-      </div>
-    );
+  /* ── actions ── */
+  async function act<T>(key: string, fn: () => Promise<T>, onDone: (v: T) => void) {
+    setBusy(key);
+    try { onDone(await fn()); } catch { /* noop */ } finally { setBusy(null); }
   }
 
-  if (!user || user.role !== 'ADMIN') return null;
+  const changeOrderStatus = (id: string, status: OrderStatus) =>
+    act(`order-${id}`, () => apiAdminUpdateOrderStatus(id, status),
+      () => setOrders(p => p.map(o => o.id === id ? { ...o, status } : o)));
 
-  const tabs: { id: Tab; label: string; icon: typeof Package }[] = [
-    { id: 'orders', label: 'Commandes', icon: Package },
-    { id: 'feedbacks', label: 'Avis', icon: Star },
-    { id: 'subscribers', label: 'Newsletter', icon: Mail },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
+  const removeOrder = (id: string) =>
+    act(`del-order-${id}`, () => apiAdminDeleteOrder(id),
+      () => setOrders(p => p.filter(o => o.id !== id)));
+
+  const toggleFeedback = (id: string, current: boolean) =>
+    act(`fb-${id}`, () => apiAdminToggleFeedback(id, !current),
+      () => setFeedbacks(p => p.map(f => f.id === id ? { ...f, isApproved: !current } : f)));
+
+  const removeFeedback = (id: string) =>
+    act(`del-fb-${id}`, () => apiAdminDeleteFeedback(id),
+      () => setFeedbacks(p => p.filter(f => f.id !== id)));
+
+  const changeRole = (id: string, role: 'USER' | 'ADMIN') =>
+    act(`role-${id}`, () => apiAdminUpdateUserRole(id, role),
+      () => setUsers(p => p.map(u => u.id === id ? { ...u, role } : u)));
+
+  const removeUser = (id: string) =>
+    act(`del-user-${id}`, () => apiAdminDeleteUser(id),
+      () => setUsers(p => p.filter(u => u.id !== id)));
+
+  /* ── nav items ── */
+  const nav: { id: Section; label: string; icon: any; badge?: number }[] = [
+    { id: 'overview',      label: 'Vue d\'ensemble', icon: LayoutDashboard },
+    { id: 'users',         label: 'Utilisateurs',    icon: Users },
+    { id: 'orders',        label: 'Commandes',       icon: Package },
+    { id: 'feedbacks',     label: 'Avis clients',    icon: Star },
+    { id: 'newsletter',    label: 'Newsletter',      icon: Mail },
+    { id: 'notifications', label: 'Notifications',   icon: Bell, badge: unread },
   ];
 
+  const SECTION_TITLES: Record<Section, string> = {
+    overview: 'Vue d\'ensemble', users: 'Utilisateurs', orders: 'Commandes',
+    feedbacks: 'Avis clients', newsletter: 'Newsletter', notifications: 'Notifications',
+  };
+
+  if (isLoading) return <div className="flex min-h-screen items-center justify-center bg-[#07040d]"><Loader2 className="h-8 w-8 animate-spin text-[#c084fc]" /></div>;
+  if (!user || user.role !== 'ADMIN') return null;
+
   return (
-    <div className="min-h-screen bg-[#0a0512] text-white px-4 py-10 md:px-10">
-      <div className="mx-auto max-w-6xl">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-black text-white md:text-4xl">Panel Admin</h1>
-            <p className="mt-1 text-sm text-zinc-400">
-              Connecté en tant que <span className="text-fuchsia-400">{user.email}</span>
-            </p>
-          </div>
-          {unreadCount > 0 && (
-            <span className="flex items-center gap-2 rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-4 py-2 text-sm font-bold text-fuchsia-300">
-              <Bell className="h-4 w-4" />
-              {unreadCount} non lue{unreadCount > 1 ? 's' : ''}
-            </span>
+    <div className="flex min-h-screen bg-[#07040d] text-slate-100 font-sans">
+
+      {/* ═══════ SIDEBAR ═══════ */}
+      <aside className={`relative flex flex-col min-h-screen border-r border-white/10 bg-[#0f0718] transition-all duration-300 ease-in-out ${collapsed ? 'w-20' : 'w-64'}`}>
+
+        {/* Logo + toggle */}
+        <div className={`flex items-center border-b border-white/10 px-4 py-5 ${collapsed ? 'justify-center' : 'justify-between'}`}>
+          {!collapsed && (
+            <div className="flex items-center gap-2">
+              <img src="/assets/logoMenu.svg" alt="Kroma" className="h-8" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <span className="text-sm font-black tracking-widest text-[#c084fc] uppercase">Admin</span>
+            </div>
+          )}
+          <button onClick={() => setCollapsed(c => !c)} className="rounded-lg p-1.5 text-slate-400 hover:bg-white/5 hover:text-white transition-colors cursor-pointer">
+            <MenuIcon size={18} />
+          </button>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex flex-col gap-1.5 p-3 flex-1">
+          {nav.map(({ id, label, icon: Icon, badge }) => {
+            const active = section === id;
+            return (
+              <button
+                key={id}
+                onClick={() => setSection(id)}
+                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium border transition-all duration-200 cursor-pointer w-full text-left ${
+                  active
+                    ? 'bg-[#241838] text-[#c084fc] border-[#583385] shadow-[0_0_15px_rgba(192,132,252,0.1)]'
+                    : 'text-slate-400 border-transparent hover:text-white hover:bg-[#1a1130] hover:border-[#3a2550]'
+                }`}
+              >
+                <Icon size={18} className="shrink-0" />
+                {!collapsed && <span className="flex-1 whitespace-nowrap">{label}</span>}
+                {!collapsed && badge != null && badge > 0 && (
+                  <span className="rounded-full bg-[#c084fc] px-1.5 py-0.5 text-xs font-bold text-[#07040d] leading-none">{badge}</span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Bottom: user + actions */}
+        <div className="border-t border-white/10 p-3 space-y-1">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium border border-transparent text-slate-400 hover:text-white hover:bg-[#1a1130] hover:border-[#3a2550] transition-all duration-200 cursor-pointer w-full"
+          >
+            <ExternalLink size={16} className="shrink-0" />
+            {!collapsed && <span>Voir le site</span>}
+          </button>
+          <button
+            onClick={() => { logout(); navigate('/'); }}
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium border border-transparent text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/20 transition-all duration-200 cursor-pointer w-full"
+          >
+            <LogOut size={16} className="shrink-0" />
+            {!collapsed && <span>Déconnexion</span>}
+          </button>
+          {!collapsed && (
+            <div className="flex items-center gap-2 px-3 py-2 mt-1">
+              <Avatar user={user} size={7} />
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-white truncate">{user.firstName} {user.lastName}</p>
+                <p className="text-[10px] text-[#c084fc] font-bold">ADMIN</p>
+              </div>
+            </div>
           )}
         </div>
+      </aside>
 
-        {/* Tabs */}
-        <div className="mb-8 flex gap-2 overflow-x-auto pb-1">
-          {tabs.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setTab(id)}
-              className={`flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all cursor-pointer ${
-                tab === id
-                  ? 'bg-fuchsia-600 text-white shadow-[0_0_20px_rgba(147,51,234,0.4)]'
-                  : 'border border-white/10 bg-white/5 text-zinc-400 hover:border-fuchsia-500/30 hover:text-white'
-              }`}
-            >
-              <Icon className="h-4 w-4" />
-              {label}
-              {id === 'notifications' && unreadCount > 0 && (
-                <span className="ml-1 rounded-full bg-rose-500 px-1.5 py-0.5 text-xs text-white">
-                  {unreadCount}
-                </span>
-              )}
+      {/* ═══════ MAIN CONTENT ═══════ */}
+      <main className="flex-1 overflow-y-auto">
+
+        {/* Top bar */}
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/8 bg-[#07040d]/90 backdrop-blur-xl px-8 py-4">
+          <h1 className="text-lg font-black text-white">{SECTION_TITLES[section]}</h1>
+          <div className="flex items-center gap-3">
+            {unread > 0 && section !== 'notifications' && (
+              <button onClick={() => setSection('notifications')} className="flex items-center gap-1.5 rounded-full bg-[#241838] border border-[#583385] px-3 py-1.5 text-xs font-bold text-[#c084fc] cursor-pointer">
+                <Bell size={12} /> {unread} notif{unread > 1 ? 's' : ''}
+              </button>
+            )}
+            <button onClick={() => load(section)} disabled={loadingSection} className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-400 hover:text-white transition cursor-pointer disabled:opacity-40">
+              <RefreshCw size={12} className={loadingSection ? 'animate-spin' : ''} /> Actualiser
             </button>
-          ))}
+          </div>
         </div>
 
-        {/* ─── COMMANDES ─── */}
-        {tab === 'orders' && (
-          <div>
-            <div className="mb-4 flex items-center gap-3">
-              <select
-                value={orderFilter}
-                onChange={(e) => setOrderFilter(e.target.value)}
-                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white focus:border-fuchsia-500/50 focus:outline-none"
-              >
-                <option value="">Tous les statuts</option>
-                <option value="PENDING">En attente</option>
-                <option value="VALIDATED">Validées</option>
-                <option value="REJECTED">Rejetées</option>
-              </select>
-              <button
-                onClick={loadOrders}
-                disabled={ordersLoading}
-                className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-400 hover:text-white transition cursor-pointer disabled:opacity-50"
-              >
-                <RefreshCw className={`h-4 w-4 ${ordersLoading ? 'animate-spin' : ''}`} />
-                Rafraîchir
-              </button>
-            </div>
+        <div className="px-8 py-8">
+          {loadingSection && <Spinner />}
 
-            {ordersLoading && (
-              <div className="flex justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-fuchsia-400" />
+          {/* ─────────── OVERVIEW ─────────── */}
+          {!loadingSection && section === 'overview' && (
+            <div className="space-y-8">
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <StatCard label="Utilisateurs" value={stats?.users ?? '—'} color="text-[#c084fc]" />
+                <StatCard label="Commandes" value={stats?.orders ?? '—'} sub={`${stats?.pendingOrders ?? 0} en attente`} color="text-sky-400" />
+                <StatCard label="Avis soumis" value={stats?.feedbacks ?? '—'} sub={`${stats?.pendingFeedbacks ?? 0} à modérer`} color="text-yellow-400" />
+                <StatCard label="Abonnés actifs" value={stats?.subscribers ?? '—'} color="text-emerald-400" />
               </div>
-            )}
 
-            {!ordersLoading && orders.length === 0 && (
-              <p className="py-12 text-center text-zinc-500">Aucune commande.</p>
-            )}
-
-            <div className="flex flex-col gap-4">
-              {orders.map((order) => {
-                let serviceSummary = '';
-                try {
-                  const parsed = typeof order.services === 'string' ? JSON.parse(order.services) : order.services;
-                  serviceSummary = Array.isArray(parsed)
-                    ? parsed.join(', ')
-                    : parsed?.name || JSON.stringify(parsed);
-                } catch {
-                  serviceSummary = order.services;
-                }
-
-                return (
-                  <div
-                    key={order.id}
-                    className="rounded-2xl border border-white/8 bg-white/[0.04] p-5"
-                  >
-                    <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500">Dernières notifications</h2>
+                <div className="space-y-2">
+                  {notifications.slice(0, 8).map(n => (
+                    <div key={n.id} className={`flex items-start gap-3 rounded-xl border p-4 ${n.isRead ? 'border-white/5 bg-white/[0.02] opacity-50' : 'border-[#583385]/40 bg-[#241838]/40'}`}>
+                      <div className={`mt-1 h-2 w-2 shrink-0 rounded-full ${n.isRead ? 'bg-slate-600' : 'bg-[#c084fc]'}`} />
                       <div>
-                        <p className="text-xs font-bold text-zinc-500">
-                          #{order.id.substring(0, 8)} · {order.type}
-                        </p>
-                        <p className="mt-1 font-bold text-white">
-                          {order.user?.firstName || order.customerName || '—'}{' '}
-                          {order.user?.lastName || ''}
-                        </p>
-                        <p className="text-sm text-zinc-400">{order.customerEmail}</p>
-                        <p className="mt-2 text-xs text-zinc-500 line-clamp-2">{serviceSummary}</p>
-                        {order.notes && (
-                          <p className="mt-1 text-xs italic text-zinc-600">{order.notes}</p>
-                        )}
+                        <p className="text-sm text-slate-200">{n.message}</p>
+                        <p className="text-xs text-slate-600 mt-0.5">{fmt(n.createdAt)}</p>
                       </div>
+                      {!n.isRead && <span className="ml-auto rounded-full bg-[#c084fc]/20 px-2 py-0.5 text-[10px] font-bold text-[#c084fc]">Nouveau</span>}
+                    </div>
+                  ))}
+                  {notifications.length === 0 && <Empty label="Aucune notification." />}
+                </div>
+              </div>
+            </div>
+          )}
 
-                      <div className="flex flex-col items-end gap-3">
-                        <StatusBadge status={order.status} />
-                        {order.totalPrice && (
-                          <span className="text-sm font-bold text-fuchsia-300">
-                            {order.totalPrice} €
-                          </span>
+          {/* ─────────── UTILISATEURS ─────────── */}
+          {!loadingSection && section === 'users' && (
+            <div className="space-y-3">
+              <p className="text-xs text-slate-500">{users.length} utilisateur{users.length > 1 ? 's' : ''}</p>
+              {users.length === 0 && <Empty label="Aucun utilisateur." />}
+              {users.map(u => (
+                <div key={u.id} className="flex flex-wrap items-center gap-4 rounded-2xl border border-white/8 bg-[#0f0718] px-5 py-4">
+                  <Avatar user={u} size={10} />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-white text-sm">{u.firstName} {u.lastName}</p>
+                    <p className="text-xs text-slate-400 truncate">{u.email}</p>
+                    <p className="text-xs text-slate-600 mt-0.5">Inscrit le {fmt(u.createdAt)} · {u._count?.orders ?? 0} commande{(u._count?.orders ?? 0) > 1 ? 's' : ''} · {u._count?.feedbacks ?? 0} avis</p>
+                  </div>
+                  <span className={`rounded-full border px-2.5 py-0.5 text-xs font-black ${u.role === 'ADMIN' ? 'bg-[#241838] text-[#c084fc] border-[#583385]' : 'bg-white/5 text-slate-400 border-white/10'}`}>{u.role}</span>
+                  <div className="flex items-center gap-2">
+                    {busy === `role-${u.id}` ? <Loader2 size={16} className="animate-spin text-[#c084fc]" /> : (
+                      <>
+                        {u.role === 'USER' ? (
+                          <button onClick={() => changeRole(u.id, 'ADMIN')} title="Promouvoir admin" className="flex items-center gap-1.5 rounded-lg border border-[#583385]/50 bg-[#241838] px-3 py-1.5 text-xs font-bold text-[#c084fc] hover:bg-[#2d1f45] transition cursor-pointer">
+                            <Shield size={13} /> Admin
+                          </button>
+                        ) : u.id !== user.id ? (
+                          <button onClick={() => changeRole(u.id, 'USER')} title="Rétrograder user" className="flex items-center gap-1.5 rounded-lg border border-slate-600/40 bg-white/5 px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
+                            <ShieldOff size={13} /> User
+                          </button>
+                        ) : null}
+                      </>
+                    )}
+                    {u.id !== user.id && (
+                      busy === `del-user-${u.id}` ? <Loader2 size={14} className="animate-spin text-rose-400" /> : (
+                        <button onClick={() => removeUser(u.id)} className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-2.5 py-1.5 text-xs text-rose-400 hover:bg-rose-500/20 transition cursor-pointer" title="Supprimer">
+                          <Trash2 size={13} />
+                        </button>
+                      )
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ─────────── COMMANDES ─────────── */}
+          {!loadingSection && section === 'orders' && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <select value={orderFilter} onChange={e => setOrderFilter(e.target.value)}
+                  className="rounded-xl border border-white/10 bg-[#0f0718] px-4 py-2 text-sm text-white focus:border-[#583385] focus:outline-none cursor-pointer">
+                  <option value="">Tous</option>
+                  <option value="PENDING">En attente</option>
+                  <option value="VALIDATED">Validées</option>
+                  <option value="REJECTED">Rejetées</option>
+                </select>
+                <p className="text-xs text-slate-500">{orders.length} résultat{orders.length > 1 ? 's' : ''}</p>
+              </div>
+              {orders.length === 0 && <Empty label="Aucune commande." />}
+              {orders.map(o => (
+                <div key={o.id} className="rounded-2xl border border-white/8 bg-[#0f0718] p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="text-xs font-bold text-slate-500">#{o.id.substring(0, 8)}</p>
+                        <span className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${o.type === 'PACK' ? 'bg-sky-500/15 text-sky-300 border-sky-500/30' : 'bg-violet-500/15 text-violet-300 border-violet-500/30'}`}>{o.type}</span>
+                        <Badge s={o.status} />
+                      </div>
+                      <p className="font-bold text-white">{o.user?.firstName ?? o.customerName ?? '—'} {o.user?.lastName ?? ''}</p>
+                      <p className="text-xs text-slate-400">{o.customerEmail}</p>
+                      <p className="text-xs text-slate-600 mt-1 line-clamp-1">{parseServices(o.services)}</p>
+                      {o.notes && <p className="text-xs italic text-slate-600 mt-0.5">"{o.notes}"</p>}
+                      <p className="text-xs text-slate-700 mt-1">{fmt(o.createdAt)}</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-2 shrink-0">
+                      {o.totalPrice != null && <p className="text-sm font-black text-[#c084fc]">{o.totalPrice} €</p>}
+                      <div className="flex flex-wrap gap-1.5 justify-end">
+                        {busy === `order-${o.id}` ? <Loader2 size={16} className="animate-spin text-[#c084fc]" /> : (
+                          <>
+                            {o.status !== 'VALIDATED' && (
+                              <button onClick={() => changeOrderStatus(o.id, 'VALIDATED')} className="flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/20 transition cursor-pointer">
+                                <Check size={12} /> Valider
+                              </button>
+                            )}
+                            {o.status !== 'REJECTED' && (
+                              <button onClick={() => changeOrderStatus(o.id, 'REJECTED')} className="flex items-center gap-1 rounded-lg border border-rose-500/30 bg-rose-500/10 px-2.5 py-1.5 text-xs font-bold text-rose-300 hover:bg-rose-500/20 transition cursor-pointer">
+                                <X size={12} /> Rejeter
+                              </button>
+                            )}
+                            {o.status !== 'PENDING' && (
+                              <button onClick={() => changeOrderStatus(o.id, 'PENDING')} className="flex items-center gap-1 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-2.5 py-1.5 text-xs font-bold text-yellow-300 hover:bg-yellow-500/20 transition cursor-pointer">
+                                <ChevronDown size={12} /> Attente
+                              </button>
+                            )}
+                          </>
                         )}
-
-                        {updatingOrder === order.id ? (
-                          <Loader2 className="h-5 w-5 animate-spin text-fuchsia-400" />
-                        ) : (
-                          <div className="flex gap-2">
-                            {order.status !== 'VALIDATED' && (
-                              <button
-                                onClick={() => handleStatusChange(order.id, 'VALIDATED')}
-                                className="flex items-center gap-1.5 rounded-lg bg-emerald-600/20 border border-emerald-500/30 px-3 py-1.5 text-xs font-bold text-emerald-300 hover:bg-emerald-600/40 transition cursor-pointer"
-                              >
-                                <Check className="h-3.5 w-3.5" />
-                                Valider
-                              </button>
-                            )}
-                            {order.status !== 'REJECTED' && (
-                              <button
-                                onClick={() => handleStatusChange(order.id, 'REJECTED')}
-                                className="flex items-center gap-1.5 rounded-lg bg-rose-600/20 border border-rose-500/30 px-3 py-1.5 text-xs font-bold text-rose-300 hover:bg-rose-600/40 transition cursor-pointer"
-                              >
-                                <X className="h-3.5 w-3.5" />
-                                Rejeter
-                              </button>
-                            )}
-                            {order.status !== 'PENDING' && (
-                              <button
-                                onClick={() => handleStatusChange(order.id, 'PENDING')}
-                                className="flex items-center gap-1.5 rounded-lg bg-yellow-600/20 border border-yellow-500/30 px-3 py-1.5 text-xs font-bold text-yellow-300 hover:bg-yellow-600/40 transition cursor-pointer"
-                              >
-                                <ChevronDown className="h-3.5 w-3.5" />
-                                En attente
-                              </button>
-                            )}
-                          </div>
+                        {busy === `del-order-${o.id}` ? <Loader2 size={14} className="animate-spin text-rose-400" /> : (
+                          <button onClick={() => removeOrder(o.id)} className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-2.5 py-1.5 text-xs text-rose-400 hover:bg-rose-500/20 transition cursor-pointer">
+                            <Trash2 size={13} />
+                          </button>
                         )}
                       </div>
                     </div>
-
-                    <p className="mt-3 text-right text-xs text-zinc-600">
-                      {new Date(order.createdAt).toLocaleDateString('fr-FR', {
-                        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-                      })}
-                    </p>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ─── AVIS ─── */}
-        {tab === 'feedbacks' && (
-          <div>
-            {feedbacksLoading && (
-              <div className="flex justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-fuchsia-400" />
-              </div>
-            )}
-            {!feedbacksLoading && feedbacks.length === 0 && (
-              <p className="py-12 text-center text-zinc-500">Aucun avis soumis.</p>
-            )}
-            <div className="flex flex-col gap-4">
-              {feedbacks.map((f) => (
-                <div
-                  key={f.id}
-                  className={`rounded-2xl border p-5 transition ${
-                    f.isApproved
-                      ? 'border-emerald-500/20 bg-emerald-500/5'
-                      : 'border-white/8 bg-white/[0.04]'
-                  }`}
-                >
+          {/* ─────────── AVIS ─────────── */}
+          {!loadingSection && section === 'feedbacks' && (
+            <div className="space-y-3">
+              <p className="text-xs text-slate-500">{feedbacks.length} avis · {feedbacks.filter(f => !f.isApproved).length} à modérer</p>
+              {feedbacks.length === 0 && <Empty label="Aucun avis." />}
+              {feedbacks.map(f => (
+                <div key={f.id} className={`rounded-2xl border p-5 transition ${f.isApproved ? 'border-emerald-500/15 bg-emerald-500/5' : 'border-white/8 bg-[#0f0718]'}`}>
                   <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
-                        {f.user?.avatarUrl && (
-                          <img
-                            src={f.user.avatarUrl}
-                            alt="avatar"
-                            className="h-8 w-8 rounded-full object-cover"
-                          />
-                        )}
-                        <p className="font-bold text-white">
-                          {f.user?.firstName} {f.user?.lastName}
-                        </p>
-                        <div className="flex gap-0.5">
+                        <Avatar user={f.user} size={7} />
+                        <div>
+                          <p className="text-sm font-bold text-white">{f.user?.firstName} {f.user?.lastName}</p>
+                          <p className="text-xs text-slate-500">{f.user?.email}</p>
+                        </div>
+                        <div className="flex gap-0.5 ml-1">
                           {Array.from({ length: f.rating }).map((_, i) => (
-                            <Star key={i} className="h-3.5 w-3.5 fill-fuchsia-400 text-fuchsia-400" />
+                            <Star key={i} size={12} className="fill-[#c084fc] text-[#c084fc]" />
                           ))}
                         </div>
                       </div>
-                      <p className="text-sm text-zinc-300 leading-6">"{f.comment}"</p>
-                      <p className="mt-2 text-xs text-zinc-600">
-                        {new Date(f.createdAt).toLocaleDateString('fr-FR')}
-                      </p>
+                      <p className="text-sm text-slate-300 leading-6">"{f.comment}"</p>
+                      <p className="text-xs text-slate-600 mt-1">{fmt(f.createdAt)}</p>
                     </div>
-
-                    <div className="flex flex-col items-end gap-2">
-                      <span className={`rounded-full border px-3 py-1 text-xs font-bold ${
-                        f.isApproved
-                          ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                          : 'bg-zinc-700/30 text-zinc-400 border-zinc-600/30'
-                      }`}>
+                    <div className="flex flex-col items-end gap-2 shrink-0">
+                      <span className={`rounded-full border px-2.5 py-0.5 text-xs font-bold ${f.isApproved ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' : 'bg-slate-700/30 text-slate-500 border-slate-600/30'}`}>
                         {f.isApproved ? 'Approuvé' : 'En attente'}
                       </span>
-
-                      {togglingFeedback === f.id ? (
-                        <Loader2 className="h-5 w-5 animate-spin text-fuchsia-400" />
-                      ) : (
-                        <button
-                          onClick={() => handleToggleFeedback(f.id, f.isApproved)}
-                          className={`rounded-lg border px-4 py-1.5 text-xs font-bold transition cursor-pointer ${
-                            f.isApproved
-                              ? 'border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20'
-                              : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20'
-                          }`}
-                        >
-                          {f.isApproved ? 'Désapprouver' : 'Approuver'}
-                        </button>
-                      )}
+                      <div className="flex gap-1.5">
+                        {busy === `fb-${f.id}` ? <Loader2 size={14} className="animate-spin text-[#c084fc]" /> : (
+                          <button onClick={() => toggleFeedback(f.id, f.isApproved)} className={`rounded-lg border px-3 py-1.5 text-xs font-bold transition cursor-pointer ${f.isApproved ? 'border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20' : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20'}`}>
+                            {f.isApproved ? 'Désapprouver' : 'Approuver'}
+                          </button>
+                        )}
+                        {busy === `del-fb-${f.id}` ? <Loader2 size={14} className="animate-spin text-rose-400" /> : (
+                          <button onClick={() => removeFeedback(f.id)} className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-2.5 py-1.5 text-xs text-rose-400 hover:bg-rose-500/20 transition cursor-pointer">
+                            <Trash2 size={13} />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ─── ABONNÉS NEWSLETTER ─── */}
-        {tab === 'subscribers' && (
-          <div>
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm text-zinc-400">
-                {subscribers.length} abonné{subscribers.length > 1 ? 's' : ''}
-              </p>
-              <button
-                onClick={loadSubscribers}
-                disabled={subscribersLoading}
-                className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-400 hover:text-white transition cursor-pointer disabled:opacity-50"
-              >
-                <RefreshCw className={`h-4 w-4 ${subscribersLoading ? 'animate-spin' : ''}`} />
-                Rafraîchir
-              </button>
-            </div>
-
-            {subscribersLoading && (
-              <div className="flex justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-fuchsia-400" />
-              </div>
-            )}
-
-            <div className="rounded-2xl border border-white/8 overflow-hidden">
-              {subscribers.map((s, i) => (
-                <div
-                  key={s.id}
-                  className={`flex items-center justify-between px-5 py-4 ${
-                    i < subscribers.length - 1 ? 'border-b border-white/5' : ''
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-fuchsia-500/15 text-fuchsia-300">
-                      <Mail className="h-4 w-4" />
+          {/* ─────────── NEWSLETTER ─────────── */}
+          {!loadingSection && section === 'newsletter' && (
+            <div className="space-y-3">
+              <p className="text-xs text-slate-500">{subscribers.filter(s => s.isSubscribed).length} abonné{subscribers.filter(s => s.isSubscribed).length > 1 ? 's' : ''} actif{subscribers.filter(s => s.isSubscribed).length > 1 ? 's' : ''} sur {subscribers.length}</p>
+              {subscribers.length === 0 && <Empty label="Aucun abonné." />}
+              <div className="rounded-2xl border border-white/8 overflow-hidden">
+                {subscribers.map((s, i) => (
+                  <div key={s.id} className={`flex items-center gap-4 px-5 py-3.5 ${i < subscribers.length - 1 ? 'border-b border-white/5' : ''}`}>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#241838] text-[#c084fc]">
+                      <Mail size={14} />
                     </div>
-                    <p className="text-sm font-semibold text-white">{s.email}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className={`rounded-full border px-3 py-1 text-xs font-bold ${
-                      s.isSubscribed
-                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                        : 'bg-zinc-700/30 text-zinc-500 border-zinc-600/30'
-                    }`}>
+                    <p className="flex-1 text-sm font-semibold text-white truncate">{s.email}</p>
+                    <span className={`rounded-full border px-2.5 py-0.5 text-xs font-bold ${s.isSubscribed ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' : 'bg-slate-700/30 text-slate-500 border-slate-600/30'}`}>
                       {s.isSubscribed ? 'Abonné' : 'Désabonné'}
                     </span>
-                    <p className="text-xs text-zinc-600">
-                      {new Date(s.subscribedAt).toLocaleDateString('fr-FR')}
-                    </p>
+                    <p className="text-xs text-slate-600 hidden sm:block">{fmt(s.subscribedAt)}</p>
                   </div>
-                </div>
-              ))}
-              {!subscribersLoading && subscribers.length === 0 && (
-                <p className="py-12 text-center text-zinc-500">Aucun abonné.</p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ─── NOTIFICATIONS ─── */}
-        {tab === 'notifications' && (
-          <div>
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm text-zinc-400">
-                {unreadCount} non lue{unreadCount > 1 ? 's' : ''} · {notifications.length} au total
-              </p>
-              <button
-                onClick={loadNotifications}
-                disabled={notifLoading}
-                className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-400 hover:text-white transition cursor-pointer disabled:opacity-50"
-              >
-                <RefreshCw className={`h-4 w-4 ${notifLoading ? 'animate-spin' : ''}`} />
-                Rafraîchir
-              </button>
-            </div>
-
-            {notifLoading && (
-              <div className="flex justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-fuchsia-400" />
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
-            <div className="flex flex-col gap-3">
-              {notifications.map((n) => (
-                <div
-                  key={n.id}
-                  className={`flex items-start gap-4 rounded-2xl border p-4 ${
-                    n.isRead
-                      ? 'border-white/5 bg-white/[0.02] opacity-60'
-                      : 'border-fuchsia-500/20 bg-fuchsia-500/5'
-                  }`}
-                >
-                  <div className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${n.isRead ? 'bg-zinc-600' : 'bg-fuchsia-400'}`} />
+          {/* ─────────── NOTIFICATIONS ─────────── */}
+          {!loadingSection && section === 'notifications' && (
+            <div className="space-y-2">
+              <p className="text-xs text-slate-500">{unread} non lue{unread > 1 ? 's' : ''} · {notifications.length} au total</p>
+              {notifications.length === 0 && <Empty label="Aucune notification." />}
+              {notifications.map(n => (
+                <div key={n.id} className={`flex items-start gap-3 rounded-xl border p-4 ${n.isRead ? 'border-white/5 bg-white/[0.02] opacity-50' : 'border-[#583385]/50 bg-[#241838]/50'}`}>
+                  <div className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${n.isRead ? 'bg-slate-600' : 'bg-[#c084fc]'}`} />
                   <div className="flex-1">
-                    <p className="text-sm text-white">{n.message}</p>
-                    <p className="mt-1 text-xs text-zinc-600">
-                      {new Date(n.createdAt).toLocaleDateString('fr-FR', {
-                        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-                      })}
-                    </p>
+                    <p className="text-sm text-slate-200">{n.message}</p>
+                    <p className="text-xs text-slate-600 mt-0.5">{fmt(n.createdAt)}</p>
                   </div>
-                  {!n.isRead && (
-                    <span className="rounded-full bg-fuchsia-500/20 px-2 py-0.5 text-xs font-bold text-fuchsia-300">
-                      Nouveau
-                    </span>
-                  )}
+                  {!n.isRead && <span className="rounded-full bg-[#c084fc]/20 px-2 py-0.5 text-[10px] font-bold text-[#c084fc]">Nouveau</span>}
                 </div>
               ))}
-              {!notifLoading && notifications.length === 0 && (
-                <p className="py-12 text-center text-zinc-500">Aucune notification.</p>
-              )}
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 }

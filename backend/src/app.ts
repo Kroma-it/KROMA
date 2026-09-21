@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import authRoutes from './routes/authRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import newsletterRoutes from './routes/newsletterRoutes.js';
-import feedbackRoutes from './routes/feedbackRoutes.js';
-import adminRoutes from './routes/adminRoutes.js';
+import authRoutes from './routes/authRoutes';
+import orderRoutes from './routes/orderRoutes';
+import newsletterRoutes from './routes/newsletterRoutes';
+import feedbackRoutes from './routes/feedbackRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 const app = express();
 
@@ -14,8 +14,8 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Route de santé (Healthcheck)
 app.get('/api/v1/health', (_req, res) => {
