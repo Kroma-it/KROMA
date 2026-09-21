@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from "react"
-import { Building, Camera, Globe, Mail, Save, User, Loader2 } from "lucide-react"
+import { Building, Camera, Globe, Mail, User, Loader2, Bookmark } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import { apiUpdateProfile } from "../utils/api"
+import AvatarCropper from "./AvatarCropper"
 
 type FieldProps = {
     label: string
@@ -23,6 +24,7 @@ export default function UserInfo() {
     const [company, setCompany] = useState("Kroma Studio")
     const [country, setCountry] = useState("France")
     const [avatar, setAvatar] = useState("/assets/2.jpg")
+    const [cropSrc, setCropSrc] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
@@ -43,9 +45,11 @@ export default function UserInfo() {
 
         const reader = new FileReader()
         reader.onloadend = () => {
-            setAvatar(reader.result as string)
+            setCropSrc(reader.result as string)
         }
         reader.readAsDataURL(file)
+        // Permet de re-choisir la même image après une annulation
+        e.target.value = ""
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -102,7 +106,7 @@ export default function UserInfo() {
     )
 
     return (
-        <section className="relative h-fit self-start overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl md:p-8 lg:min-w-[780px]">
+        <section className="relative h-fit w-full self-start overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-6 md:p-8">
             <User
                 strokeWidth={0.5}
                 className="absolute -right-8 -bottom-10 -rotate-20 h-56 w-56 text-fuchsia-400/10"
@@ -114,13 +118,13 @@ export default function UserInfo() {
                         <img
                             src={avatar}
                             alt="Photo de profil"
-                            className="h-40 w-40 rounded-full border-4 border-fuchsia-500/70 object-cover shadow-[0_0_35px_rgba(217,70,239,0.25)]"
+                            className="h-32 w-32 sm:h-40 sm:w-40 rounded-full border-4 border-fuchsia-500/70 object-cover shadow-[0_0_35px_rgba(217,70,239,0.25)]"
                         />
                         <button
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
                             aria-label="Changer la photo de profil"
-                            className="absolute bottom-2 right-2 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-fuchsia-700 text-white shadow-lg shadow-fuchsia-950/40 transition-all duration-300 hover:bg-fuchsia-600 active:scale-95 cursor-pointer"
+                            className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/20 bg-fuchsia-700 text-white shadow-lg shadow-fuchsia-950/40 transition-all duration-300 hover:bg-fuchsia-600 active:scale-95 cursor-pointer"
                         >
                             <Camera className="h-5 w-5" />
                         </button>
@@ -132,6 +136,16 @@ export default function UserInfo() {
                             className="hidden"
                         />
                     </div>
+                    {cropSrc && (
+                        <AvatarCropper
+                            src={cropSrc}
+                            onCancel={() => setCropSrc(null)}
+                            onConfirm={(cropped) => {
+                                setAvatar(cropped)
+                                setCropSrc(null)
+                            }}
+                        />
+                    )}
 
                     <div className="text-center">
                         <h2 className="text-xl font-extrabold text-white">
@@ -202,7 +216,7 @@ export default function UserInfo() {
                     <button
                         type="submit"
                         disabled={loading || !user}
-                        className="md:col-span-2 mt-2 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#ab05bd] py-3.5 text-sm font-extrabold tracking-wide text-white shadow-[0_0_25px_rgba(171,5,189,0.35)] transition-all duration-300 hover:bg-[#c205d6] active:scale-[0.98] cursor-pointer disabled:opacity-50"
+                        className="md:col-span-2 mt-2 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#ab05bd] py-3.5 text-sm font-medium tracking-wide text-white transition-all duration-300 hover:bg-[#c205d6] active:scale-[0.98] cursor-pointer disabled:opacity-50"
                     >
                         {loading ? (
                             <>
@@ -212,7 +226,7 @@ export default function UserInfo() {
                         ) : (
                             <>
                                 Enregistrer les informations
-                                <Save className="h-4 w-4" />
+                                <Bookmark className="h-4 w-4" />
                             </>
                         )}
                     </button>

@@ -20,7 +20,7 @@ export default function FeedbackHistory() {
     }, [user])
 
     return (
-        <section className="relative h-fit w-full self-start overflow-hidden rounded-[28px] border border-fuchsia-400/10 bg-[#100b1f]/90 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.45)] md:p-8">
+        <section className="relative h-fit w-full self-start overflow-hidden rounded-[28px] border border-fuchsia-400/10 bg-[#100b1f]/90 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] sm:p-6 md:p-8">
             <MessageSquareText
                 strokeWidth={0.5}
                 className="absolute -right-8 -top-10 h-52 w-52 -rotate-12 text-fuchsia-400/10"
@@ -31,7 +31,7 @@ export default function FeedbackHistory() {
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-fuchsia-400/10 text-fuchsia-300">
                     <MessageSquareText className="h-6 w-6" />
                 </div>
-                <h2 className="text-2xl font-extrabold text-fuchsia-200 md:text-3xl">
+                <h2 className="text-xl font-extrabold text-fuchsia-200 sm:text-2xl md:text-3xl">
                     Feedback History
                 </h2>
             </div>

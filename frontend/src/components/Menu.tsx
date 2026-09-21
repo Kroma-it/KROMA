@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { ChevronDown, LogOut, LayoutDashboard, User } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, LayoutDashboard, User } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import "../css/style.css"
 import { toModalBackgroundState } from "../utils/modalBackground";
@@ -152,7 +152,7 @@ function Menu() {
                                     className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-fuchsia-500/40 bg-fuchsia-900/20 hover:bg-fuchsia-900/40 transition-all duration-300 cursor-pointer"
                                 >
                                     {user.avatarUrl ? (
-                                        <img src={user.avatarUrl} className="h-8 w-8 rounded-full border border-fuchsia-500" alt={user.firstName} />
+                                        <img src={user.avatarUrl} className="h-8 w-8 rounded-full border border-fuchsia-500 object-cover" alt={user.firstName} />
                                     ) : (
                                         <div className="h-8 w-8 rounded-full bg-fuchsia-700 flex items-center justify-center text-white font-bold text-sm">
                                             {user.firstName?.charAt(0).toUpperCase()}
@@ -206,7 +206,7 @@ function Menu() {
                                     className="rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-2 focus:ring-offset-black"
                                 >
                                     <div className="h-11 w-11 rounded-full border-2 border-fuchsia-500 bg-fuchsia-900/30 flex items-center justify-center text-white transition-all duration-300 cursor-pointer hover:bg-fuchsia-900/60">
-                                        <User size={22} />
+                                        <User className="text-gray-400" size={22} />
                                     </div>
                                 </button>
                             </NavLink>
@@ -293,18 +293,36 @@ function Menu() {
                         <div className="h-px bg-white/10 my-4"></div>
 
                                 {user ? (
-                    <div className="flex items-center gap-3">
-                        {user.avatarUrl ? (
-                            <img src={user.avatarUrl} className="h-11 w-11 rounded-full border-2 border-fuchsia-500" alt={user.firstName} />
-                        ) : (
-                            <div className="h-11 w-11 rounded-full bg-fuchsia-700 flex items-center justify-center text-white font-bold text-base">
-                                {user.firstName?.charAt(0).toUpperCase()}
+                    <div className="flex flex-col gap-3">
+                        <NavLink
+                            to="/profil"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 transition-all duration-300 hover:border-fuchsia-500/40 active:scale-[0.98]"
+                        >
+                            {user.avatarUrl ? (
+                                <img src={user.avatarUrl} className="h-11 w-11 shrink-0 rounded-full border-2 border-fuchsia-500 object-cover" alt={user.firstName} />
+                            ) : (
+                                <div className="h-11 w-11 shrink-0 rounded-full bg-fuchsia-700 flex items-center justify-center text-white font-bold text-base">
+                                    {user.firstName?.charAt(0).toUpperCase()}
+                                </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                                <p className="text-[11px] font-bold uppercase tracking-widest text-fuchsia-400">Mon profil</p>
+                                <p className="truncate text-white font-bold text-sm">{user.firstName} {user.lastName}</p>
+                                <p className="truncate text-white/40 text-xs">{user.email}</p>
                             </div>
+                            <ChevronRight size={18} className="shrink-0 text-white/40" />
+                        </NavLink>
+                        {user.role === 'ADMIN' && (
+                            <NavLink
+                                to="/admin"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center gap-2.5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-[#c084fc] transition-all duration-300 hover:border-fuchsia-500/40 active:scale-[0.98]"
+                            >
+                                <LayoutDashboard size={16} />
+                                Dashboard admin
+                            </NavLink>
                         )}
-                        <div>
-                            <p className="text-white font-bold text-sm">{user.firstName} {user.lastName}</p>
-                            <p className="text-white/40 text-xs">{user.email}</p>
-                        </div>
                     </div>
                 ) : (
                     <NavLink to="/login" state={loginBackgroundState} onClick={() => setIsMenuOpen(false)}>

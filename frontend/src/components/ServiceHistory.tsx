@@ -47,7 +47,7 @@ export default function ServiceHistory() {
     }, [user])
 
     return (
-        <section className="relative h-fit w-full self-start overflow-hidden rounded-[28px] border border-fuchsia-400/10 bg-[#100b1f]/90 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.45)] md:p-8">
+        <section className="relative h-fit w-full self-start overflow-hidden rounded-[28px] border border-fuchsia-400/10 bg-[#100b1f]/90 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.45)] sm:p-6 md:p-8">
             <Wrench
                 strokeWidth={0.5}
                 className="absolute -right-8 -top-10 h-56 w-56 rotate-12 text-fuchsia-400/10"
@@ -58,7 +58,7 @@ export default function ServiceHistory() {
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-fuchsia-400/10 text-fuchsia-300">
                     <Wrench className="h-6 w-6" />
                 </div>
-                <h2 className="text-2xl font-extrabold text-fuchsia-200 md:text-3xl">
+                <h2 className="text-xl font-extrabold text-fuchsia-200 sm:text-2xl md:text-3xl">
                     Service Orders
                 </h2>
             </div>
@@ -91,11 +91,11 @@ export default function ServiceHistory() {
                             className="group rounded-2xl border border-white/5 bg-white/5 p-5 transition-all duration-300 hover:border-fuchsia-400/25 hover:bg-white/[0.08]"
                         >
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                                <div className="flex items-center gap-4">
+                                <div className="flex min-w-0 items-center gap-4">
                                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-fuchsia-300/10 text-fuchsia-300 transition-all duration-300 group-hover:bg-fuchsia-400/15">
                                         <Icon className="h-6 w-6" />
                                     </div>
-                                    <h3 className="text-base font-extrabold text-zinc-200">
+                                    <h3 className="min-w-0 break-words text-base font-extrabold text-zinc-200">
                                         {serviceNames.join(", ")}
                                     </h3>
                                 </div>

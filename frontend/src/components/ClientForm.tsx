@@ -47,7 +47,7 @@ export default function ClientForm() {
     }
 
     return (
-        <div className="relative w-[400px] overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+        <div className="relative w-full overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-5 sm:p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl">
             <MessageSquareText
                 strokeWidth={0.5}
                 className="absolute -right-6 -rotate-20 -bottom-10 h-40 w-40 text-fuchsia-400/10"
@@ -88,12 +88,12 @@ export default function ClientForm() {
                                 onMouseEnter={() => setHovered(star)}
                                 onMouseLeave={() => setHovered(0)}
                                 aria-label={`Donner ${star} étoile${star > 1 ? "s" : ""}`}
-                                className="rounded-full p-1 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/60 cursor-pointer disabled:opacity-50"
+                                className="rounded-full p-1 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none cursor-pointer disabled:opacity-50"
                             >
                                 <Star
                                     className={`h-8 w-8 transition-all duration-200 ${
                                         star <= activeRating
-                                            ? "fill-fuchsia-500 text-fuchsia-500 drop-shadow-[0_0_7px_rgba(217,70,239,0.65)]"
+                                            ? "fill-fuchsia-500 text-fuchsia-500"
                                             : "text-white/20"
                                     }`}
                                 />
@@ -121,7 +121,7 @@ export default function ClientForm() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#ab05bd] py-3.5 text-lg font-extrabold tracking-wide text-white shadow-[0_0_25px_rgba(171,5,189,0.35)] transition-all duration-300 hover:bg-[#c205d6] active:scale-[0.98] cursor-pointer disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#ab05bd] py-3.5 text-lg font-medium tracking-wide text-white transition-all duration-300 hover:bg-[#c205d6] active:scale-[0.98] cursor-pointer disabled:opacity-50"
                 >
                     {loading ? (
                         <>

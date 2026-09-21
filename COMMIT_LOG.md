@@ -277,3 +277,30 @@ Correction et modification
 - `vercel.json`
 - `Menu.tsx`
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-09-21 - Neox-debug
+
+**Nom**  
+Recadrage de la photo de profil et refonte mobile du profil
+
+**Nature**  
+Ajout et modification
+
+**Details**  
+- J'ai ajouté le composant `AvatarCropper.tsx` : quand on choisit une photo dans le profil, une fenêtre permet de glisser l'image et de zoomer pour choisir la partie à garder. L'image enregistrée est carrée (512x512), ce qui évite l'étirement de l'avatar sur le reste du site
+- J'ai ajouté `object-cover` aux avatars du menu pour ne plus déformer les photos déjà enregistrées
+- Dans le menu mobile, le bloc utilisateur est maintenant un lien vers `/profil` (et vers le dashboard pour les admins)
+- J'ai refait la mise en page de la page de profil pour le mobile : conteneur avec marges, cartes en pleine largeur (suppression des largeurs fixes de `ClientForm.tsx` et `UserInfo.tsx`), paddings et tailles adaptés
+
+**Fichiers**  
+- `AvatarCropper.tsx`
+- `UserInfo.tsx`
+- `ClientForm.tsx`
+- `Menu.tsx`
+- `Profil.tsx`
+- `ServiceHistory.tsx`
+- `PackHistory.tsx`
+- `FeedbackHistory.tsx`
+- `COMMIT_LOG.md`
