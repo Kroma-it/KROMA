@@ -215,3 +215,25 @@ Ajout et modification
 **Fichiers**  
 - `LogoCrea.tsx`
 - `Menu.tsx`
+
+---
+
+## 2026-09-21 - Neox-debug
+
+**Nom**  
+Refonte de la grille tarifaire
+
+**Nature**  
+Modification
+
+**Details**  
+- J'ai revu les prix web pour les adapter au budget des PME camerounaises : Portfolio 50k, Site vitrine 110k, Site Business 280k XAF
+- J'ai réécrit les caractéristiques des packs vitrine et business (bouton WhatsApp, paiement Mobile Money, boutique en ligne, espace admin)
+- J'ai donné une description distincte à chaque pack de design et corrigé les doublons d'affiches
+- J'ai retiré la mention "Investissement unique" sous les prix et réduit la taille de la description dans `Pack.tsx`
+- J'ai arrondi au maximum le bouton de commande du pack populaire
+
+**Fichiers**  
+- `Pricing.tsx`
+- `Pack.tsx`
+- `COMMIT_LOG.md`

@@ -9,42 +9,38 @@ export default function Pricing() {
     const packs = [
         {
             name: "Pack Starter",
-            description: "Idéal pour les lancements et les startups",
-            price: "100K XAF",
+            description: "Pour lancer votre activité avec une image professionnelle",
+            price: "45k XAF",
             features: [
                 "Logo",
-                "Charte graphique",
-                "1 affiche visuelle",
-                "1 carte de visite",
-                "1 flyer",
-                "1 bannière réseaux sociaux"
+                "2 cartes de visite",
+                "1 visuel"
             ]
         },
         {
             name: "Pack Essential",
-            description: "Idéal pour les lancements et les startups",
-            price: "180K XAF",
+            description: "Pour une identité cohérente qui vous démarque de la concurrence",
+            price: "85k XAF",
             features: [
                 "Logo",
                 "Charte graphique",
-                "1 affiche visuelle",
                 "1 carte de visite",
                 "3 affiches visuelles",
                 "1 bannière réseaux sociaux"
             ]
         },
         {
-            name: "Pack Pro",
-            description: "Idéal pour les lancements et les startups",
-            price: "250K+ XAF",
+            name: "Pack Professionnel",
+            description: "Pour une image de marque cohérente et professionnelle",
+            price: "130k XAF",
             features: [
                 "Logo",
                 "Charte graphique",
-                "1 affiche visuelle",
-                "Carte de visite",
-                "1 flyer",
+                "5 affiches visuelles",
+                "2 cartes de visite",
+                "2 bannières",
                 "Mockups",
-                "1 bannière réseaux sociaux"
+                "Papeterie complète personnalisée"
             ]
         }
     ]
@@ -53,37 +49,39 @@ export default function Pricing() {
         {
             name : "Portfolio",
             description : "Pour vous présenter devant vos embaucheurs",
-            price : "40K XAF",
+            price : "50k XAF",
             features : [
-                "Galerie de projets",
-                "Animations légères et fluides",
-                "Design moderne et professionnel",
-                "Responsive sur tous les appareils",
-                "Optimisation SEO de base",
-                "Contact direct via formulaire"
+                "1 à 3 pages",
+                "Galerie d'images et de projets",
+                "Animations minimalistes",
+                "Adaptation mobile et PC",
+                "Bouton WhatsApp et réseaux sociaux"
             ]
         },
         {
             name : "Site vitrine",
-            description : "Pour avoir accès à votre business de n'importe où",
-            price : "150K XAF",
+            description : "Pour que vos clients vous trouvent et vous contactent",
+            price : "110k XAF",
             features : [
-                "5 pages",
-                "Design moderne et professionnel",
-                "Responsive sur tous les appareils",
-                "Optimisation reférencement Google",
-                "Contact direct via formulaire"
+                "5 à 6 pages",
+                "Adaptation sur tous les appareils",
+                "Bouton WhatsApp et formulaire de contact",
+                "Référencement Google de base",
+                "Animations légères et fluides"
             ]
         },
         {
-            name : "Site complet",
-            description : "Pour convertir chaque clique en vente",
-            price : "300K+ XAF",
+            name : "Site Business",
+            description : "Pour vendre en ligne et gérer votre activité",
+            price : "280k XAF",
             features : [
-                "Design moderne et professionnel",
-                "Responsive sur tous les appareils",
-                "Optimisation reférencement Google",
-                "Contact direct via formulaire"
+                "Jusqu'à 12 pages sur mesure",
+                "Boutique en ligne",
+                "Paiement Mobile Money (MTN MoMo, Orange Money)",
+                "Espace admin : produits et commandes",
+                "Référencement Google avancé + Analytics",
+                "Nom de domaine professionnel",
+                "30 jours de support"
             ]
         }
     ]
@@ -118,7 +116,7 @@ export default function Pricing() {
                     <h2 className="text-white text-2xl md:text-4xl font-bold">Besoin d'une approche plus spécifique ?</h2>
                     <p className="text-white/50 text-lg font-light">Personnalisez votre pack de design pour qu'il s'adapte parfaitement à votre flux de travail.</p>
                 </div>
-                <NavLink to='/personnalisation' className="bg-kroma-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-xl text-lg md:text-xs  font-bold flex items-center gap-3 shrink-0 cursor-pointer">
+                <NavLink to='/personnalisation' className="bg-kroma-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-full text-lg md:text-xs  font-bold flex items-center gap-3 shrink-0 cursor-pointer">
                     CONTACTEZ-NOUS
                     <SendHorizonal strokeWidth={1.5} className="text-white w-6 h-6" />
                 </NavLink>
@@ -143,7 +141,7 @@ export default function Pricing() {
                     <h2 className="text-white text-2xl md:text-4xl font-bold">Besoin d'une approche plus spécifique ?</h2>
                     <p className="text-white/50 text-lg font-light">Personnalisez votre pack de design pour qu'il s'adapte parfaitement à votre flux de travail.</p>
                 </div>
-                <NavLink to='/personnalisation' className="bg-kroma-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-xl text-lg md:text-xs font-bold flex items-center gap-3 shrink-0 cursor-pointer">
+                <NavLink to='/personnalisation' className="bg-kroma-600 hover:bg-fuchsia-500 transition-all duration-300 hover:scale-105 text-white px-8 py-5 rounded-full text-lg md:text-xs font-bold flex items-center gap-3 shrink-0 cursor-pointer">
                     CONTACTEZ-NOUS
                     <SendHorizonal strokeWidth={1.5} className="text-white w-6 h-6" />
                 </NavLink>

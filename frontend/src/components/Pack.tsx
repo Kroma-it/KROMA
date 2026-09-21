@@ -74,13 +74,11 @@ export default function Pack({ packs }: PackProps) {
 
                             <div className="mb-6">
                                 <h1 className="text-2xl md:text-3xl font-bold mb-2">{pack.name}</h1>
-                                <h3 className="text-base md:text-lg font-light text-white/50 leading-tight">{pack.description}</h3>
+                                <h3 className="text-base font-light text-white/50 leading-tight">{pack.description}</h3>
                             </div>
                             
                             <div className="mb-8">
-                                <h4 className={`text-4xl md:text-5xl font-bold ${isPopular ? 'text-fuchsia-400' : 'text-fuchsia-500'}`}>{pack.price}</h4>
-                                <span className="text-sm text-white/40">Investissement unique</span>
-                            </div>
+                                <h4 className={`text-4xl md:text-5xl font-bold ${isPopular ? 'text-fuchsia-400' : 'text-fuchsia-500'}`}>{pack.price}</h4>                            </div>
 
                             <div className="w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent mb-8"></div>
 
@@ -97,10 +95,10 @@ export default function Pack({ packs }: PackProps) {
 
                             <button 
                                 onClick={() => handleOpenModal(pack)}
-                                className={`w-full py-4 px-6 rounded-2xl font-semibold text-lg md:text-xl transition-all duration-300 cursor-pointer ${
-                                isPopular 
-                                    ? 'bg-kroma-600 text-white hover:from-fuchsia-500 hover:to-purple-500' 
-                                    : 'bg-white/5 border border-fuchsia-500/30 hover:bg-kroma-600 hover:border-fuchsia-600'
+                                className={`w-full py-4 px-6 font-semibold text-lg md:text-xl transition-all duration-300 cursor-pointer ${
+                                isPopular
+                                    ? 'rounded-full bg-kroma-600 text-white hover:from-fuchsia-500 hover:to-purple-500'
+                                    : 'rounded-2xl bg-white/5 border border-fuchsia-500/30 hover:bg-kroma-600 hover:border-fuchsia-600'
                             }`}>
                                 Choisir {pack.name.split(' ')[1] || 'ce pack'}
                             </button>
