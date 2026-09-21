@@ -304,3 +304,23 @@ Ajout et modification
 - `PackHistory.tsx`
 - `FeedbackHistory.tsx`
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-09-21 - Neox-debug
+
+**Nom**  
+Correction du "Failed to fetch" à la connexion après le changement de domaine
+
+**Nature**  
+Correction
+
+**Details**  
+- Après le passage à `kroma-agence.vercel.app`, la connexion échouait avec "Failed to fetch". Le bundle appelait l'API sur un autre domaine (`kroma-2nyj.vercel.app`, via la variable `VITE_API_URL`) et le CORS du backend n'autorisait que l'ancien domaine (`FRONTEND_URL`)
+- `api.ts` appelle maintenant toujours `/api/v1` (même domaine que le site) : plus de dépendance à `VITE_API_URL` ni au CORS
+- `app.ts` accepte plusieurs origines dans `FRONTEND_URL` (séparées par des virgules)
+
+**Fichiers**  
+- `frontend/src/utils/api.ts`
+- `backend/src/app.ts`
+- `COMMIT_LOG.md`

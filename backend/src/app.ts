@@ -8,9 +8,15 @@ import adminRoutes from './routes/adminRoutes';
 
 const app = express();
 
+// FRONTEND_URL accepte plusieurs origines séparées par des virgules
+const allowedOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 // Middlewares globaux
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: allowedOrigins.length > 0 ? allowedOrigins : '*',
   credentials: true
 }));
 

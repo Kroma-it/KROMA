@@ -1,4 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL || '/api/v1';
+// Toujours relatif : l'API est servie sur le même domaine que le site (rewrite /api dans vercel.json,
+// proxy Vite en local). Une URL absolue casse la connexion (CORS) dès que le domaine change.
+const API_URL = '/api/v1';
 
 export function getAuthToken(): string | null {
   return localStorage.getItem('kroma_token');
