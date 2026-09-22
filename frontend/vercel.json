@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://kroma-2nyj.vercel.app/api/:path*"
+      "destination": "https://kroma-backend-azure.vercel.app/api/:path*"
     },
     {
       "source": "/(.*)",
