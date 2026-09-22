@@ -22,7 +22,9 @@ export const googleAuthSchema = z.object({
 export const updateProfileSchema = z.object({
   firstName: z.string().min(1, 'Le prénom est requis'),
   lastName: z.string().min(1, 'Le nom est requis'),
-  avatarUrl: z.string().optional()
+  avatarUrl: z.string().optional(),
+  company: z.string().max(100, 'Le nom de la compagnie est trop long').optional(),
+  country: z.string().max(100, 'Le pays est trop long').optional()
 });
 
 // Helper pour déduire prénom / nom depuis l'email
@@ -98,6 +100,8 @@ export async function loginOrRegister(req: Request, res: Response): Promise<void
         firstName: user.firstName,
         lastName: user.lastName,
         avatarUrl: user.avatarUrl,
+        company: user.company,
+        country: user.country,
         isProfileComplete: user.isProfileComplete,
         role: user.role
       }
@@ -161,6 +165,8 @@ export async function googleLogin(req: Request, res: Response): Promise<void> {
         firstName: user.firstName,
         lastName: user.lastName,
         avatarUrl: user.avatarUrl,
+        company: user.company,
+        country: user.country,
         isProfileComplete: user.isProfileComplete,
         role: user.role
       }
@@ -187,6 +193,8 @@ export async function getMe(req: AuthenticatedRequest, res: Response): Promise<v
         firstName: true,
         lastName: true,
         avatarUrl: true,
+        company: true,
+        country: true,
         isProfileComplete: true,
         role: true,
         createdAt: true
@@ -212,8 +220,12 @@ export async function updateProfile(req: AuthenticatedRequest, res: Response): P
       return;
     }
 
-    const { firstName, lastName, avatarUrl } = req.body;
+    const { firstName, lastName, avatarUrl, company, country } = req.body;
     const isProfileComplete = Boolean(firstName && lastName);
+
+    // Une chaîne vide efface la valeur ; undefined laisse la valeur actuelle
+    const cleanOptional = (value?: string) =>
+      value === undefined ? undefined : value.trim() || null;
 
     const updatedUser = await prisma.user.update({
       where: { id: req.user.userId },
@@ -221,6 +233,8 @@ export async function updateProfile(req: AuthenticatedRequest, res: Response): P
         firstName,
         lastName,
         avatarUrl,
+        company: cleanOptional(company),
+        country: cleanOptional(country),
         isProfileComplete
       },
       select: {
@@ -229,6 +243,8 @@ export async function updateProfile(req: AuthenticatedRequest, res: Response): P
         firstName: true,
         lastName: true,
         avatarUrl: true,
+        company: true,
+        country: true,
         isProfileComplete: true,
         role: true
       }

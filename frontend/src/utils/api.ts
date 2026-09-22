@@ -69,7 +69,7 @@ export async function apiGetProfile() {
 }
 
 // Mettre à jour le profil
-export async function apiUpdateProfile(payload: { firstName: string; lastName: string; avatarUrl?: string }) {
+export async function apiUpdateProfile(payload: { firstName: string; lastName: string; avatarUrl?: string; company?: string; country?: string }) {
   return request<{ message: string; user: any }>('/auth/profile', {
     method: 'PUT',
     body: JSON.stringify(payload)

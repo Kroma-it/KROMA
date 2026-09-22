@@ -8,6 +8,8 @@ interface AuthUser {
   firstName: string;
   lastName: string;
   avatarUrl?: string;
+  company?: string | null;
+  country?: string | null;
   isProfileComplete: boolean;
   role: string;
 }

@@ -16,6 +16,8 @@ model User {
   lastName          String?
   googleId          String?    @unique
   avatarUrl         String?
+  company           String?
+  country           String?
   isProfileComplete Boolean    @default(false)
   role              String     @default("USER") // USER | ADMIN
   createdAt         DateTime   @default(now())

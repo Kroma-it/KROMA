@@ -342,3 +342,27 @@ Correction
 **Fichiers**  
 - `backend/src/app.ts`
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-09-22 - Neox-debug
+
+**Nom**  
+Enregistrement de la compagnie et du pays dans le profil
+
+**Nature**  
+Ajout
+
+**Details**  
+- Les champs "Compagnie" et "Pays" du profil affichaient des valeurs fictives ("Kroma Studio", "France") et n'étaient jamais envoyés à l'API : rien n'était enregistré
+- Ajout des colonnes `company` et `country` (texte, optionnelles) au modèle `User` — colonnes déjà créées dans Supabase par l'utilisateur avant ce commit
+- Le backend (`authController.ts`) accepte, enregistre et renvoie ces deux champs (100 caractères max, une valeur vide efface le champ)
+- Le frontend (`UserInfo.tsx`) charge les valeurs enregistrées et les envoie à l'enregistrement du profil ; le sous-titre du profil affiche "compagnie · pays" seulement s'ils sont renseignés
+
+**Fichiers**  
+- `backend/prisma/schema.prisma`
+- `backend/src/controllers/authController.ts`
+- `frontend/src/components/UserInfo.tsx`
+- `frontend/src/context/AuthContext.tsx`
+- `frontend/src/utils/api.ts`
+- `COMMIT_LOG.md`

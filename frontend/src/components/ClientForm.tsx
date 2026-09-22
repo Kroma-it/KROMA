@@ -75,9 +75,6 @@ export default function ClientForm() {
 
             <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
                 <div>
-                    <label className="mb-3 block text-xs font-bold text-zinc-300">
-                        Nombre d'étoiles
-                    </label>
                     <div className="flex items-center gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
                             <button
@@ -103,9 +100,6 @@ export default function ClientForm() {
                 </div>
 
                 <div>
-                    <label htmlFor="client-comment" className="mb-2 block text-xs font-bold text-zinc-300">
-                        Commentaire
-                    </label>
                     <textarea
                         id="client-comment"
                         value={comment}

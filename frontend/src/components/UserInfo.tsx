@@ -21,8 +21,8 @@ export default function UserInfo() {
     const [lastName, setLastName] = useState("")
     const [firstName, setFirstName] = useState("")
     const [email, setEmail] = useState("")
-    const [company, setCompany] = useState("Kroma Studio")
-    const [country, setCountry] = useState("France")
+    const [company, setCompany] = useState("")
+    const [country, setCountry] = useState("")
     const [avatar, setAvatar] = useState("/assets/2.jpg")
     const [cropSrc, setCropSrc] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
@@ -33,6 +33,8 @@ export default function UserInfo() {
             setLastName(user.lastName || "")
             setFirstName(user.firstName || "")
             setEmail(user.email || "")
+            setCompany(user.company || "")
+            setCountry(user.country || "")
             if (user.avatarUrl) {
                 setAvatar(user.avatarUrl)
             }
@@ -66,7 +68,9 @@ export default function UserInfo() {
             await apiUpdateProfile({
                 firstName,
                 lastName,
-                avatarUrl: avatar
+                avatarUrl: avatar,
+                company,
+                country
             })
             await refreshUser()
             setStatus({ type: 'success', text: 'Votre profil a été mis à jour avec succès.' })
@@ -151,7 +155,11 @@ export default function UserInfo() {
                         <h2 className="text-xl font-extrabold text-white">
                             {firstName || "Utilisateur"} {lastName}
                         </h2>
-                        <p className="mt-1 text-sm text-zinc-400">{company}</p>
+                        {(user?.company || user?.country) && (
+                            <p className="mt-1 text-sm text-zinc-400">
+                                {[user.company, user.country].filter(Boolean).join(" · ")}
+                            </p>
+                        )}
                     </div>
                 </div>
 

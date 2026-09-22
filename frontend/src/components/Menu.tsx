@@ -307,7 +307,6 @@ function Menu() {
                                 </div>
                             )}
                             <div className="min-w-0 flex-1">
-                                <p className="text-[11px] font-bold uppercase tracking-widest text-fuchsia-400">Mon profil</p>
                                 <p className="truncate text-white font-bold text-sm">{user.firstName} {user.lastName}</p>
                                 <p className="truncate text-white/40 text-xs">{user.email}</p>
                             </div>
@@ -331,7 +330,7 @@ function Menu() {
                             aria-label="Ouvrir la connexion"
                             className="w-fit rounded-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
                         >
-                            <div className="h-12 w-12 rounded-full border-2 border-fuchsia-500 bg-fuchsia-900/30 flex items-center justify-center text-white">
+                            <div className="h-12 text-gray-400 w-12 rounded-full border-2 border-fuchsia-500 bg-fuchsia-900/30 flex items-center justify-center">
                                 <User size={24} />
                             </div>
                         </button>
