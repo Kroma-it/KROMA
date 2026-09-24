@@ -2,11 +2,11 @@
   "name": "kroma-backend",
   "version": "1.0.0",
   "description": "Backend API for KROMA Agency",
-  "main": "dist/api.js",
+  "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "prisma generate && npx esbuild src/app.ts --bundle --platform=node --target=node18 --outfile=api/index.js --external:@prisma/client --external:.prisma/client --format=cjs",
-    "start": "node dist/api.js",
+    "build": "prisma generate && npx esbuild src/server.ts --bundle --platform=node --target=node18 --outfile=dist/server.js --external:@prisma/client --external:.prisma/client --format=cjs",
+    "start": "node dist/server.js",
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio"
