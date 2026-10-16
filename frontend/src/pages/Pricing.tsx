@@ -1,8 +1,8 @@
 import { SendHorizonal, ChartNoAxesCombined } from 'lucide-react';
 import { NavLink } from "react-router-dom"
-import { Helmet } from "react-helmet-async";
 import Pack from "../components/Pack";
 import PricingHero from "../components/PricingHero";
+import SEO from "../components/SEO";
 
 export default function Pricing() {
 
@@ -87,10 +87,11 @@ export default function Pricing() {
     ]
     return (
         <>
-        <Helmet>
-            <title>Des tarifs transparents pour des ambitions sans limites | Kroma</title>
-            <meta name="description" content="Kroma fusionne l'art et la technologie pour créer des expériences digitales uniques et percutantes"/>
-        </Helmet>
+        <SEO 
+        title="Tarifs | Kroma" 
+        description="Découvrez nos tarifs transparents et les services que nous offrons."
+        pathname="/tarification"
+        />
         <PricingHero
             icon={ChartNoAxesCombined}
             iconText="Investissement créatif"

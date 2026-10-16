@@ -12,7 +12,7 @@ import {
     type LucideIcon,
 } from "lucide-react"
 import { useState } from "react"
-import { Helmet } from "react-helmet-async"
+import SEO from "../components/SEO";
 import PricingHero from "../components/PricingHero"
 import { apiCreateOrder } from "../utils/api"
 
@@ -110,13 +110,11 @@ export default function Service() {
 
     return (
         <>
-            <Helmet>
-                <title>Personnalisez Votre Projet | Kroma</title>
-                <meta
-                    name="description"
-                    content="Personnalisez votre projet artistique avec Kroma et donnez vie a votre vision"
-                />
-            </Helmet>
+            <SEO 
+            title="Personnalisez votre projet | Kroma" 
+            description="Personnalisez votre projet artistique avec Kroma et donnez vie a votre vision"
+            pathname="/personnalisation"
+            />
 
             <PricingHero
                 icon={MessageSquareText}

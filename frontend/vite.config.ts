@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     Sitemap({
-      hostname: "https://kroma-agence.vercel.app",
+      hostname: "https://kroma-agence.com",
       dynamicRoutes : [
         '/clients',
         '/tarification',

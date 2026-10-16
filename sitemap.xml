@@ -5,7 +5,7 @@
   
   <!-- Page d'accueil -->
   <url>
-    <loc>https://kroma-agence.vercel.app/</loc>
+    <loc>https://kroma-agence.com/</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -13,7 +13,7 @@
 
   <!-- Services logos-->
   <url>
-    <loc>https://kroma-agence.vercel.app/services/logos</loc>
+    <loc>https://kroma-agence.com/services/logos</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -21,14 +21,14 @@
 
   <!-- Services web-->
   <url>
-    <loc>https://kroma-agence.vercel.app/services/web</loc>
+    <loc>https://kroma-agence.com/services/web</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <!-- Services graphiques-->
   <url>
-    <loc>https://kroma-agence.vercel.app/services/graphics</loc>
+    <loc>https://kroma-agence.com/services/graphics</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -36,7 +36,7 @@
 
   <!-- Tarification -->
   <url>
-    <loc>https://kroma-agence.vercel.app/tarification</loc>
+    <loc>https://kroma-agence.com/tarification</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -44,7 +44,7 @@
 
   <!-- Projet personnalisé -->
   <url>
-    <loc>https://kroma-agence.vercel.app/personnalisation</loc>
+    <loc>https://kroma-agence.com/personnalisation</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

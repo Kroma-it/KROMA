@@ -366,3 +366,21 @@ Ajout
 - `frontend/src/context/AuthContext.tsx`
 - `frontend/src/utils/api.ts`
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-10-16 - Neox-debug
+
+**Nom**
+Mise à jour de l'url du site et optimisation du SEO
+
+**Nature**
+Modification
+
+**Details**
+- J'ai amélioré les fichiers pour optimiser le SEO
+
+**Fichiers**
+- `frontend/dist/robots.txt`
+- `frontend/dist/sitemap.xml`
+- `frontend/sitemap.xml`

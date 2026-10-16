@@ -37,8 +37,8 @@ de telle sorte que si dans la base de données il n'y a pas d'email de la sorte 
 
 3. Fonctionnement du système de commande
 
-- Dans la page [`/personnalisation`](https://kroma-agence.vercel.app/personnalisation) l'utilisateur va pouvoir sélectionner les différents services dont il a besoin et quand il va cliquer sur le bouton *Envoyer le projet*, le projet sera envoyé par mail et envoyé dans le système au niveau des notifications du dashboard là où elle pourra être validée ou rejetée
-- Dans la page [`/tarification`](https://kroma-agence.vercel.app/tarification) où il y aura les différents packs, l'utilisateur pourra envoyer sa commande par mail
+- Dans la page [`/personnalisation`](https://kroma-agence.com/personnalisation) l'utilisateur va pouvoir sélectionner les différents services dont il a besoin et quand il va cliquer sur le bouton *Envoyer le projet*, le projet sera envoyé par mail et envoyé dans le système au niveau des notifications du dashboard là où elle pourra être validée ou rejetée
+- Dans la page [`/tarification`](https://kroma-agence.comp/tarification) où il y aura les différents packs, l'utilisateur pourra envoyer sa commande par mail
 
 4. Système d'abonnement aux *newsletter*
 

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import {Helmet} from "react-helmet-async";
+import SEO from "../components/SEO";
 import {
   ArrowRight,
   Palette,
@@ -115,10 +115,11 @@ export default function ServiceLogo() {
 
   return (
     <main className="min-h-screen mt-20 text-white overflow-hidden pb-16 selection:bg-fuchsia-500/30 selection:text-white">
-      <Helmet>
-        <title>Création de logos professionnels | Kroma</title>
-        <meta name="description" content="Réalisation d'identité visuelle forte et captivante pour des marques ambitieuses" />
-      </Helmet>
+      <SEO 
+        title="Création de logos professionnels | Kroma" 
+        description="Réalisation d'identité visuelle forte et captivante pour des marques ambitieuses"
+        pathname="/services/logo"
+      />
       {/* 1. Hero Section & LogoCrea Component */}
       <section className="relative pt-24 md:pt-32 pb-20 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
         {/* Decorative ambient background */}

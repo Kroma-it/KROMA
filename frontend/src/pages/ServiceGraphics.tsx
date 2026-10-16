@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import { NavLink } from "react-router-dom";
 import GraphicsCrea from "../components/GraphicsCrea";
 import {
@@ -132,13 +132,11 @@ export default function ServiceGraphics() {
 
   return (
     <main className="min-h-screen mt-20 text-white overflow-hidden pb-16 selection:bg-fuchsia-500/30 selection:text-white">
-      <Helmet>
-        <title>Création de supports visuels professionnels | Kroma</title>
-        <meta
-          name="description"
-          content="Création de supports visuels professionnels pour les réseaux sociaux, campagnes, affiches et communications de marque."
-        />
-      </Helmet>
+      <SEO 
+        title="Création de supports visuels professionnels | Kroma" 
+        description="Création de supports visuels professionnels pour les réseaux sociaux, campagnes, affiches et communications de marque"
+        pathname="/services/graphics"
+      />
 
       <section className="relative pt-24 md:pt-32 pb-20 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center">
         <div className="absolute top-16 left-4 h-96 w-96 rounded-full bg-fuchsia-600/8 blur-[120px] pointer-events-none" />

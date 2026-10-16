@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import {
   ArrowRight,
   Palette,
@@ -115,10 +115,11 @@ export default function ServiceWeb() {
 
   return (
     <main className="min-h-screen mt-20 text-white overflow-hidden pb-16 selection:bg-cyan-500/30 selection:text-white">
-      <Helmet>
-        <title>Création de sites web professionnels | Kroma</title>
-        <meta name="description" content="Développement de sites internet modernes, performants et sur-mesure pour des marques ambitieuses." />
-      </Helmet>
+      <SEO 
+        title="Création de sites web professionnels | Kroma" 
+        description="Développement de sites internet modernes, performants et sur-mesure pour des marques ambitieuses"
+        pathname="/services/web"
+      />
       {/* 1. Hero Section & WebCrea Component */}
       <section className="relative pt-24 md:pt-32 pb-20 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
         {/* Decorative ambient background */}

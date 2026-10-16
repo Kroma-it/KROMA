@@ -2,7 +2,7 @@
 
 **KROMA** est un studio de design créatif numérique qui fusionne l'art et la technologie pour créer des expériences digitales uniques et percutantes. Notre site vitrine présente nos services en design graphique, branding et développement web.
 
-**Site:** [kroma-agence.vercel.app](https://kroma-agence.vercel.app)
+**Site:** [kroma-agence.com](https://kroma-agence.com)
 
 ---
 
@@ -196,8 +196,8 @@ KROMA/
 
 ### Vercel (Production)
 Le projet est automatiquement déployé sur **Vercel** via :
-- URL : https://kroma-agence.vercel.app
-- Hostname du sitemap : https://kroma-agence.vercel.app
+- URL : https://kroma-agence.com
+- Hostname du sitemap : https://kroma-agence.com
 
 ### Configuration Vite
 ```javascript

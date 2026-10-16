@@ -13,7 +13,7 @@ import {
 import { NavLink } from "react-router-dom";
 import Landing from "../components/Landing";
 import Feedback from "../components/FeedBack";
-import { Helmet } from "react-helmet-async";
+import SEO from "../components/SEO";
 import { apiGetPublicFeedbacks } from "../utils/api";
 
 type FeedbackDisplay = {
@@ -133,10 +133,13 @@ export default function Home() {
 
   return (
     <main className="overflow-hidden text-white">
-      <Helmet>
-        <title>Agence créative de design | Kroma</title>
-        <meta name="description" content="Kroma est une agence créative de design qui aide les entrepreneurs et marques à construire une présence professionnelle forte et cohérente." />
-      </Helmet>
+      
+      <SEO 
+        title="Agence créative de design | Kroma" 
+        description="Kroma est une agence créative de design qui aide les entrepreneurs et marques à construire une présence professionnelle forte et cohérente."
+        pathname="/"
+      />
+      
       <Landing
         icon={landing.icon}
         cta1={landing.cta1}
