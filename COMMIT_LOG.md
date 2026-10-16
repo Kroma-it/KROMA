@@ -384,3 +384,24 @@ Modification
 - `frontend/dist/robots.txt`
 - `frontend/dist/sitemap.xml`
 - `frontend/sitemap.xml`
+
+---
+
+## 2026-10-16 - Neox-debug
+
+**Nom**
+Fusion des correctifs de déploiement Vercel
+
+**Nature**
+Modification
+
+**Details**
+- Intégration dans la branche de travail des correctifs présents sur `main` pour le proxy Vercel et la compilation du backend.
+
+**Fichiers**
+- `backend/package.json`
+- `backend/tsconfig.json`
+- `backend/vercel.json`
+- `frontend/vercel.json`
+- `vercel.json`
+- `COMMIT_LOG.md`
