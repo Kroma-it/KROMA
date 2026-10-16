@@ -86,6 +86,26 @@ Modification
 
 **Fichiers**  
 - `COMMIT_LOG.md`
+
+---
+
+## 2026-10-16 - Neox-debug
+
+**Nom**
+Déplacement du sitemap et mise à jour du proxy Vercel
+
+**Nature**
+Modification
+
+**Details**
+- Déplacement du sitemap dans le dossier `frontend` afin qu'il soit inclus dans le déploiement de l'application.
+- Mise à jour de la destination du proxy API Vercel vers `kroma-backend.vercel.app`.
+
+**Fichiers**
+- `frontend/sitemap.xml`
+- `sitemap.xml` (supprimé après déplacement)
+- `frontend/vercel.json`
+- `COMMIT_LOG.md`
 - `.githooks/pre-commit`
 
 ---
