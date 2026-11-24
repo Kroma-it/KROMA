@@ -32,8 +32,15 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.error || data.message || 'Une erreur est survenue.');
+  if (!response.ok || data.success === false) {
+    const apiError = data.error;
+    const message = typeof apiError === 'object' ? apiError.message : apiError;
+    const error = new Error(message || data.message || 'Une erreur est survenue.');
+    (error as Error & { code?: string; details?: unknown }).code =
+      typeof apiError === 'object' ? apiError.code : undefined;
+    (error as Error & { details?: unknown }).details =
+      typeof apiError === 'object' ? apiError.details : data.details;
+    throw error;
   }
 
   return data as T;

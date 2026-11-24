@@ -57,13 +57,19 @@ app.use('/api/v1/admin', adminRoutes);
 
 // Middleware 404
 app.use((_req, res) => {
-  res.status(404).json({ error: 'Route introuvable.' });
+  res.status(404).json({
+    success: false,
+    error: { code: 'NOT_FOUND', message: 'Cette adresse n’existe pas sur l’API.' }
+  });
 });
 
 // Middleware d'erreur globale
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Unhandled Server Error:', err);
-  res.status(500).json({ error: 'Erreur interne du serveur.' });
+  res.status(500).json({
+    success: false,
+    error: { code: 'INTERNAL_ERROR', message: 'Un problème est survenu de notre côté. Veuillez réessayer dans quelques minutes.' }
+  });
 });
 
 export default app;

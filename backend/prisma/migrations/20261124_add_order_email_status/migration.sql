@@ -1,0 +1,4 @@
+ALTER TABLE "Order"
+ADD COLUMN "emailStatus" TEXT NOT NULL DEFAULT 'NOT_SENT',
+ADD COLUMN "emailErrorCode" TEXT,
+ADD COLUMN "emailSentAt" TIMESTAMP(3);

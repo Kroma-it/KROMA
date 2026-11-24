@@ -66,19 +66,36 @@ export async function createOrder(req: AuthenticatedRequest, res: Response): Pro
       }
     });
 
-    // Envoi d'e-mail de confirmation (Async / non-bloquant)
-    sendOrderNotificationEmail({
+    const emailResult = await sendOrderNotificationEmail({
       orderId: newOrder.id,
       type,
       customerEmail: cleanEmail,
       customerName,
       services,
       totalPrice
-    }).catch(err => console.error('Error sending order emails:', err));
+    });
 
-    res.status(201).json({
-      message: 'Votre commande / projet a été envoyé avec succès.',
-      order: newOrder
+    if (emailResult.ok) {
+      await prisma.order.update({
+        where: { id: newOrder.id },
+        data: { emailStatus: 'SENT', emailErrorCode: null, emailSentAt: new Date() }
+      });
+    } else {
+      await prisma.order.update({
+        where: { id: newOrder.id },
+        data: { emailStatus: 'FAILED', emailErrorCode: emailResult.code }
+      });
+    }
+
+    res.status(emailResult.ok ? 201 : 207).json({
+      success: emailResult.ok,
+      message: emailResult.ok
+        ? 'Votre commande / projet a été envoyé avec succès.'
+        : emailResult.message,
+      order: newOrder,
+      ...(emailResult.ok ? {} : {
+        error: { code: emailResult.code, message: emailResult.message }
+      })
     });
   } catch (error) {
     console.error('Error creating order:', error);

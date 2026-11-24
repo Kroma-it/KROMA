@@ -9,7 +9,12 @@ export function validateBody(schema: ZodSchema) {
     } catch (err) {
       if (err instanceof ZodError) {
         res.status(400).json({
-          error: 'Données invalides',
+          success: false,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: 'Certaines informations sont invalides. Vérifiez les champs indiqués.',
+            details: err.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
+          },
           details: err.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
         });
         return;
